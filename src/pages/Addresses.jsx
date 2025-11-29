@@ -18,6 +18,8 @@ import {
   FaTag,
   FaMap,
   FaExternalLinkAlt,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
@@ -46,6 +48,7 @@ export default function Addresses() {
   const [showMapModal, setShowMapModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [expandedMaps, setExpandedMaps] = useState({});
 
   const [formData, setFormData] = useState({
     cityId: "",
@@ -62,6 +65,13 @@ export default function Addresses() {
 
   const toggleDropdown = (menu) =>
     setOpenDropdown(openDropdown === menu ? null : menu);
+
+  const toggleMapVisibility = (addressId) => {
+    setExpandedMaps((prev) => ({
+      ...prev,
+      [addressId]: !prev[addressId],
+    }));
+  };
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem("darkMode");
@@ -98,6 +108,12 @@ export default function Addresses() {
       const res = await axiosInstance.get("/api/Locations/GetAllForUser");
       if (res.status === 200) {
         setAddresses(res.data);
+        // Initialize all maps as collapsed
+        const initialExpandedState = {};
+        res.data.forEach((address) => {
+          initialExpandedState[address.id] = false;
+        });
+        setExpandedMaps(initialExpandedState);
       }
     } catch (err) {
       console.error("Failed to fetch addresses", err);
@@ -181,12 +197,20 @@ export default function Addresses() {
     e.preventDefault();
 
     try {
+      // Create a copy of formData without locationUrl if it's empty
+      const submitData = { ...formData };
+
+      // Remove locationUrl from data if it's empty
+      if (!submitData.locationUrl || submitData.locationUrl.trim() === "") {
+        delete submitData.locationUrl;
+      }
+
       const formattedData = {
-        ...formData,
-        cityId: parseInt(formData.cityId),
-        buildingNumber: parseInt(formData.buildingNumber) || 0,
-        floorNumber: parseInt(formData.floorNumber) || 0,
-        flatNumber: parseInt(formData.flatNumber) || 0,
+        ...submitData,
+        cityId: parseInt(submitData.cityId),
+        buildingNumber: parseInt(submitData.buildingNumber) || 0,
+        floorNumber: parseInt(submitData.floorNumber) || 0,
+        flatNumber: parseInt(submitData.flatNumber) || 0,
       };
 
       if (editingId) {
@@ -351,6 +375,26 @@ export default function Addresses() {
   const openMapModal = () => {
     setShowMapModal(true);
     setMapLoaded(false);
+
+    // تحديد الموقع تلقائياً
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const embedUrl = generateEmbedUrl(lat, lng);
+          setSelectedLocation({ lat, lng });
+          setFormData((prev) => ({ ...prev, locationUrl: embedUrl }));
+        },
+        (error) => {
+          console.warn("خطأ في تحديد الموقع:", error);
+          setSelectedLocation(defaultCenter); // لو رفض المستخدم الموقع
+        },
+        { enableHighAccuracy: true }
+      );
+    } else {
+      setSelectedLocation(defaultCenter); // لو المتصفح لا يدعم الجيولوجيشن
+    }
   };
 
   const closeMapModal = () => {
@@ -386,7 +430,6 @@ export default function Addresses() {
   const isFormValid = () => {
     const requiredFields = [
       "cityId",
-      "locationUrl",
       "streetName",
       "phoneNumber",
       "buildingNumber",
@@ -537,7 +580,7 @@ export default function Addresses() {
                     {mapLoaded && (
                       <GoogleMap
                         mapContainerStyle={mapContainerStyle}
-                        center={defaultCenter}
+                        center={selectedLocation || defaultCenter}
                         zoom={12}
                         onClick={handleMapClick}
                         onLoad={handleMapLoad}
@@ -741,21 +784,66 @@ export default function Addresses() {
                         {address.locationUrl && (
                           <motion.div
                             initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            transition={{ delay: 0.2 }}
-                            className="mt-3 sm:mt-4 rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600"
+                            animate={{
+                              opacity: expandedMaps[address.id] ? 1 : 0,
+                              height: expandedMaps[address.id] ? "auto" : 0,
+                            }}
+                            transition={{ duration: 0.3 }}
+                            className="mt-3 sm:mt-4 overflow-hidden"
                           >
-                            <iframe
-                              src={address.locationUrl}
-                              width="100%"
-                              height="200"
-                              style={{ border: 0 }}
-                              allowFullScreen=""
-                              loading="lazy"
-                              referrerPolicy="no-referrer-when-downgrade"
-                              title={`خريطة موقع ${address.streetName}`}
-                              className="w-full"
-                            />
+                            {expandedMaps[address.id] && (
+                              <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600">
+                                <iframe
+                                  src={address.locationUrl}
+                                  width="100%"
+                                  height="200"
+                                  style={{ border: 0 }}
+                                  allowFullScreen=""
+                                  loading="lazy"
+                                  referrerPolicy="no-referrer-when-downgrade"
+                                  title={`خريطة موقع ${address.streetName}`}
+                                  className="w-full"
+                                />
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+
+                        {address.locationUrl && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="mt-3 sm:mt-4"
+                          >
+                            <motion.button
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => toggleMapVisibility(address.id)}
+                              className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-medium text-xs sm:text-sm transition-all duration-300 ${
+                                darkMode
+                                  ? expandedMaps[address.id]
+                                    ? "bg-gray-600 text-gray-200 hover:bg-gray-500"
+                                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                  : expandedMaps[address.id]
+                                  ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                              } border ${
+                                darkMode ? "border-gray-600" : "border-gray-200"
+                              }`}
+                            >
+                              {expandedMaps[address.id] ? (
+                                <>
+                                  <FaEyeSlash className="text-xs sm:text-sm" />
+                                  <span>إخفاء الخريطة</span>
+                                </>
+                              ) : (
+                                <>
+                                  <FaEye className="text-xs sm:text-sm" />
+                                  <span>عرض الخريطة</span>
+                                </>
+                              )}
+                            </motion.button>
                           </motion.div>
                         )}
                       </div>
@@ -1132,7 +1220,7 @@ export default function Addresses() {
                             darkMode ? "text-gray-300" : "text-gray-700"
                           } mb-1 sm:mb-2`}
                         >
-                          رابط الموقع *
+                          رابط الموقع
                         </label>
 
                         <motion.button
@@ -1152,14 +1240,13 @@ export default function Addresses() {
                           name="locationUrl"
                           value={formData.locationUrl}
                           onChange={handleInputChange}
-                          required
+                          disabled
                           className={`w-full border ${
                             darkMode
-                              ? "border-gray-600 bg-gray-800 text-white"
-                              : "border-gray-200 bg-white text-black"
-                          } rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 outline-none focus:ring-2 focus:ring-[#E41E26] focus:border-transparent transition-all duration-200 text-sm sm:text-base`}
+                              ? "border-gray-600 bg-gray-800 text-gray-400"
+                              : "border-gray-200 bg-gray-100 text-gray-500"
+                          } rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 outline-none transition-all duration-200 text-sm sm:text-base cursor-not-allowed`}
                           placeholder="سيتم تعبئته تلقائياً عند اختيار موقع من الخريطة"
-                          readOnly={selectedLocation !== null}
                         />
 
                         {formData.locationUrl && (
