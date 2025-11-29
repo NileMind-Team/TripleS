@@ -18,6 +18,10 @@ import {
   FaMoneyBillWave,
   FaTag,
   FaCity,
+  FaCashRegister,
+  FaStore,
+  FaCodeBranch,
+  FaUserCircle,
 } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -34,6 +38,9 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [userData, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isRestaurant, setIsRestaurant] = useState(false);
+  const [isBranch, setIsBranch] = useState(false);
+  const [isUser, setIsUser] = useState(false);
   const sidebarRef = useRef(null);
   const dropdownRef = useRef(null);
 
@@ -154,6 +161,11 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
     navigate("/admin/cities");
   };
 
+  const handleCashierClick = () => {
+    setIsSidebarOpen(false);
+    navigate("/cashier");
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -197,9 +209,16 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
           const userDataWithAvatar = { ...res.data, avatar: fixedImageUrl };
           setUser(userDataWithAvatar);
 
-          const isAdminUser =
-            res.data.roles && res.data.roles.includes("Admin");
+          const userRoles = res.data.roles || [];
+          const isAdminUser = userRoles.includes("Admin");
+          const isRestaurantUser = userRoles.includes("Restaurant");
+          const isBranchUser = userRoles.includes("Branch");
+          const isUserRole = userRoles.includes("User");
+
           setIsAdmin(isAdminUser);
+          setIsRestaurant(isRestaurantUser);
+          setIsBranch(isBranchUser);
+          setIsUser(isUserRole);
 
           localStorage.setItem(
             "user",
@@ -219,6 +238,8 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
   }, [isLoggedIn]);
 
   const getInitial = (name) => (!name ? "?" : name.charAt(0).toUpperCase());
+
+  const hasCashierAccess = isAdmin || isRestaurant || isBranch;
 
   if (loading) {
     return (
@@ -421,14 +442,56 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
                       <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
                         {userData.email}
                       </p>
-                      {isAdmin && (
-                        <div className="flex items-center gap-1 mt-1">
-                          <FaUserShield className="text-[#E41E26] dark:text-[#FDB913] text-xs" />
-                          <span className="text-xs text-[#E41E26] dark:text-[#FDB913] font-semibold">
-                            مدير
-                          </span>
-                        </div>
-                      )}
+
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {isAdmin && (
+                          <div
+                            className="flex flex-row items-center gap-1 bg-[#E41E26]/10 dark:bg-[#FDB913]/20 px-2 py-1 rounded-full"
+                            dir="rtl"
+                          >
+                            <FaUserShield className="text-[#E41E26] dark:text-[#FDB913] text-xs" />
+                            <span className="text-xs text-[#E41E26] dark:text-[#FDB913] font-semibold">
+                              مدير
+                            </span>
+                          </div>
+                        )}
+
+                        {isRestaurant && (
+                          <div
+                            className="flex flex-row items-center gap-1 bg-green-500/10 dark:bg-green-500/20 px-2 py-1 rounded-full"
+                            dir="rtl"
+                          >
+                            <FaStore className="text-green-600 dark:text-green-400 text-xs" />
+                            <span className="text-xs text-green-600 dark:text-green-400 font-semibold">
+                              مطعم
+                            </span>
+                          </div>
+                        )}
+
+                        {isBranch && (
+                          <div
+                            className="flex flex-row items-center gap-1 bg-blue-500/10 dark:bg-blue-500/20 px-2 py-1 rounded-full"
+                            dir="rtl"
+                          >
+                            <FaCodeBranch className="text-blue-600 dark:text-blue-400 text-xs" />
+                            <span className="text-xs text-blue-600 dark:text-blue-400 font-semibold">
+                              فرع
+                            </span>
+                          </div>
+                        )}
+
+                        {isUser && (
+                          <div
+                            className="flex flex-row items-center gap-1 bg-purple-500/10 dark:bg-purple-500/20 px-2 py-1 rounded-full"
+                            dir="rtl"
+                          >
+                            <FaUserCircle className="text-purple-600 dark:text-purple-400 text-xs" />
+                            <span className="text-xs text-purple-600 dark:text-purple-400 font-semibold">
+                              مستخدم
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -451,6 +514,24 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
                       <span className="text-lg">الصفحة الرئيسية</span>
                     </button>
                   </motion.div>
+
+                  {hasCashierAccess && (
+                    <motion.div
+                      whileHover={{ scale: 1.02, x: -4 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <button
+                        onClick={handleCashierClick}
+                        className="w-full text-right flex items-center gap-4 px-2 py-2 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] dark:hover:from-gray-700 dark:hover:to-gray-600 transition-all duration-200 font-medium rounded-xl border border-transparent hover:border-[#FDB913]/30 dark:hover:border-gray-500"
+                        dir="rtl"
+                      >
+                        <div className="p-2 bg-green-500/10 dark:bg-green-500/20 rounded-lg">
+                          <FaCashRegister className="text-green-600 dark:text-green-400 text-lg" />
+                        </div>
+                        <span className="text-lg">الكاشير</span>
+                      </button>
+                    </motion.div>
+                  )}
 
                   {isAdmin && (
                     <>

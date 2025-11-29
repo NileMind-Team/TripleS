@@ -19,6 +19,7 @@ import DeliveryCostManagement from "./pages/DeliveryCostManagement";
 import CouponsManagement from "./pages/CouponsManagement";
 import CitiesManagement from "./pages/CitiesManagement";
 import ProductDetails from "./pages/ProductDetails";
+import Cashier from "./pages/Cashier";
 
 function App() {
   const location = useLocation();
@@ -95,6 +96,7 @@ function App() {
           <Route path="/admin/coupons" element={<CouponsManagement />} />
           <Route path="/admin/cities" element={<CitiesManagement />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cashier" element={<Cashier />} />
         </Routes>
       </main>
 
