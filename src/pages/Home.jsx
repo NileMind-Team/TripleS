@@ -18,6 +18,7 @@ import {
   FaTag,
   FaHeart,
   FaRegHeart,
+  FaFire,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -165,6 +166,12 @@ const Home = () => {
               ) || [],
           },
           menuItemSchedules: product.menuItemSchedules || [],
+          itemOffer: product.itemOffer,
+          finalPrice: product.itemOffer
+            ? product.itemOffer.isPercentage
+              ? product.basePrice * (1 - product.itemOffer.discountValue / 100)
+              : product.basePrice - product.itemOffer.discountValue
+            : product.basePrice,
         }));
 
         setProducts(transformedProducts);
@@ -739,6 +746,15 @@ const Home = () => {
     return arabicRegex.test(text);
   };
 
+  const formatOfferText = (offer) => {
+    if (!offer) return "";
+    if (offer.isPercentage) {
+      return `خصم ${offer.discountValue}%`;
+    } else {
+      return `خصم ${offer.discountValue} ج.م`;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
@@ -934,8 +950,26 @@ const Home = () => {
                     {product.isActive ? "نشط" : "غير نشط"}
                   </div>
 
+                  {product.itemOffer && product.itemOffer.isEnabled && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute top-2 left-2 z-10"
+                    >
+                      <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center gap-1.5">
+                        <FaFire
+                          className="text-white animate-pulse"
+                          size={12}
+                        />
+                        <span className="text-xs font-bold whitespace-nowrap">
+                          {formatOfferText(product.itemOffer)}
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+
                   {isAdminOrRestaurantOrBranch && (
-                    <div className="absolute top-2 left-2 z-10 flex gap-1">
+                    <div className="absolute top-12 left-2 z-10 flex flex-col gap-1">
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
@@ -994,8 +1028,21 @@ const Home = () => {
                     </p>
 
                     <div className="flex items-center justify-between mb-3">
-                      <div className="text-[#E41E26] font-bold text-lg sm:text-xl">
-                        {product.price} ج.م
+                      <div className="flex items-center gap-2">
+                        {product.itemOffer && product.itemOffer.isEnabled ? (
+                          <>
+                            <div className="text-gray-400 dark:text-gray-500 text-sm line-through">
+                              {product.price} ج.م
+                            </div>
+                            <div className="text-[#E41E26] font-bold text-lg sm:text-xl">
+                              {product.finalPrice.toFixed(2)} ج.م
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-[#E41E26] font-bold text-lg sm:text-xl">
+                            {product.price} ج.م
+                          </div>
+                        )}
                       </div>
                       <motion.button
                         whileHover={{ scale: 1.2 }}

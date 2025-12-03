@@ -117,12 +117,21 @@ const ProductDetails = () => {
 
       setAddonsData(transformedAddons);
 
+      // حساب السعر بعد الخصم
+      const finalPrice = productData.itemOffer
+        ? productData.itemOffer.isPercentage
+          ? productData.basePrice *
+            (1 - productData.itemOffer.discountValue / 100)
+          : productData.basePrice - productData.itemOffer.discountValue
+        : productData.basePrice;
+
       const transformedProduct = {
         id: productData.id,
         name: productData.name,
         category: productData.category?.name?.toLowerCase() || "meals",
         categoryId: productData.category?.id,
         price: productData.basePrice,
+        finalPrice: finalPrice,
         image: productData.imageUrl
           ? `https://restaurant-template.runasp.net/${productData.imageUrl}`
           : "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop",
@@ -151,6 +160,7 @@ const ProductDetails = () => {
         typesWithOptions: productData.typesWithOptions || [],
         canSelectMultipleOptions: productData.canSelectMultipleOptions,
         isSelectionRequired: productData.isSelectionRequired,
+        itemOffer: productData.itemOffer,
       };
 
       setProduct(transformedProduct);
@@ -230,6 +240,15 @@ const ProductDetails = () => {
     return num.toString().replace(/\d/g, (digit) => arabicNumbers[digit]);
   };
 
+  const formatOfferText = (offer) => {
+    if (!offer) return "";
+    if (offer.isPercentage) {
+      return `خصم ${offer.discountValue}%`;
+    } else {
+      return `خصم ${offer.discountValue} ج.م`;
+    }
+  };
+
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () =>
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -263,7 +282,12 @@ const ProductDetails = () => {
   const calculateTotalPrice = () => {
     if (!product) return 0;
 
-    let total = product.price * quantity;
+    const basePrice =
+      product.itemOffer && product.itemOffer.isEnabled
+        ? product.finalPrice
+        : product.price;
+
+    let total = basePrice * quantity;
 
     Object.values(selectedAddons).forEach((optionIds) => {
       optionIds.forEach((optionId) => {
@@ -1024,13 +1048,28 @@ const ProductDetails = () => {
                 {product.isActive ? "نشط" : "غير نشط"}
               </div>
 
+              {product.itemOffer && product.itemOffer.isEnabled && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute top-3 md:top-4 left-3 md:left-4 z-10"
+                >
+                  <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-xl shadow-2xl flex items-center gap-1.5 md:gap-2">
+                    <FaFire className="text-white animate-pulse" size={14} />
+                    <span className="text-xs md:text-sm font-bold whitespace-nowrap">
+                      {formatOfferText(product.itemOffer)}
+                    </span>
+                  </div>
+                </motion.div>
+              )}
+
               {isAdminOrRestaurantOrBranch && (
-                <div className="absolute top-3 md:top-4 left-3 md:left-4 flex flex-col sm:flex-row gap-2">
+                <div className="absolute top-12 md:top-16 left-3 md:left-4 flex flex-col gap-2 z-10">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleToggleActive}
-                    className={`p-2 md:p-3 rounded-xl shadow-lg transition-colors flex items-center gap-1 md:gap-2 text-xs md:text-sm ${
+                    className={`p-2 md:p-3 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm ${
                       product.isActive
                         ? "bg-yellow-500 text-white hover:bg-yellow-600"
                         : "bg-green-500 text-white hover:bg-green-600"
@@ -1041,27 +1080,25 @@ const ProductDetails = () => {
                     ) : (
                       <FaCheckCircle className="text-sm md:text-base" />
                     )}
-                    <span className="hidden sm:inline">
-                      {product.isActive ? "تعطيل" : "تفعيل"}
-                    </span>
+                    <span>{product.isActive ? "تعطيل" : "تفعيل"}</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleEditProduct}
-                    className="bg-blue-500 text-white p-2 md:p-3 rounded-xl shadow-lg hover:bg-blue-600 transition-colors flex items-center gap-1 md:gap-2 text-xs md:text-sm"
+                    className="bg-blue-500 text-white p-2 md:p-3 rounded-xl shadow-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm"
                   >
                     <FaEdit className="text-sm md:text-base" />
-                    <span className="hidden sm:inline">تعديل</span>
+                    <span>تعديل</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleDeleteProduct}
-                    className="bg-red-500 text-white p-2 md:p-3 rounded-xl shadow-lg hover:bg-red-600 transition-colors flex items-center gap-1 md:gap-2 text-xs md:text-sm"
+                    className="bg-red-500 text-white p-2 md:p-3 rounded-xl shadow-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm"
                   >
                     <FaTrash className="text-sm md:text-base" />
-                    <span className="hidden sm:inline">حذف</span>
+                    <span>حذف</span>
                   </motion.button>
                 </div>
               )}
@@ -1091,8 +1128,21 @@ const ProductDetails = () => {
                       {product.description}
                     </p>
 
-                    <div className="text-2xl md:text-3xl font-bold text-[#E41E26]">
-                      {toArabicNumbers(product.price)} ج.م
+                    <div className="flex items-center gap-2 md:gap-4 mb-3 md:mb-4">
+                      {product.itemOffer && product.itemOffer.isEnabled ? (
+                        <>
+                          <div className="text-gray-400 dark:text-gray-500 text-base md:text-lg line-through">
+                            {toArabicNumbers(product.price)} ج.م
+                          </div>
+                          <div className="text-[#E41E26] font-bold text-2xl md:text-3xl">
+                            {toArabicNumbers(product.finalPrice.toFixed(2))} ج.م
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-[#E41E26] font-bold text-2xl md:text-3xl">
+                          {toArabicNumbers(product.price)} ج.م
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -1255,9 +1305,8 @@ const ProductDetails = () => {
                                     )}
                                   </motion.button>
 
-                                  {/* Admin Options Buttons */}
                                   {isAdminOrRestaurantOrBranch && (
-                                    <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                    <div className="absolute top-2 left-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                       <motion.button
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.9 }}
