@@ -16,6 +16,8 @@ import {
   FaSave,
   FaTimes,
   FaLayerGroup,
+  FaStickyNote,
+  FaPercent,
 } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -50,9 +52,13 @@ const ProductDetails = () => {
     isSelectionRequired: false,
   });
 
+  const [additionalNotes, setAdditionalNotes] = useState("");
+  const [showNotesModal, setShowNotesModal] = useState(false);
+
   const [newAddonOptions, setNewAddonOptions] = useState([]);
   const modalRef = useRef(null);
   const addonTypeModalRef = useRef(null);
+  const notesModalRef = useRef(null);
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -226,9 +232,15 @@ const ProductDetails = () => {
       ) {
         handleCloseAddonTypeModal();
       }
+      if (
+        notesModalRef.current &&
+        !notesModalRef.current.contains(event.target)
+      ) {
+        handleCloseNotesModal();
+      }
     };
 
-    if (showOptionModal || showAddonTypeModal) {
+    if (showOptionModal || showAddonTypeModal || showNotesModal) {
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("touchstart", handleClickOutside);
     }
@@ -237,7 +249,7 @@ const ProductDetails = () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, [showOptionModal, showAddonTypeModal]);
+  }, [showOptionModal, showAddonTypeModal, showNotesModal]);
 
   const getDayName = (dayNumber) => {
     const days = [
@@ -388,6 +400,7 @@ const ProductDetails = () => {
         menuItemId: product.id,
         quantity: quantity,
         options: options,
+        additionalNotes: additionalNotes.trim(),
       });
 
       await fetchCartItemsCount();
@@ -408,6 +421,7 @@ const ProductDetails = () => {
 
       setQuantity(1);
       setSelectedAddons({});
+      setAdditionalNotes("");
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast.error("فشل في إضافة المنتج إلى السلة", {
@@ -487,6 +501,41 @@ const ProductDetails = () => {
         text: "فشل في تحديث حالة المنتج",
         timer: 2000,
         showConfirmButton: false,
+      });
+    }
+  };
+
+  const handleManageOffers = async (e) => {
+    e?.stopPropagation();
+
+    try {
+      const response = await axiosInstance.get("/api/ItemOffers/GetAll");
+      const offersData = response.data;
+
+      const existingOffer = offersData.find(
+        (offer) => offer.menuItemId === product.id
+      );
+
+      if (existingOffer) {
+        navigate("/admin/item-offers", {
+          state: {
+            selectedProductId: product.id,
+            selectedOfferId: existingOffer.id,
+          },
+        });
+      } else {
+        navigate("/admin/item-offers", {
+          state: {
+            selectedProductId: product.id,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching offers:", error);
+      toast.error("فشل في تحميل بيانات الخصومات", {
+        position: "top-right",
+        autoClose: 2000,
+        rtl: true,
       });
     }
   };
@@ -727,6 +776,32 @@ const ProductDetails = () => {
         rtl: true,
       });
     }
+  };
+
+  const handleOpenNotesModal = () => {
+    setShowNotesModal(true);
+  };
+
+  const handleCloseNotesModal = () => {
+    setShowNotesModal(false);
+  };
+
+  const handleSaveNotes = () => {
+    handleCloseNotesModal();
+    toast.success("تم حفظ التعليمات الإضافية", {
+      position: "top-right",
+      autoClose: 1500,
+      rtl: true,
+    });
+  };
+
+  const handleClearNotes = () => {
+    setAdditionalNotes("");
+    toast.info("تم مسح التعليمات الإضافية", {
+      position: "top-right",
+      autoClose: 1500,
+      rtl: true,
+    });
   };
 
   const isArabic = (text) => {
@@ -1033,6 +1108,89 @@ const ProductDetails = () => {
         </div>
       )}
 
+      {/* Notes Modal */}
+      {showNotesModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            ref={notesModalRef}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6"
+            dir="rtl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <FaStickyNote className="text-[#E41E26] text-xl" />
+                <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                  تعليمات إضافية
+                </h3>
+              </div>
+              <button
+                onClick={handleCloseNotesModal}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              >
+                <FaTimes className="text-lg" />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                اكتب أي ملاحظات
+              </p>
+
+              <textarea
+                value={additionalNotes}
+                onChange={(e) => setAdditionalNotes(e.target.value)}
+                placeholder="اكتب تعليماتك هنا..."
+                className="w-full h-40 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-[#E41E26] focus:border-transparent resize-none"
+                dir="rtl"
+                maxLength={500}
+                autoFocus
+              />
+
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  اختياري
+                </span>
+                <span
+                  className={`text-xs ${
+                    additionalNotes.length >= 450
+                      ? "text-red-500"
+                      : "text-gray-500 dark:text-gray-400"
+                  }`}
+                >
+                  {additionalNotes.length}/500
+                </span>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleClearNotes}
+                className="flex-1 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"
+              >
+                <FaTrash className="text-sm" />
+                مسح
+              </button>
+              <button
+                onClick={handleCloseNotesModal}
+                className="flex-1 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleSaveNotes}
+                className="flex-1 py-3 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+              >
+                <FaCheck className="text-sm" />
+                حفظ
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -1117,6 +1275,15 @@ const ProductDetails = () => {
                   >
                     <FaEdit className="text-sm md:text-base" />
                     <span>تعديل</span>
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleManageOffers}
+                    className="bg-purple-500 text-white p-2 md:p-3 rounded-xl shadow-lg hover:bg-purple-600 transition-colors flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm"
+                  >
+                    <FaPercent className="text-sm md:text-base" />
+                    <span>خصومات</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -1369,6 +1536,30 @@ const ProductDetails = () => {
                           </div>
                         </div>
                       ))}
+
+                    <button
+                      onClick={handleOpenNotesModal}
+                      className="w-full bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-900/30 dark:to-indigo-800/30 border-2 border-dashed border-indigo-300 dark:border-indigo-600 rounded-xl md:rounded-2xl p-3 md:p-4 text-center hover:border-solid hover:border-indigo-400 dark:hover:border-indigo-500 transition-all duration-300"
+                      dir="rtl"
+                    >
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <div className="bg-indigo-100 dark:bg-indigo-800/50 p-2 rounded-full">
+                          <FaStickyNote className="text-indigo-600 dark:text-indigo-400 text-xl" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-indigo-700 dark:text-indigo-300 text-base md:text-lg">
+                            {additionalNotes
+                              ? "تم إضافة تعليمات إضافية"
+                              : "إضافة تعليمات إضافية"}
+                          </h4>
+                          <p className="text-indigo-600/70 dark:text-indigo-400/70 text-xs md:text-sm mt-1">
+                            {additionalNotes
+                              ? "انقر لتعديل التعليمات الإضافية"
+                              : ""}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>

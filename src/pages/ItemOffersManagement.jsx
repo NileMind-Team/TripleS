@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaArrowLeft,
@@ -26,6 +26,7 @@ import axiosInstance from "../api/axiosInstance";
 
 export default function ItemOffersManagement() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
@@ -40,8 +41,11 @@ export default function ItemOffersManagement() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const selectedProductId = location.state?.selectedProductId || "";
+  const selectedOfferId = location.state?.selectedOfferId || null;
+
   const [formData, setFormData] = useState({
-    menuItemId: "",
+    menuItemId: selectedProductId.toString() || "",
     isPercentage: true,
     discountValue: "",
     startDate: "",
@@ -110,8 +114,33 @@ export default function ItemOffersManagement() {
     };
 
     checkUserRoleAndFetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
+
+  useEffect(() => {
+    if (selectedProductId && !loading) {
+      handleAddNewOffer();
+    }
+
+    if (selectedOfferId && offers.length > 0) {
+      const existingOffer = offers.find(
+        (offer) => offer.id === selectedOfferId
+      );
+      if (existingOffer) {
+        handleEdit(existingOffer);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProductId, selectedOfferId, loading, offers]);
+
+  useEffect(() => {
+    if (selectedProductId) {
+      setFormData((prev) => ({
+        ...prev,
+        menuItemId: selectedProductId.toString(),
+      }));
+    }
+  }, [selectedProductId]);
 
   const fetchOffers = async (branchesList = branches) => {
     try {
@@ -464,7 +493,7 @@ export default function ItemOffersManagement() {
 
   const resetForm = () => {
     setFormData({
-      menuItemId: "",
+      menuItemId: selectedProductId.toString() || "",
       isPercentage: true,
       discountValue: "",
       startDate: "",

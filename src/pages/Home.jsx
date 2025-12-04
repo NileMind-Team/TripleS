@@ -19,6 +19,7 @@ import {
   FaHeart,
   FaRegHeart,
   FaFire,
+  FaPercent,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -400,6 +401,36 @@ const Home = () => {
   const handleEditProduct = (product, e) => {
     e.stopPropagation();
     navigate("/products/edit", { state: { productId: product.id } });
+  };
+
+  const handleManageOffers = async (product, e) => {
+    e.stopPropagation();
+
+    try {
+      const response = await axiosInstance.get("/api/ItemOffers/GetAll");
+      const offersData = response.data;
+
+      const existingOffer = offersData.find(
+        (offer) => offer.menuItemId === product.id
+      );
+
+      if (existingOffer) {
+        navigate("/admin/item-offers", {
+          state: {
+            selectedProductId: product.id,
+            selectedOfferId: existingOffer.id,
+          },
+        });
+      } else {
+        navigate("/admin/item-offers", {
+          state: {
+            selectedProductId: product.id,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching offers:", error);
+    }
   };
 
   const handleDeleteProduct = async (productId, e) => {
@@ -983,21 +1014,12 @@ const Home = () => {
                     }
                   }}
                 >
-                  <div
-                    className={`absolute top-2 right-2 z-10 px-2 py-1 rounded-full text-xs font-semibold ${
-                      product.isActive
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
-                    }`}
-                  >
-                    {product.isActive ? "نشط" : "غير نشط"}
-                  </div>
-
+                  {/* عرض الخصم بدلاً من حالة النشاط */}
                   {product.itemOffer && product.itemOffer.isEnabled && (
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute top-2 left-2 z-10"
+                      className="absolute top-2 right-2 z-10"
                     >
                       <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center gap-1.5">
                         <FaFire
@@ -1011,8 +1033,9 @@ const Home = () => {
                     </motion.div>
                   )}
 
+                  {/* الأيقونات الإدارية - تم رفعها إلى أعلى البطاقة */}
                   {isAdminOrRestaurantOrBranch && (
-                    <div className="absolute top-12 left-2 z-10 flex flex-col gap-1">
+                    <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
@@ -1036,6 +1059,14 @@ const Home = () => {
                         className="bg-blue-500 text-white p-2 rounded-lg shadow-lg hover:bg-blue-600 transition-colors no-product-details"
                       >
                         <FaEdit size={12} />
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={(e) => handleManageOffers(product, e)}
+                        className="bg-purple-500 text-white p-2 rounded-lg shadow-lg hover:bg-purple-600 transition-colors no-product-details"
+                      >
+                        <FaPercent size={12} />
                       </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
