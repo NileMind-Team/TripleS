@@ -309,6 +309,11 @@ const ProductDetails = () => {
     return !isCategoryDisabled();
   };
 
+  const canToggleProductActive = () => {
+    if (!product?.categoryId) return true;
+    return !isCategoryDisabled();
+  };
+
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () =>
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -516,6 +521,17 @@ const ProductDetails = () => {
   };
 
   const handleToggleActive = async () => {
+    if (!canToggleProductActive()) {
+      Swal.fire({
+        icon: "error",
+        title: "لا يمكن التعديل",
+        text: "لا يمكن تعديل حالة المنتج لأن الفئة معطلة",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      return;
+    }
+
     try {
       await axiosInstance.put(
         `/api/MenuItems/ChangeMenuItemActiveStatus/${product.id}`
@@ -1291,10 +1307,15 @@ const ProductDetails = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleToggleActive}
+                    disabled={!canToggleProductActive()}
                     className={`p-2 md:p-3 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm ${
                       product.isActive
                         ? "bg-yellow-500 text-white hover:bg-yellow-600"
                         : "bg-green-500 text-white hover:bg-green-600"
+                    } ${
+                      !canToggleProductActive()
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
                     }`}
                   >
                     {product.isActive ? (

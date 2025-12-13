@@ -520,6 +520,23 @@ const Home = () => {
   const handleToggleActive = async (productId, e) => {
     e.stopPropagation();
 
+    const productToToggle = products.find((p) => p.id === productId);
+    if (productToToggle && productToToggle.categoryId) {
+      const category = categories.find(
+        (cat) => cat.originalId === productToToggle.categoryId
+      );
+      if (category && !category.isActive) {
+        Swal.fire({
+          icon: "error",
+          title: "لا يمكن التعديل",
+          text: "لا يمكن تعديل حالة المنتج لأن الفئة معطلة",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        return;
+      }
+    }
+
     try {
       await axiosInstance.put(
         `/api/MenuItems/ChangeMenuItemActiveStatus/${productId}`
@@ -884,12 +901,20 @@ const Home = () => {
     }
   };
 
-  const isCategoryDisabled = (categoryId) => {
-    if (categoryId === "all" || categoryId === "offers") {
+  const isProductCategoryDisabled = (product) => {
+    if (!product.categoryId) {
       return false;
     }
-    const category = categories.find((cat) => cat.id === categoryId);
-    return category && !category.isActive;
+
+    const category = categories.find(
+      (cat) => cat.originalId === product.categoryId
+    );
+
+    if (!category) {
+      return true;
+    }
+
+    return !category.isActive;
   };
 
   const isProductAvailableForCart = (product) => {
@@ -897,11 +922,20 @@ const Home = () => {
       return false;
     }
 
-    if (selectedCategory === "all" || selectedCategory === "offers") {
-      return true;
+    if (isProductCategoryDisabled(product)) {
+      return false;
     }
 
-    return !isCategoryDisabled(selectedCategory);
+    return true;
+  };
+
+  const canToggleProductActive = (product) => {
+    if (!product.categoryId) return true;
+
+    const category = categories.find(
+      (cat) => cat.originalId === product.categoryId
+    );
+    return !category || category.isActive;
   };
 
   if (loading) {
@@ -1052,9 +1086,9 @@ const Home = () => {
                   whileHover={{ y: -5 }}
                   className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 cursor-pointer group w-full relative min-h-[180px] ${
                     !product.isActive ? "opacity-70" : ""
-                  } ${
-                    isCategoryDisabled(selectedCategory) ? "opacity-80" : ""
-                  } ${productsLoading ? "opacity-50" : ""}`}
+                  } ${isProductCategoryDisabled(product) ? "opacity-80" : ""} ${
+                    productsLoading ? "opacity-50" : ""
+                  }`}
                   onClick={(e) => {
                     const isButtonClick =
                       e.target.closest("button") ||
@@ -1088,11 +1122,28 @@ const Home = () => {
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={(e) => handleToggleActive(product.id, e)}
+                        onClick={(e) => {
+                          if (!canToggleProductActive(product)) {
+                            Swal.fire({
+                              icon: "error",
+                              title: "لا يمكن التعديل",
+                              text: "لا يمكن تعديل حالة المنتج لأن الفئة معطلة",
+                              timer: 2000,
+                              showConfirmButton: false,
+                            });
+                            return;
+                          }
+                          handleToggleActive(product.id, e);
+                        }}
+                        disabled={!canToggleProductActive(product)}
                         className={`p-2 rounded-lg shadow-lg transition-colors flex items-center gap-1 text-xs no-product-details ${
                           product.isActive
                             ? "bg-yellow-500 text-white hover:bg-yellow-600"
                             : "bg-green-500 text-white hover:bg-green-600"
+                        } ${
+                          !canToggleProductActive(product)
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
                         }`}
                       >
                         {product.isActive ? (
