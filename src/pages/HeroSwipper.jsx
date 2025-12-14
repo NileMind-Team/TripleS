@@ -364,7 +364,7 @@ const HeroSwipper = () => {
                             <img
                               src={slide.image}
                               alt={slide.title}
-                              className="w-full h-full object-contain p-1 sm:p-2"
+                              className="w-full h-full object-contain"
                             />
                           </div>
 
