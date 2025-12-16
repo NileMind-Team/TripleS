@@ -104,7 +104,6 @@ export default function AdminBranches() {
     isLoading: isLoadingData,
     addBranch,
     updateBranch,
-    deleteBranch,
     toggleBranchActive,
   } = useBranches();
 
@@ -242,34 +241,6 @@ export default function AdminBranches() {
         });
       }, 100);
     }
-  };
-
-  const handleDelete = async (branchId) => {
-    Swal.fire({
-      title: "هل أنت متأكد؟",
-      text: "أنت على وشك حذف هذا الفرع.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#E41E26",
-      cancelButtonColor: "#6B7280",
-      confirmButtonText: "نعم، احذفه!",
-      cancelButtonText: "إلغاء",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteBranch(branchId);
-          Swal.fire({
-            title: "تم الحذف!",
-            text: "تم حذف الفرع بنجاح.",
-            icon: "success",
-            timer: 2000,
-            showConfirmButton: false,
-          });
-        } catch (errorMessages) {
-          showErrorAlert(errorMessages);
-        }
-      }
-    });
   };
 
   const handleToggleActive = async (branchId, currentStatus) => {
@@ -429,7 +400,6 @@ export default function AdminBranches() {
                   key={branch.id}
                   branch={branch}
                   onEdit={handleEdit}
-                  onDelete={handleDelete}
                   onToggleActive={handleToggleActive}
                   getPhoneTypeArabic={getPhoneTypeArabic}
                 />

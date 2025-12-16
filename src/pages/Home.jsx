@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaShoppingCart,
@@ -46,6 +46,11 @@ const Home = () => {
   ]);
   const [editingCategory, setEditingCategory] = useState(null);
   const [newCategory, setNewCategory] = useState({ name: "", isActive: true });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  // eslint-disable-next-line no-unused-vars
+  const [pageSize, setPageSize] = useState(8);
+
   const categoriesContainerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -123,88 +128,119 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setProductsLoading(true);
-
-        const params = {};
-        if (selectedCategory !== "all" && selectedCategory !== "offers") {
-          params.categoryId = parseInt(selectedCategory);
-        }
-
-        const response = await axiosInstance.get(
-          "/api/MenuItems/GetAllWithoutPagination",
-          {
-            params,
-          }
-        );
-        const productsData = response.data;
-
-        const transformedProducts = productsData.map((product) => ({
-          id: product.id,
-          name: product.name,
-          category: product.category?.name?.toLowerCase() || "meals",
-          categoryId: product.category?.id,
-          price: product.basePrice,
-          image: product.imageUrl
-            ? `https://restaurant-template.runasp.net/${product.imageUrl}`
-            : "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop",
-          ingredients: [],
-          description: product.description,
-          isActive: product.isActive,
-          calories: product.calories,
-          preparationTimeStart: product.preparationTimeStart,
-          preparationTimeEnd: product.preparationTimeEnd,
-          availabilityTime: {
-            alwaysAvailable: product.isAllTime,
-            startTime:
-              product.menuItemSchedules?.[0]?.startTime?.substring(0, 5) || "",
-            endTime:
-              product.menuItemSchedules?.[0]?.endTime?.substring(0, 5) || "",
-          },
-          availabilityDays: {
-            everyday: product.isAllTime,
-            specificDays:
-              product.menuItemSchedules?.map((schedule) =>
-                getDayName(schedule.day)
-              ) || [],
-          },
-          menuItemSchedules: product.menuItemSchedules || [],
-          itemOffer: product.itemOffer,
-          finalPrice: product.itemOffer
-            ? product.itemOffer.isPercentage
-              ? product.basePrice * (1 - product.itemOffer.discountValue / 100)
-              : product.basePrice - product.itemOffer.discountValue
-            : product.basePrice,
-          hasOffer: product.itemOffer && product.itemOffer.isEnabled,
-        }));
-
-        setProducts(transformedProducts);
-        let filtered = transformedProducts;
-
-        if (selectedCategory === "offers") {
-          filtered = transformedProducts.filter(
-            (product) => product.itemOffer && product.itemOffer.isEnabled
-          );
-        }
-
-        setFilteredProducts(filtered);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        Swal.fire({
-          icon: "error",
-          title: "خطأ",
-          text: "فشل في تحميل المنتجات",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-      } finally {
-        setProductsLoading(false);
-      }
-    };
-
     fetchProducts();
-  }, [selectedCategory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory, currentPage]);
+
+  const buildFiltersArray = () => {
+    const filtersArray = [];
+
+    if (selectedCategory !== "all" && selectedCategory !== "offers") {
+      filtersArray.push({
+        propertyName: "category.id",
+        propertyValue: selectedCategory.toString(),
+        range: false,
+      });
+    }
+    return filtersArray;
+  };
+
+  const fetchProducts = async () => {
+    try {
+      setProductsLoading(true);
+
+      const requestBody = {
+        pageNumber: currentPage,
+        pageSize: pageSize,
+        filters: buildFiltersArray(),
+      };
+
+      console.log("Request Body:", JSON.stringify(requestBody, null, 2));
+
+      const response = await axiosInstance.post(
+        "/api/MenuItems/GetAll",
+        requestBody
+      );
+
+      const responseData = response.data;
+      const productsData = responseData.items || responseData.data || [];
+
+      console.log("Response Data:", JSON.stringify(responseData, null, 2));
+
+      const transformedProducts = productsData.map((product) => ({
+        id: product.id,
+        name: product.name,
+        category: product.category?.name?.toLowerCase() || "meals",
+        categoryId: product.category?.id,
+        price: product.basePrice,
+        image: product.imageUrl
+          ? `https://restaurant-template.runasp.net/${product.imageUrl}`
+          : "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop",
+        ingredients: [],
+        description: product.description,
+        isActive: product.isActive,
+        calories: product.calories,
+        preparationTimeStart: product.preparationTimeStart,
+        preparationTimeEnd: product.preparationTimeEnd,
+        availabilityTime: {
+          alwaysAvailable: product.isAllTime,
+          startTime:
+            product.menuItemSchedules?.[0]?.startTime?.substring(0, 5) || "",
+          endTime:
+            product.menuItemSchedules?.[0]?.endTime?.substring(0, 5) || "",
+        },
+        availabilityDays: {
+          everyday: product.isAllTime,
+          specificDays:
+            product.menuItemSchedules?.map((schedule) =>
+              getDayName(schedule.day)
+            ) || [],
+        },
+        menuItemSchedules: product.menuItemSchedules || [],
+        itemOffer: product.itemOffer,
+        finalPrice: product.itemOffer
+          ? product.itemOffer.isPercentage
+            ? product.basePrice * (1 - product.itemOffer.discountValue / 100)
+            : product.basePrice - product.itemOffer.discountValue
+          : product.basePrice,
+        hasOffer: product.itemOffer && product.itemOffer.isEnabled,
+      }));
+
+      setProducts(transformedProducts);
+
+      if (selectedCategory === "offers") {
+        const offersProducts = transformedProducts.filter(
+          (product) => product.itemOffer && product.itemOffer.isEnabled
+        );
+        setFilteredProducts(offersProducts);
+
+        const totalItems = offersProducts.length;
+        setTotalPages(Math.ceil(totalItems / pageSize));
+      } else {
+        setFilteredProducts(transformedProducts);
+
+        setTotalPages(
+          responseData.totalPages ||
+            Math.ceil(
+              (responseData.totalCount || productsData.length) / pageSize
+            )
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      Swal.fire({
+        icon: "error",
+        title: "خطأ",
+        text: "فشل في تحميل المنتجات",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      setProducts([]);
+      setFilteredProducts([]);
+    } finally {
+      setProductsLoading(false);
+    }
+  };
 
   const fetchCartItemsCount = async () => {
     try {
@@ -258,36 +294,25 @@ const Home = () => {
   useEffect(() => {
     if (!searchTerm) {
       if (selectedCategory === "offers") {
-        setFilteredProducts(
-          products.filter(
-            (product) => product.itemOffer && product.itemOffer.isEnabled
-          )
+        const offersProducts = products.filter(
+          (product) => product.itemOffer && product.itemOffer.isEnabled
         );
-      } else if (selectedCategory === "all") {
-        setFilteredProducts(products);
+        setFilteredProducts(offersProducts);
       } else {
-        setFilteredProducts(
-          products.filter(
-            (product) => product.categoryId === parseInt(selectedCategory)
-          )
-        );
+        setFilteredProducts(products);
       }
       return;
     }
 
-    let baseProducts = products;
+    let filtered = products;
 
     if (selectedCategory === "offers") {
-      baseProducts = products.filter(
+      filtered = filtered.filter(
         (product) => product.itemOffer && product.itemOffer.isEnabled
-      );
-    } else if (selectedCategory !== "all") {
-      baseProducts = products.filter(
-        (product) => product.categoryId === parseInt(selectedCategory)
       );
     }
 
-    const filtered = baseProducts.filter(
+    filtered = filtered.filter(
       (product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -577,6 +602,7 @@ const Home = () => {
             timer: 2000,
             showConfirmButton: false,
           });
+          fetchProducts();
         } catch (error) {
           console.error("Error deleting product:", error);
           Swal.fire({
@@ -616,21 +642,7 @@ const Home = () => {
         `/api/MenuItems/ChangeMenuItemActiveStatus/${productId}`
       );
 
-      setProducts(
-        products.map((product) =>
-          product.id === productId
-            ? { ...product, isActive: !product.isActive }
-            : product
-        )
-      );
-
-      setFilteredProducts(
-        filteredProducts.map((product) =>
-          product.id === productId
-            ? { ...product, isActive: !product.isActive }
-            : product
-        )
-      );
+      fetchProducts();
 
       Swal.fire({
         icon: "success",
@@ -1046,6 +1058,49 @@ const Home = () => {
     navigate("/cart");
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const getPaginationNumbers = () => {
+    const delta = 2;
+    const range = [];
+
+    for (
+      let i = Math.max(2, currentPage - delta);
+      i <= Math.min(totalPages - 1, currentPage + delta);
+      i++
+    ) {
+      range.push(i);
+    }
+
+    if (currentPage - delta > 2) {
+      range.unshift("...");
+    }
+    if (currentPage + delta < totalPages - 1) {
+      range.push("...");
+    }
+
+    range.unshift(1);
+    if (totalPages > 1) {
+      range.push(totalPages);
+    }
+
+    return range;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
@@ -1104,7 +1159,10 @@ const Home = () => {
                 key={category.id}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedCategory(category.id)}
+                onClick={() => {
+                  setSelectedCategory(category.id);
+                  setCurrentPage(1);
+                }}
                 className={`flex-shrink-0 flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 rounded-xl font-semibold transition-all duration-300 text-sm md:text-base ${
                   selectedCategory === category.id
                     ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white shadow-lg"
@@ -1162,6 +1220,7 @@ const Home = () => {
               <button
                 onClick={() => {
                   setSelectedCategory("all");
+                  setCurrentPage(1);
                 }}
                 className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all text-sm md:text-base"
               >
@@ -1186,7 +1245,7 @@ const Home = () => {
             >
               {filteredProducts.map((product, index) => (
                 <motion.div
-                  key={product.id}
+                  key={`${product.id}-${currentPage}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -1514,6 +1573,65 @@ const Home = () => {
                 </motion.div>
               ))}
             </motion.div>
+
+            {totalPages > 1 && (
+              <div className="mt-8 flex flex-col items-center">
+                <div className="flex items-center justify-center gap-1 sm:gap-2">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                    className={`p-2 sm:p-3 rounded-xl transition-all ${
+                      currentPage === 1
+                        ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
+                    }`}
+                  >
+                    <FaChevronRight className="text-sm sm:text-base" />
+                  </motion.button>
+
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    {getPaginationNumbers().map((pageNum, index) => (
+                      <React.Fragment key={index}>
+                        {pageNum === "..." ? (
+                          <span className="px-2 sm:px-3 py-1 sm:py-2 text-gray-500">
+                            ...
+                          </span>
+                        ) : (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handlePageChange(pageNum)}
+                            className={`px-3 sm:px-4 py-1 sm:py-2 rounded-xl font-semibold transition-all ${
+                              currentPage === pageNum
+                                ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white shadow-lg"
+                                : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
+                            }`}
+                          >
+                            {pageNum}
+                          </motion.button>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className={`p-2 sm:p-3 rounded-xl transition-all ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
+                    }`}
+                  >
+                    <FaChevronLeft className="text-sm sm:text-base" />
+                  </motion.button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

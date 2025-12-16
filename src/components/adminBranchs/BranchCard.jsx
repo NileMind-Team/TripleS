@@ -8,14 +8,12 @@ import {
   FaPhone,
   FaWhatsapp,
   FaEdit,
-  FaTrash,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const BranchCard = ({
   branch,
   onEdit,
-  onDelete,
   onToggleActive,
   getPhoneTypeArabic,
 }) => {
@@ -125,15 +123,6 @@ const BranchCard = ({
             }`}
           >
             {branch.isActive ? "تعطيل" : "تفعيل"}
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onDelete(branch.id)}
-            className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors duration-200 text-xs sm:text-sm font-medium flex-1 sm:flex-none justify-center"
-          >
-            <FaTrash className="text-xs sm:text-sm" />
-            <span className="whitespace-nowrap">حذف</span>
           </motion.button>
         </div>
       </div>
