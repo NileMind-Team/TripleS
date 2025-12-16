@@ -87,11 +87,11 @@ const Footer = () => {
               <div className="flex items-center gap-3">
                 <img
                   src={logo}
-                  alt="Chicken One Logo"
+                  alt="NileFood"
                   className="w-12 h-12 object-contain"
                 />
                 <span className="text-2xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent">
-                  Chicken One
+                  NileFood
                 </span>
               </div>
             </Link>
@@ -108,7 +108,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
                 <FaEnvelope className="text-[#FDB913] text-sm" />
-                <span className="text-sm">info@chickenone.com</span>
+                <span className="text-sm">info@NileFood.com</span>
               </div>
               <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
                 <FaMapMarkerAlt className="text-[#FDB913] text-sm" />
@@ -251,7 +251,7 @@ const Footer = () => {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center" dir="rtl">
-              © {currentYear} Chicken One. جميع الحقوق محفوظة. | صنع بواسطة{" "}
+              © {currentYear} NileFood. جميع الحقوق محفوظة. | صنع بواسطة{" "}
               <span className="text-[#E41E26]">مهند أشرف</span> في مصر
             </p>
 

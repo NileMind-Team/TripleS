@@ -29,7 +29,7 @@ export default function LoginForm({
           مرحباً بعودتك
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm">
-          سجل الدخول إلى حسابك في Chicken One
+          سجل الدخول إلى حسابك في NileFood
         </p>
       </div>
 
