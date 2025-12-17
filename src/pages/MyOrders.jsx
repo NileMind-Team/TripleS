@@ -9,7 +9,6 @@ import {
   FaShoppingBag,
   FaFilter,
   FaChevronDown,
-  FaEdit,
   FaTrash,
   FaUser,
   FaMapMarkerAlt,
@@ -341,74 +340,6 @@ export default function MyOrders() {
         return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
-    }
-  };
-
-  const handleChangeOrderStatus = async (orderId, e) => {
-    e.stopPropagation();
-
-    const result = await Swal.fire({
-      title: "تغيير حالة الطلب",
-      input: "select",
-      inputOptions: {
-        Pending: "قيد الانتظار",
-        Confirmed: "تم التأكيد",
-        Preparing: "قيد التحضير",
-        OutForDelivery: "قيد التوصيل",
-        Delivered: "تم التوصيل",
-        Cancelled: "ملغي",
-      },
-      inputPlaceholder: "اختر الحالة",
-      showCancelButton: true,
-      confirmButtonColor: "#E41E26",
-      cancelButtonColor: "#6B7280",
-      confirmButtonText: "تحديث الحالة",
-      cancelButtonText: "إلغاء",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        localStorage.getItem("token");
-        const newStatus = result.value;
-
-        setOrders(
-          orders.map((order) =>
-            order.id === orderId
-              ? {
-                  ...order,
-                  status: newStatus,
-                }
-              : order
-          )
-        );
-
-        if (selectedOrder?.id === orderId && orderDetails) {
-          setOrderDetails((prev) => ({
-            ...prev,
-            status: newStatus,
-          }));
-        }
-
-        Swal.fire({
-          icon: "success",
-          title: "تم تحديث الحالة!",
-          text: `تم تغيير حالة الطلب إلى ${getStatusText(newStatus)}`,
-          timer: 2000,
-          showConfirmButton: false,
-        });
-
-        setTimeout(() => {
-          fetchOrders();
-        }, 500);
-      } catch (error) {
-        console.error("Error updating order status:", error);
-        Swal.fire({
-          icon: "error",
-          title: "خطأ",
-          text: "فشل تحديث حالة الطلب.",
-          confirmButtonColor: "#E41E26",
-        });
-      }
     }
   };
 
@@ -952,17 +883,6 @@ export default function MyOrders() {
 
                           {isAdminOrRestaurantOrBranch && (
                             <div className="flex gap-2 mb-3">
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={(e) =>
-                                  handleChangeOrderStatus(order.id, e)
-                                }
-                                className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-600 transition-colors"
-                              >
-                                <FaEdit size={10} />
-                                تغيير الحالة
-                              </motion.button>
                               {order.status !== "Cancelled" &&
                                 order.status !== "Rejected" && (
                                   <motion.button
@@ -1422,17 +1342,6 @@ export default function MyOrders() {
                       {/* Admin Actions */}
                       {isAdminOrRestaurantOrBranch && (
                         <div className="flex flex-col xs:flex-row gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={(e) =>
-                              handleChangeOrderStatus(orderDetails.id, e)
-                            }
-                            className="flex-1 flex items-center justify-center gap-2 bg-blue-500 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors text-sm sm:text-base"
-                          >
-                            <FaEdit className="w-3 h-3 sm:w-4 sm:h-4" />
-                            تغيير الحالة
-                          </motion.button>
                           {orderDetails.status !== "Cancelled" &&
                             orderDetails.status !== "Rejected" && (
                               <motion.button
