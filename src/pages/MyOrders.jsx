@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -18,6 +18,7 @@ import {
   FaBox,
   FaTag,
   FaPlusCircle,
+  FaSpinner,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
@@ -41,6 +42,27 @@ export default function MyOrders() {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const BASE_URL = "https://restaurant-template.runasp.net/";
   const refreshIntervalRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const observerRef = useRef(null);
+  const lastOrderRef = useCallback(
+    (node) => {
+      if (isLoadingMore) return;
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore && !fetchingOrders) {
+          loadMoreOrders();
+        }
+      });
+
+      if (node) observerRef.current.observe(node);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isLoadingMore, hasMore, fetchingOrders]
+  );
 
   const addTwoHoursToDate = (dateString) => {
     const date = new Date(dateString);
@@ -95,23 +117,68 @@ export default function MyOrders() {
     return order.totalWithFee || 0;
   };
 
-  const fetchOrders = async () => {
-    if (isInitialLoad) {
+  const buildFilters = () => {
+    const filters = [];
+
+    if (filter !== "all") {
+      filters.push({
+        propertyName: "Status",
+        propertyValue: filter,
+        range: false,
+      });
+    }
+
+    if (isAdminOrRestaurantOrBranch && selectedUserId) {
+      filters.push({
+        propertyName: "UserId",
+        propertyValue: selectedUserId,
+        range: false,
+      });
+    }
+
+    if (dateRange.start && dateRange.end) {
+      filters.push({
+        propertyName: "CreatedAt",
+        propertyValue: `${dateRange.start}T00:00:00,${dateRange.end}T23:59:59`,
+        range: true,
+      });
+    } else if (dateRange.start) {
+      filters.push({
+        propertyName: "CreatedAt",
+        propertyValue: `${dateRange.start}T00:00:00,${dateRange.start}T23:59:59`,
+        range: true,
+      });
+    }
+
+    return filters;
+  };
+
+  const fetchOrders = async (pageNumber = 1, isLoadMore = false) => {
+    if (isInitialLoad && !isLoadMore) {
       return;
     }
 
     try {
-      setFetchingOrders(true);
+      if (isLoadMore) {
+        setIsLoadingMore(true);
+      } else {
+        setFetchingOrders(true);
+      }
+
       const token = localStorage.getItem("token");
 
       if (!token) {
-        setOrders([]);
-        setFetchingOrders(false);
+        if (!isLoadMore) {
+          setOrders([]);
+          setFetchingOrders(false);
+        }
         return;
       }
 
       let url = "/api/Orders/GetAllForUser";
+      let method = "get";
       let params = {};
+      let data = null;
 
       if (filter !== "all") {
         params.status = filter;
@@ -125,24 +192,62 @@ export default function MyOrders() {
       }
 
       if (isAdminOrRestaurantOrBranch) {
-        url = "/api/Orders/GetAll";
+        url = "/api/Orders/GetAllWithPagination";
+        method = "post";
 
-        if (selectedUserId) {
-          params.userId = selectedUserId;
+        data = {
+          pageNumber: pageNumber,
+          pageSize: pageSize,
+          filters: buildFilters(),
+        };
+      } else {
+        if (dateRange.start) {
+          params.startRange = dateRange.start;
+        }
+        if (dateRange.end) {
+          params.endRange = dateRange.end;
         }
       }
 
-      const response = await axiosInstance.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: params,
-      });
+      let response;
+      if (method === "post") {
+        console.log("Sending request with data:", data);
+        response = await axiosInstance.post(url, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        response = await axiosInstance.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: params,
+        });
+      }
 
-      setOrders(response.data || []);
+      let newOrders;
+      if (isAdminOrRestaurantOrBranch) {
+        newOrders = response.data?.data || [];
+        setHasMore(newOrders.length === pageSize);
+      } else {
+        newOrders = response.data || [];
+        setHasMore(false);
+      }
+
+      if (isLoadMore) {
+        setOrders((prev) => [...prev, ...newOrders]);
+        setCurrentPage(pageNumber);
+      } else {
+        setOrders(newOrders);
+        setCurrentPage(1);
+        setHasMore(
+          isAdminOrRestaurantOrBranch && newOrders.length === pageSize
+        );
+      }
     } catch (error) {
       console.error("Error fetching orders:", error);
-      if (!selectedOrder) {
+      if (!selectedOrder && !isLoadMore) {
         Swal.fire({
           icon: "error",
           title: "خطأ",
@@ -150,10 +255,21 @@ export default function MyOrders() {
           confirmButtonColor: "#E41E26",
         });
       }
-      setOrders([]);
+      if (!isLoadMore) {
+        setOrders([]);
+      }
     } finally {
-      setFetchingOrders(false);
+      if (isLoadMore) {
+        setIsLoadingMore(false);
+      } else {
+        setFetchingOrders(false);
+      }
     }
+  };
+
+  const loadMoreOrders = () => {
+    if (!hasMore || isLoadingMore || fetchingOrders) return;
+    fetchOrders(currentPage + 1, true);
   };
 
   useEffect(() => {
@@ -227,7 +343,7 @@ export default function MyOrders() {
   }, [isAdminOrRestaurantOrBranch]);
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filter,
@@ -244,7 +360,7 @@ export default function MyOrders() {
 
     refreshIntervalRef.current = setInterval(() => {
       if (!isInitialLoad && !selectedOrder) {
-        fetchOrders();
+        fetchOrders(1);
       }
     }, 60000);
 
@@ -265,7 +381,7 @@ export default function MyOrders() {
     } else if (!isInitialLoad) {
       if (!refreshIntervalRef.current) {
         refreshIntervalRef.current = setInterval(() => {
-          fetchOrders();
+          fetchOrders(1);
         }, 60000);
       }
     }
@@ -388,7 +504,7 @@ export default function MyOrders() {
         });
 
         setTimeout(() => {
-          fetchOrders();
+          fetchOrders(1);
         }, 500);
       } catch (error) {
         console.error("Error cancelling order:", error);
@@ -506,6 +622,8 @@ export default function MyOrders() {
     setFilter("all");
     setDateRange({ start: "", end: "" });
     setSelectedUserId("");
+    setCurrentPage(1);
+    setOrders([]);
   };
 
   if (loading && isInitialLoad) {
@@ -625,6 +743,7 @@ export default function MyOrders() {
                               onClick={() => {
                                 setFilter(item.value);
                                 setOpenDropdown(null);
+                                setCurrentPage(1);
                               }}
                               className="px-4 py-3 hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] cursor-pointer text-gray-700 transition-all text-sm sm:text-base border-b border-gray-100 last:border-b-0 dark:hover:from-gray-600 dark:hover:to-gray-500 dark:text-gray-300 dark:border-gray-600"
                             >
@@ -686,6 +805,7 @@ export default function MyOrders() {
                               onClick={() => {
                                 setSelectedUserId("");
                                 setOpenDropdown(null);
+                                setCurrentPage(1);
                               }}
                               className="px-4 py-3 hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] cursor-pointer text-gray-700 transition-all text-sm sm:text-base border-b border-gray-100 dark:hover:from-gray-600 dark:hover:to-gray-500 dark:text-gray-300 dark:border-gray-600"
                             >
@@ -702,6 +822,7 @@ export default function MyOrders() {
                                   onClick={() => {
                                     setSelectedUserId(user.id);
                                     setOpenDropdown(null);
+                                    setCurrentPage(1);
                                   }}
                                   className="px-4 py-3 hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] cursor-pointer text-gray-700 transition-all text-sm sm:text-base border-b border-gray-100 last:border-b-0 dark:hover:from-gray-600 dark:hover:to-gray-500 dark:text-gray-300 dark:border-gray-600"
                                 >
@@ -753,9 +874,10 @@ export default function MyOrders() {
                       <input
                         type="date"
                         value={dateRange.start}
-                        onChange={(e) =>
-                          handleDateRangeChange("start", e.target.value)
-                        }
+                        onChange={(e) => {
+                          handleDateRangeChange("start", e.target.value);
+                          setCurrentPage(1);
+                        }}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-black focus:ring-2 focus:ring-[#E41E26] focus:border-transparent transition-all duration-200 text-sm sm:text-base dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       />
                     </div>
@@ -766,9 +888,10 @@ export default function MyOrders() {
                       <input
                         type="date"
                         value={dateRange.end}
-                        onChange={(e) =>
-                          handleDateRangeChange("end", e.target.value)
-                        }
+                        onChange={(e) => {
+                          handleDateRangeChange("end", e.target.value);
+                          setCurrentPage(1);
+                        }}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-black focus:ring-2 focus:ring-[#E41E26] focus:border-transparent transition-all duration-200 text-sm sm:text-base dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                       />
                     </div>
@@ -829,10 +952,12 @@ export default function MyOrders() {
               <AnimatePresence>
                 {orders.map((order, index) => {
                   const finalTotal = getFinalTotal(order);
+                  const isLastOrder = index === orders.length - 1;
 
                   return (
                     <motion.div
                       key={order.id}
+                      ref={isLastOrder ? lastOrderRef : null}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
@@ -947,6 +1072,20 @@ export default function MyOrders() {
                   );
                 })}
               </AnimatePresence>
+            )}
+
+            {/* Loading More Indicator */}
+            {isLoadingMore && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex justify-center py-6"
+              >
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+                  <FaSpinner className="animate-spin text-[#E41E26]" />
+                  <span>جاري تحميل المزيد...</span>
+                </div>
+              </motion.div>
             )}
 
             {!fetchingOrders && orders.length === 0 && (
@@ -1113,7 +1252,9 @@ export default function MyOrders() {
                               const basePrice =
                                 item.menuItemBasePriceSnapshotAtOrder > 0
                                   ? item.menuItemBasePriceSnapshotAtOrder
-                                  : item.menuItem?.basePrice || 0;
+                                  : item.menuItem
+                                  ? item.menuItem.basePrice
+                                  : 0;
                               const totalPrice =
                                 item.totalPrice < 0
                                   ? Math.abs(item.totalPrice)
