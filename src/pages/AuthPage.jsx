@@ -383,6 +383,8 @@ export default function AuthPage() {
       onTabChange={handleTabChange}
       onBack={() => navigate(-1)}
       showWelcome={showWelcome}
+      onGoogleLogin={handleGoogleLogin}
+      isGoogleLoading={isGoogleLoading}
     >
       {showWelcome ? (
         <WelcomeAnimation userName={loggedUserName} />
@@ -411,12 +413,10 @@ export default function AuthPage() {
           password={loginData.password}
           showPassword={showPassword}
           isLoading={loginLoading}
-          isGoogleLoading={isGoogleLoading}
           onEmailChange={(value) => handleLoginChange("email", value)}
           onPasswordChange={(value) => handleLoginChange("password", value)}
           onToggleShowPassword={() => setShowPassword(!showPassword)}
           onForgotPassword={() => setForgetMode(true)}
-          onGoogleLogin={handleGoogleLogin}
           onSubmit={handleLogin}
         />
       ) : (

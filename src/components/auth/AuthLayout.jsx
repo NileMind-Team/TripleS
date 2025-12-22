@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaGoogle } from "react-icons/fa";
 
 export default function AuthLayout({
   children,
@@ -8,6 +8,8 @@ export default function AuthLayout({
   onTabChange,
   onBack,
   showWelcome,
+  onGoogleLogin,
+  isGoogleLoading,
 }) {
   return (
     <div
@@ -104,8 +106,53 @@ export default function AuthLayout({
               </motion.button>
             </div>
 
+            {/* Google Login Button - Now in Layout */}
+            <div className="mt-6 mb-6">
+              <div className="relative mb-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-3 bg-gradient-to-br from-[#fff8e7] to-[#ffe5b4] dark:from-gray-800 dark:to-gray-700 text-gray-500 dark:text-gray-400">
+                    أو تابع باستخدام
+                  </span>
+                </div>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                type="button"
+                onClick={onGoogleLogin}
+                disabled={isGoogleLoading}
+                className={`w-full flex items-center justify-center gap-3 font-semibold py-3.5 rounded-xl transition-all duration-300 border ${
+                  isGoogleLoading
+                    ? "bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 cursor-not-allowed"
+                    : "bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-lg"
+                }`}
+              >
+                {isGoogleLoading ? (
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#DB4437]"></div>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      جاري التوجيه...
+                    </span>
+                  </div>
+                ) : (
+                  <>
+                    <FaGoogle className="text-[#DB4437]" size={20} />
+                    <span className="text-gray-700 dark:text-gray-300">
+                      {activeTab === "login"
+                        ? "تسجيل الدخول عبر Google"
+                        : "إنشاء حساب عبر Google"}
+                    </span>
+                  </>
+                )}
+              </motion.button>
+            </div>
+
             {/* Animated Dots */}
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-4">
               <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <div className="w-3 h-3 bg-[#E41E26] dark:bg-[#FDB913] rounded-full animate-bounce"></div>
                 <div
