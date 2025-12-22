@@ -57,6 +57,14 @@ export default function AuthPage() {
   // Forget password state
   const [forgetEmail, setForgetEmail] = useState("");
 
+  const translateGoogleError = (error) => {
+    const errorMap = {
+      "user is already has password": "هذا الحساب مسجل بالفعل بكلمة مرور.",
+    };
+
+    return errorMap[error] || "حدث خطأ أثناء تسجيل الدخول باستخدام Google";
+  };
+
   const extractTokenFromUrl = useCallback(() => {
     const hash = window.location.hash;
     if (hash.startsWith("#token=")) {
@@ -66,8 +74,37 @@ export default function AuthPage() {
     return searchParams.get("token");
   }, []);
 
+  const extractErrorFromUrl = useCallback(() => {
+    const hash = window.location.hash;
+
+    if (hash.startsWith("#error=")) {
+      return decodeURIComponent(hash.replace("#error=", ""));
+    }
+
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get("error");
+  }, []);
+
   useEffect(() => {
     const token = extractTokenFromUrl();
+    const error = extractErrorFromUrl();
+
+    if (error) {
+      window.history.replaceState(null, "", "/auth");
+
+      Swal.fire({
+        icon: "error",
+        title: "تعذر تسجيل الدخول",
+        text: translateGoogleError(error),
+        showConfirmButton: false,
+        timer: 2500,
+        didClose: () => {
+          navigate("/login");
+        },
+      });
+
+      return;
+    }
 
     if (token) {
       window.history.replaceState(null, "", "/auth");
@@ -85,20 +122,23 @@ export default function AuthPage() {
               navigate("/");
             }, 3000);
           }
-        } catch (error) {
-          console.error("Google login error:", error);
+        } catch (err) {
           Swal.fire({
             icon: "error",
             title: "خطأ في تسجيل الدخول",
-            text: "حدث خطأ أثناء تسجيل الدخول بـ Google. يرجى المحاولة مرة أخرى.",
-            confirmButtonText: "حاول مرة أخرى",
+            text: "حدث خطأ أثناء تسجيل الدخول باستخدام Google",
+            showConfirmButton: false,
+            timer: 2500,
+            didClose: () => {
+              navigate("/login");
+            },
           });
         }
       };
 
       processGoogleLogin();
     }
-  }, [dispatch, navigate, extractTokenFromUrl]);
+  }, [dispatch, navigate, extractTokenFromUrl, extractErrorFromUrl]);
 
   const handleTabChange = useCallback((tab) => {
     setActiveTab(tab);
