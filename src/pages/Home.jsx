@@ -22,7 +22,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HeroSwipper from "./HeroSwipper";
 
@@ -1214,41 +1214,6 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 font-sans relative overflow-x-hidden">
       <div ref={topOfPageRef}></div>
-
-      {/* Toast Container - Custom styled for mobile */}
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        style={{
-          zIndex: 9999,
-          width: isMobile() ? "70%" : "auto",
-          maxWidth: "400px",
-          margin: "10px auto",
-        }}
-        toastStyle={{
-          width: "100%",
-          borderRadius: "12px",
-          fontSize: "14px",
-          fontWeight: "500",
-          boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
-          marginBottom: "10px",
-          minWidth: "250px",
-          maxWidth: "400px",
-          textAlign: "right",
-        }}
-        bodyStyle={{
-          fontFamily: "inherit",
-          padding: "12px 16px",
-        }}
-      />
 
       <HeroSwipper />
 

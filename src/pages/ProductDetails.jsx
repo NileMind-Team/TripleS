@@ -19,7 +19,7 @@ import {
   FaStickyNote,
   FaPercent,
 } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
@@ -65,6 +65,34 @@ const ProductDetails = () => {
   };
 
   const showMessage = (type, title, text, options = {}) => {
+    // إذا كانت الرسالة تحتوي على أزرار (مثل رسائل التأكيد)، استخدم Swal في جميع الحالات
+    const hasButtons =
+      options.showConfirmButton === true ||
+      (options.showCancelButton !== undefined && options.showCancelButton);
+
+    if (hasButtons) {
+      Swal.fire({
+        icon: type,
+        title: title,
+        text: text,
+        confirmButtonColor: options.confirmButtonColor || "#E41E26",
+        timer: options.timer || 2500,
+        showConfirmButton:
+          options.showConfirmButton !== undefined
+            ? options.showConfirmButton
+            : false,
+        showCancelButton:
+          options.showCancelButton !== undefined
+            ? options.showCancelButton
+            : false,
+        confirmButtonText: options.confirmButtonText || "موافق",
+        cancelButtonText: options.cancelButtonText || "إلغاء",
+        ...options,
+      });
+      return;
+    }
+
+    // إذا كان المستخدم على موبايل والرسالة لا تحتوي على أزرار، استخدم toast
     if (isMobile() && !options.forceSwal) {
       const toastOptions = {
         position: "top-right",
@@ -82,7 +110,7 @@ const ProductDetails = () => {
           fontSize: "14px",
           borderRadius: "8px",
           right: "0",
-          top: "0",
+          top: "10px",
           margin: "0",
           wordBreak: "break-word",
           overflowWrap: "break-word",
@@ -115,6 +143,7 @@ const ProductDetails = () => {
           toast(text, toastOptions);
       }
     } else {
+      // على الشاشات الكبيرة، استخدم Swal
       Swal.fire({
         icon: type,
         title: title,
@@ -890,53 +919,6 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 transition-colors duration-300">
-      {/* Toast Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={2500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        style={{
-          position: "fixed",
-          width: "70vw",
-          maxWidth: "none",
-          minWidth: "200px",
-          top: "10px",
-          right: "10px",
-          left: "auto",
-          bottom: "auto",
-          margin: "0",
-          padding: "0",
-          zIndex: 9999,
-          pointerEvents: "none",
-        }}
-        toastStyle={{
-          width: "100%",
-          marginBottom: "10px",
-          borderRadius: "8px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-          padding: "0",
-          overflow: "hidden",
-          pointerEvents: "auto",
-        }}
-        bodyStyle={{
-          padding: "12px 16px",
-          textAlign: "right",
-          direction: "rtl",
-          width: "100%",
-          overflow: "hidden",
-          fontSize: "14px",
-          lineHeight: "1.4",
-          margin: 0,
-        }}
-      />
-
       {/* Option Modal */}
       {showOptionModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">

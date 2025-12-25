@@ -30,7 +30,7 @@ import {
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function MyOrders() {
@@ -998,51 +998,6 @@ export default function MyOrders() {
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={2500}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        style={{
-          position: "fixed",
-          width: "70vw",
-          maxWidth: "none",
-          minWidth: "200px",
-          top: "10px",
-          right: "10px",
-          left: "auto",
-          bottom: "auto",
-          margin: "0",
-          padding: "0",
-          zIndex: 9999,
-          pointerEvents: "none",
-        }}
-        toastStyle={{
-          width: "100%",
-          marginBottom: "10px",
-          borderRadius: "8px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-          padding: "0",
-          overflow: "hidden",
-          pointerEvents: "auto",
-        }}
-        bodyStyle={{
-          padding: "12px 16px",
-          textAlign: "right",
-          direction: "rtl",
-          width: "100%",
-          overflow: "hidden",
-          fontSize: "14px",
-          lineHeight: "1.4",
-          margin: 0,
-        }}
-      />
 
       <div
         className={`min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 py-4 sm:py-8 transition-colors duration-300`}

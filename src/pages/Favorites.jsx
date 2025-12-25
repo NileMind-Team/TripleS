@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axiosInstance from "../api/axiosInstance";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Favorites = () => {
@@ -180,7 +180,7 @@ const Favorites = () => {
 
     fetchFavorites();
     fetchCartItemsCount();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   const fetchCartItemsCount = async () => {
@@ -401,41 +401,6 @@ const Favorites = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 md:px-6 py-3 sm:py-6 relative font-sans overflow-hidden transition-colors duration-300">
-      {/* Toast Container - Custom styled for mobile */}
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={true}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        style={{
-          zIndex: 9999,
-          width: isMobile() ? "70%" : "auto",
-          maxWidth: "400px",
-          margin: "10px auto",
-        }}
-        toastStyle={{
-          width: "100%",
-          borderRadius: "12px",
-          fontSize: "14px",
-          fontWeight: "500",
-          boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
-          marginBottom: "10px",
-          minWidth: "250px",
-          maxWidth: "400px",
-          textAlign: "right",
-        }}
-        bodyStyle={{
-          fontFamily: "inherit",
-          padding: "12px 16px",
-        }}
-      />
-
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -left-10 sm:-left-20 -top-10 sm:-top-20 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-gradient-to-r from-[#E41E26]/10 to-[#FDB913]/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
         <div className="absolute -right-10 sm:-right-20 -bottom-10 sm:-bottom-20 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-gradient-to-r from-[#FDB913]/10 to-[#E41E26]/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>

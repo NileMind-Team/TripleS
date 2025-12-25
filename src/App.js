@@ -1,5 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ConfirmEmail from "./pages/ConfirmEmail";
@@ -76,6 +78,26 @@ function App() {
 
   return (
     <div className={`min-h-screen flex flex-col ${darkMode ? "dark" : ""}`}>
+      {/* Toast Container (GLOBAL) */}
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={darkMode ? "dark" : "light"}
+        style={{
+          width: "95vw",
+          maxWidth: "420px",
+          top: "10px",
+          right: "10px",
+        }}
+      />
+
       {/* Navbar */}
       {shouldShowNavbarFooter && (
         <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />

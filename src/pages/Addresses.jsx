@@ -22,6 +22,8 @@ import {
   FaEyeSlash,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axiosInstance from "../api/axiosInstance";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
@@ -142,14 +144,7 @@ const translateAddressErrorMessage = (errorData) => {
     });
 
     if (errorMessages.length > 0) {
-      const htmlMessages = errorMessages.map(
-        (msg) =>
-          `<div style="direction: rtl; text-align: right; margin-bottom: 8px; padding-right: 15px; position: relative;">
-           ${msg}
-           <span style="position: absolute; right: 0; top: 0;">-</span>
-         </div>`
-      );
-      return htmlMessages.join("");
+      return errorMessages.join("، ");
     }
   }
 
@@ -173,24 +168,65 @@ const translateAddressErrorMessage = (errorData) => {
 const showAddressErrorAlert = (errorData) => {
   const translatedMessage = translateAddressErrorMessage(errorData);
 
-  Swal.fire({
-    title: "حدث خطأ",
-    html: translatedMessage,
-    icon: "error",
-    confirmButtonText: "حاول مرة أخرى",
-    timer: 2500,
-    showConfirmButton: false,
-  });
+  if (window.innerWidth < 768) {
+    toast.error(translatedMessage, {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      style: {
+        width: "70%",
+        margin: "10px",
+        borderRadius: "8px",
+        textAlign: "right",
+        fontSize: "14px",
+        direction: "rtl",
+      },
+    });
+  } else {
+    Swal.fire({
+      title: "حدث خطأ",
+      html: translatedMessage,
+      icon: "error",
+      confirmButtonText: "حاول مرة أخرى",
+      timer: 2500,
+      showConfirmButton: false,
+    });
+  }
 };
 
-const showAddressSuccessAlert = (title, text) => {
-  Swal.fire({
-    title: title,
-    text: text,
-    icon: "success",
-    showConfirmButton: false,
-    timer: 2500,
-  });
+const showAddressSuccessAlert = (message) => {
+  // التحقق مما إذا كانت الشاشة صغيرة (موبايل)
+  if (window.innerWidth < 768) {
+    // استخدام Toast للشاشات الصغيرة
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      style: {
+        width: "70%",
+        margin: "10px",
+        borderRadius: "8px",
+        textAlign: "right",
+        fontSize: "14px",
+        direction: "rtl",
+      },
+    });
+  } else {
+    // استخدام SweetAlert2 للشاشات الكبيرة
+    Swal.fire({
+      title: "تم بنجاح",
+      text: message,
+      icon: "success",
+      showConfirmButton: false,
+      timer: 2500,
+    });
+  }
 };
 
 export default function Addresses() {
@@ -335,8 +371,7 @@ export default function Addresses() {
         ...formData,
         [name]: cleanedValue,
       });
-    }
-    else if (
+    } else if (
       name === "buildingNumber" ||
       name === "floorNumber" ||
       name === "flatNumber"
@@ -377,10 +412,7 @@ export default function Addresses() {
       locationUrl: embedUrl,
     }));
 
-    showAddressSuccessAlert(
-      "تم اختيار الموقع",
-      "تم إضافة رابط الخريطة تلقائياً"
-    );
+    showAddressSuccessAlert("تم اختيار الموقع: تم إضافة رابط الخريطة تلقائياً");
   }, []);
 
   const handleSubmit = async (e) => {
@@ -446,13 +478,13 @@ export default function Addresses() {
           `/api/Locations/Update/${editingId}`,
           formattedData
         );
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 204) {
           setAddresses(
             addresses.map((addr) =>
               addr.id === editingId ? { ...addr, ...formattedData } : addr
             )
           );
-          showAddressSuccessAlert("تم تحديث العنوان", "تم تحديث عنوانك بنجاح");
+          showAddressSuccessAlert("تم تحديث العنوان: تم تحديث عنوانك بنجاح");
         }
       } else {
         const res = await axiosInstance.post(
@@ -462,8 +494,7 @@ export default function Addresses() {
         if (res.status === 200) {
           fetchAddresses();
           showAddressSuccessAlert(
-            "تم إضافة العنوان",
-            "تم إضافة عنوانك الجديد بنجاح"
+            "تم إضافة العنوان: تم إضافة عنوانك الجديد بنجاح"
           );
         }
       }
@@ -499,6 +530,7 @@ export default function Addresses() {
   };
 
   const handleDelete = (id) => {
+    // استخدام SweetAlert2 للرسائل التي تحتوي على أزرار (حتى في الموبايل)
     Swal.fire({
       title: "هل أنت متأكد؟",
       text: "لن تتمكن من التراجع عن هذا!",
@@ -508,14 +540,12 @@ export default function Addresses() {
       cancelButtonColor: "#6B7280",
       confirmButtonText: "نعم، احذفه!",
       cancelButtonText: "إلغاء",
-      background: "#0f172a",
-      color: "#e2e8f0",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           await axiosInstance.delete(`/api/Locations/Delete/${id}`);
           setAddresses(addresses.filter((addr) => addr.id !== id));
-          showAddressSuccessAlert("تم الحذف!", "تم حذف عنوانك");
+          showAddressSuccessAlert("تم الحذف: تم حذف عنوانك");
         } catch (err) {
           showAddressErrorAlert(err.response?.data);
         }
@@ -534,8 +564,7 @@ export default function Addresses() {
       );
 
       showAddressSuccessAlert(
-        "تم تحديث العنوان الافتراضي",
-        "تم تغيير عنوانك الافتراضي"
+        "تم تحديث العنوان الافتراضي: تم تغيير عنوانك الافتراضي"
       );
 
       if (location.state?.fromCart) {
@@ -611,8 +640,9 @@ export default function Addresses() {
   const confirmLocation = () => {
     if (selectedLocation) {
       closeMapModal();
-      showAddressSuccessAlert("تم تأكيد الموقع", "تم حفظ موقعك بنجاح");
+      showAddressSuccessAlert("تم تأكيد الموقع: تم حفظ موقعك بنجاح");
     } else {
+      // استخدام SweetAlert2 للرسائل التي تحتوي على أزرار
       Swal.fire({
         icon: "warning",
         title: "تحذير",

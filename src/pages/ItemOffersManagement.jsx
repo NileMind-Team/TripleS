@@ -22,12 +22,13 @@ import {
   FaSpinner,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axiosInstance from "../api/axiosInstance";
 
 const translateOfferErrorMessage = (errorData, useHTML = true) => {
   if (!errorData) return "حدث خطأ غير معروف";
 
-  // Handle the new error structure (array format)
   if (Array.isArray(errorData.errors)) {
     const errorMessages = errorData.errors.map((error) => {
       if (error.code === "ItemOffer.ItemOfferAlreadyExists") {
@@ -239,6 +240,70 @@ const adjustTimeFromAPI = (dateString) => {
   return date;
 };
 
+// دالة للتحقق إذا كانت الشاشة صغيرة (موبايل)
+const isMobileScreen = () => {
+  return window.innerWidth < 768; // أقل من 768px تعتبر شاشة موبايل
+};
+
+// دالة لعرض الرسائل بناءً على نوع الشاشة
+const showMessage = (type, title, text, options = {}) => {
+  const { showButtons = false, ...otherOptions } = options;
+
+  // إذا كانت الشاشة كبيرة أو الرسالة تحتوي على أزرار، استخدم Swal
+  if (!isMobileScreen() || showButtons) {
+    const swalOptions = {
+      icon: type,
+      title: title,
+      text: text,
+      showConfirmButton: false,
+      timer: otherOptions.timer || 2000,
+      ...otherOptions,
+    };
+
+    if (showButtons) {
+      delete swalOptions.timer;
+      delete swalOptions.showConfirmButton;
+    }
+
+    Swal.fire(swalOptions);
+  } else {
+    // إذا كانت الشاشة صغيرة، استخدم toast
+    const toastOptions = {
+      position: "top-right",
+      autoClose: otherOptions.timer || 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      rtl: true,
+      className: "toast-mobile",
+      bodyClassName: "toast-body-mobile",
+      style: {
+        width: "70%",
+        margin: "10px",
+        borderRadius: "10px",
+        textAlign: "right",
+        direction: "rtl",
+      },
+    };
+
+    switch (type) {
+      case "success":
+        toast.success(text, toastOptions);
+        break;
+      case "error":
+        toast.error(text, toastOptions);
+        break;
+      case "warning":
+        toast.warning(text, toastOptions);
+        break;
+      default:
+        toast.info(text, toastOptions);
+    }
+  }
+};
+
 export default function ItemOffersManagement() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -320,11 +385,11 @@ export default function ItemOffersManagement() {
           return;
         }
 
-        Swal.fire({
-          icon: "error",
-          title: "خطأ في الاتصال",
-          text: "حدث خطأ أثناء جلب البيانات. يرجى المحاولة مرة أخرى.",
-        });
+        showMessage(
+          "error",
+          "خطأ في الاتصال",
+          "حدث خطأ أثناء جلب البيانات. يرجى المحاولة مرة أخرى."
+        );
       } finally {
         setLoading(false);
       }
@@ -371,7 +436,6 @@ export default function ItemOffersManagement() {
               `/api/MenuItems/Get/${offer.menuItemId}`
             );
 
-            // تعديل التواريخ الواردة من الباكيند (إضافة ساعتين)
             const adjustedStartDate = adjustTimeFromAPI(offer.startDate);
             const adjustedEndDate = adjustTimeFromAPI(offer.endDate);
 
@@ -409,11 +473,7 @@ export default function ItemOffersManagement() {
       setFilteredOffers(offersWithDetails);
     } catch (error) {
       console.error("خطأ في جلب العروض:", error);
-      Swal.fire({
-        icon: "error",
-        title: "خطأ",
-        text: "فشل في تحميل بيانات العروض",
-      });
+      showMessage("error", "خطأ", "فشل في تحميل بيانات العروض");
     }
   };
 
@@ -438,11 +498,7 @@ export default function ItemOffersManagement() {
       setMenuItems(itemsWithoutActiveOffers);
     } catch (error) {
       console.error("خطأ في جلب العناصر:", error);
-      Swal.fire({
-        icon: "error",
-        title: "خطأ",
-        text: "فشل في تحميل العناصر",
-      });
+      showMessage("error", "خطأ", "فشل في تحميل العناصر");
     } finally {
       setLoadingItems(false);
     }
@@ -522,7 +578,6 @@ export default function ItemOffersManagement() {
       dateObj.setHours(0, 0, 0, 0);
     }
 
-    // استخدام دالة ضبط الوقت للإرسال (طرح ساعتين)
     return adjustTimeForAPI(dateObj.toISOString());
   };
 
@@ -535,24 +590,16 @@ export default function ItemOffersManagement() {
       !formData.startDate ||
       !formData.endDate
     ) {
-      Swal.fire({
-        icon: "error",
-        title: "معلومات ناقصة",
-        text: "يرجى ملء جميع الحقول المطلوبة",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      showMessage("error", "معلومات ناقصة", "يرجى ملء جميع الحقول المطلوبة");
       return;
     }
 
     if (formData.branchesIds.length === 0) {
-      Swal.fire({
-        icon: "error",
-        title: "لم يتم اختيار فروع",
-        text: "يرجى اختيار فرع واحد على الأقل",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      showMessage(
+        "error",
+        "لم يتم اختيار فروع",
+        "يرجى اختيار فرع واحد على الأقل"
+      );
       return;
     }
 
@@ -578,24 +625,20 @@ export default function ItemOffersManagement() {
           offerData
         );
         if (res.status === 200 || res.status === 204) {
-          Swal.fire({
-            icon: "success",
-            title: "تم تحديث العرض",
-            text: "تم تحديث عرض العنصر بنجاح.",
-            timer: 2000,
-            showConfirmButton: false,
-          });
+          showMessage(
+            "success",
+            "تم تحديث العرض",
+            "تم تحديث عرض العنصر بنجاح."
+          );
         }
       } else {
         const res = await axiosInstance.post("/api/ItemOffers/Add", offerData);
         if (res.status === 200 || res.status === 201) {
-          Swal.fire({
-            icon: "success",
-            title: "تم إضافة العرض",
-            text: "تم إضافة عرض العنصر الجديد بنجاح.",
-            timer: 2000,
-            showConfirmButton: false,
-          });
+          showMessage(
+            "success",
+            "تم إضافة العرض",
+            "تم إضافة عرض العنصر الجديد بنجاح."
+          );
         }
       }
 
@@ -609,23 +652,16 @@ export default function ItemOffersManagement() {
 
       const translatedMessage = translateOfferErrorMessage(
         err.response?.data,
-        true
+        false
       );
 
-      Swal.fire({
-        icon: "error",
-        title: "حدث خطأ",
-        html: translatedMessage,
-        showConfirmButton: false,
-        timer: 2500,
-      });
+      showMessage("error", "حدث خطأ", translatedMessage, { timer: 2500 });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleEdit = (offer) => {
-    // التواريخ هنا ستكون معدلة مسبقاً (مضاف لها ساعتين)
     const startDateObj = new Date(offer.startDate);
     const endDateObj = new Date(offer.endDate);
 
@@ -652,6 +688,7 @@ export default function ItemOffersManagement() {
   };
 
   const handleDelete = async (id) => {
+    // رسالة الحذف تحتوي على أزرار، لذا نستخدم Swal دائمًا
     Swal.fire({
       title: "هل أنت متأكد؟",
       text: "لن تتمكن من التراجع عن هذا الإجراء!",
@@ -660,26 +697,17 @@ export default function ItemOffersManagement() {
       confirmButtonColor: "#E41E26",
       cancelButtonColor: "#6B7280",
       confirmButtonText: "نعم، احذفه!",
+      cancelButtonText: "إلغاء",
       reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           await axiosInstance.delete(`/api/ItemOffers/Delete/${id}`);
           fetchOffers();
-          Swal.fire({
-            title: "تم الحذف!",
-            text: "تم حذف عرض العنصر.",
-            icon: "success",
-            timer: 2000,
-            showConfirmButton: false,
-          });
+          showMessage("success", "تم الحذف!", "تم حذف عرض العنصر.");
           fetchMenuItems();
         } catch (err) {
-          Swal.fire({
-            icon: "error",
-            title: "خطأ",
-            text: "فشل في حذف عرض العنصر.",
-            showConfirmButton: false,
+          showMessage("error", "خطأ", "فشل في حذف عرض العنصر.", {
             timer: 2500,
           });
         }
@@ -693,13 +721,12 @@ export default function ItemOffersManagement() {
     const offer = offers.find((o) => o.id === id);
     if (!offer) return;
 
-    // نستخدم التواريخ المعدلة (مضاف لها ساعتين) لكن عند الإرسال سيتم طرح ساعتين
     const offerData = {
       menuItemId: offer.menuItemId,
       isPercentage: offer.isPercentage,
       discountValue: offer.discountValue,
-      startDate: adjustTimeForAPI(offer.startDate), // طرح ساعتين عند الإرسال
-      endDate: adjustTimeForAPI(offer.endDate), // طرح ساعتين عند الإرسال
+      startDate: adjustTimeForAPI(offer.startDate),
+      endDate: adjustTimeForAPI(offer.endDate),
       isEnabled: !offer.isEnabled,
       branchesIds: offer.branchesIds || branches.map((branch) => branch.id),
     };
@@ -711,24 +738,17 @@ export default function ItemOffersManagement() {
       );
       if (response.status === 200 || response.status === 204) {
         fetchOffers();
-        Swal.fire({
-          icon: "success",
-          title: "تم تحديث الحالة!",
-          text: `تم ${offer.isEnabled ? "تعطيل" : "تفعيل"} عرض العنصر`,
-          timer: 1500,
-          showConfirmButton: false,
-        });
+        showMessage(
+          "success",
+          "تم تحديث الحالة!",
+          `تم ${offer.isEnabled ? "تعطيل" : "تفعيل"} عرض العنصر`,
+          { timer: 1500 }
+        );
         fetchMenuItems();
       }
     } catch (error) {
       console.error("خطأ في تحديث حالة العرض:", error);
-      Swal.fire({
-        icon: "error",
-        title: "خطأ",
-        text: "فشل في تحديث حالة العرض",
-        showConfirmButton: false,
-        timer: 2500,
-      });
+      showMessage("error", "خطأ", "فشل في تحديث حالة العرض", { timer: 2500 });
     }
   };
 

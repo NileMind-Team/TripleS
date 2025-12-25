@@ -4,6 +4,8 @@ import axiosInstance from "../api/axiosInstance";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ConfirmEmail() {
   const [searchParams] = useSearchParams();
@@ -13,20 +15,92 @@ export default function ConfirmEmail() {
   const [message, setMessage] = useState("");
   const hasConfirmed = useRef(false);
 
+  // دالة لعرض رسائل النجاح والفشل على الموبايل باستخدام toast
+  const showMobileMessage = (type, title, text) => {
+    if (window.innerWidth < 768) {
+      // عرض رسائل النجاح والفشل العادية (بدون أزرار) باستخدام toast
+      if (type === "success") {
+        toast.success(text, {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            width: "70%",
+            margin: "10px",
+            borderRadius: "8px",
+            textAlign: "right",
+            fontSize: "14px",
+            direction: "rtl",
+          },
+        });
+      } else if (type === "error") {
+        toast.error(text, {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            width: "70%",
+            margin: "10px",
+            borderRadius: "8px",
+            textAlign: "right",
+            fontSize: "14px",
+            direction: "rtl",
+          },
+        });
+      } else if (type === "info") {
+        toast.info(text, {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            width: "70%",
+            margin: "10px",
+            borderRadius: "8px",
+            textAlign: "right",
+            fontSize: "14px",
+            direction: "rtl",
+          },
+        });
+      }
+      return true;
+    }
+    return false;
+  };
+
   useEffect(() => {
     const userId = searchParams.get("userId");
     const code = searchParams.get("code");
     const decodedCode = code ? decodeURIComponent(code) : null;
 
     if (!userId || !decodedCode) {
-      Swal.fire({
-        icon: "error",
-        title: "رابط غير صالح",
-        text: "الرابط الذي استخدمته غير مكتمل أو غير صالح.",
-        customClass: {
-          popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
-        },
-      });
+      // للشاشات الكبيرة: Swal عادي
+      // للشاشات الصغيرة: Toast للرسائل بدون أزرار
+      const isMobile = showMobileMessage(
+        "error",
+        "رابط غير صالح",
+        "الرابط الذي استخدمته غير مكتمل أو غير صالح."
+      );
+
+      if (!isMobile) {
+        Swal.fire({
+          icon: "error",
+          title: "رابط غير صالح",
+          text: "الرابط الذي استخدمته غير مكتمل أو غير صالح.",
+          customClass: {
+            popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
+          },
+        });
+      }
+
       setLoading(false);
       setSuccess(false);
       return;
@@ -45,16 +119,25 @@ export default function ConfirmEmail() {
         setMessage(res.data.message || "تم تأكيد بريدك الإلكتروني بنجاح.");
         setSuccess(true);
 
-        Swal.fire({
-          icon: "success",
-          title: "تم تأكيد البريد الإلكتروني",
-          text: res.data.message || "تم تأكيد بريدك الإلكتروني بنجاح.",
-          showConfirmButton: false,
-          timer: 2000,
-          customClass: {
-            popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
-          },
-        });
+        // استخدام toast للموبايل بدلاً من Swal
+        const isMobile = showMobileMessage(
+          "success",
+          "تم تأكيد البريد الإلكتروني",
+          res.data.message || "تم تأكيد بريدك الإلكتروني بنجاح."
+        );
+
+        if (!isMobile) {
+          Swal.fire({
+            icon: "success",
+            title: "تم تأكيد البريد الإلكتروني",
+            text: res.data.message || "تم تأكيد بريدك الإلكتروني بنجاح.",
+            showConfirmButton: false,
+            timer: 2000,
+            customClass: {
+              popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
+            },
+          });
+        }
 
         setLoading(false);
       } catch (err) {
@@ -62,32 +145,52 @@ export default function ConfirmEmail() {
         if (errorCode === "User.DuplicatedConfirmation") {
           setMessage("تم تأكيد بريدك الإلكتروني مسبقاً.");
           setSuccess(true);
-          Swal.fire({
-            icon: "info",
-            title: "تم التأكيد مسبقاً",
-            text: "تم تأكيد بريدك الإلكتروني مسبقاً.",
-            showConfirmButton: false,
-            timer: 2000,
-            customClass: {
-              popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
-            },
-          });
-        } else {
-          setMessage(
-            err.response?.data?.errors?.[0]?.description ||
-              "حدث خطأ أثناء تأكيد بريدك الإلكتروني."
+
+          // استخدام toast للموبايل
+          const isMobile = showMobileMessage(
+            "info",
+            "تم التأكيد مسبقاً",
+            "تم تأكيد بريدك الإلكتروني مسبقاً."
           );
+
+          if (!isMobile) {
+            Swal.fire({
+              icon: "info",
+              title: "تم التأكيد مسبقاً",
+              text: "تم تأكيد بريدك الإلكتروني مسبقاً.",
+              showConfirmButton: false,
+              timer: 2000,
+              customClass: {
+                popup:
+                  "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
+              },
+            });
+          }
+        } else {
+          const errorDescription =
+            err.response?.data?.errors?.[0]?.description ||
+            "حدث خطأ أثناء تأكيد بريدك الإلكتروني.";
+          setMessage(errorDescription);
           setSuccess(false);
-          Swal.fire({
-            icon: "error",
-            title: "فشل تأكيد البريد الإلكتروني",
-            text:
-              err.response?.data?.errors?.[0]?.description ||
-              "حدث خطأ أثناء تأكيد بريدك الإلكتروني.",
-            customClass: {
-              popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
-            },
-          });
+
+          // استخدام toast للموبايل للرسائل بدون أزرار
+          const isMobile = showMobileMessage(
+            "error",
+            "فشل تأكيد البريد الإلكتروني",
+            errorDescription
+          );
+
+          if (!isMobile) {
+            Swal.fire({
+              icon: "error",
+              title: "فشل تأكيد البريد الإلكتروني",
+              text: errorDescription,
+              customClass: {
+                popup:
+                  "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
+              },
+            });
+          }
         }
         setLoading(false);
       }
