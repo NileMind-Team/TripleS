@@ -1322,12 +1322,26 @@ export default function Cart() {
     } catch (error) {
       console.error("Error creating order:", error);
 
-      if (error.response?.data?.errors) {
-        const errors = error.response.data.errors;
+      if (!error.response?.data?.errors) {
+        showGenericError();
+        return;
+      }
 
-        let errorMessages = [];
+      const errors = error.response.data.errors;
 
-        errors.forEach((errorItem) => {
+      let errorMessages = [];
+      let showModalOnly = false;
+
+      errors.forEach((errorItem) => {
+        if (
+          errorItem.code === "User.MissingInfo" &&
+          errorItem.description ===
+            "User must have a phone number or a default location."
+        ) {
+          showModalOnly = true;
+          setShowMissingInfoModal(true);
+          fetchUserProfile();
+        } else {
           if (
             errorItem.code === "User" &&
             errorItem.description === "User is not active."
@@ -1372,20 +1386,17 @@ export default function Cart() {
                 deliveryType === "delivery" ? "التوصيل" : "الاستلام"
               } غير متاحة لهذا الفرع حالياً. الرجاء اختيار فرع آخر أو طريقة استلام مختلفة.`
             );
-          } else if (errorItem.code === "User.MissingInfo") {
-            errorMessages.push(
-              "يجب إضافة رقم هاتف أو تعيين عنوان افتراضي قبل إتمام الطلب."
-            );
-
-            setShowMissingInfoModal(true);
-            fetchUserProfile();
+          } else {
+            errorMessages.push("فشل في إنشاء الطلب. الرجاء المحاولة مرة أخرى.");
           }
-        });
-
-        if (errorMessages.length === 0) {
-          errorMessages.push("فشل في إنشاء الطلب. الرجاء المحاولة مرة أخرى.");
         }
+      });
 
+      if (showModalOnly && errorMessages.length === 0) {
+        return;
+      }
+
+      if (errorMessages.length > 0) {
         if (isMobile()) {
           toast.error(errorMessages.join(" "), {
             position: "top-right",
@@ -1406,25 +1417,27 @@ export default function Cart() {
             },
           });
         }
+      }
+    }
+
+    function showGenericError() {
+      if (isMobile()) {
+        toast.error("فشل في إنشاء الطلب. الرجاء المحاولة مرة أخرى.", {
+          position: "top-right",
+          autoClose: 2500,
+          rtl: true,
+        });
       } else {
-        if (isMobile()) {
-          toast.error("فشل في إنشاء الطلب. الرجاء المحاولة مرة أخرى.", {
-            position: "top-right",
-            autoClose: 2500,
-            rtl: true,
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "خطأ",
-            text: "فشل في إنشاء الطلب. الرجاء المحاولة مرة أخرى.",
-            timer: 2500,
-            showConfirmButton: false,
-            customClass: {
-              popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
-            },
-          });
-        }
+        Swal.fire({
+          icon: "error",
+          title: "خطأ",
+          text: "فشل في إنشاء الطلب. الرجاء المحاولة مرة أخرى.",
+          timer: 2500,
+          showConfirmButton: false,
+          customClass: {
+            popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
+          },
+        });
       }
     }
   };
