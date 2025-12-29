@@ -100,6 +100,53 @@ const convert24To12HourFormat = (time24) => {
     .padStart(2, "0")} ${period}`;
 };
 
+const convert12To24HourFormat = (time12) => {
+  if (!time12) return "";
+
+  if (
+    time12.includes(":") &&
+    !time12.includes("ص") &&
+    !time12.includes("م") &&
+    !time12.includes("AM") &&
+    !time12.includes("PM")
+  ) {
+    return time12;
+  }
+
+  const time = time12.trim();
+  let hours, minutes, period;
+
+  if (time.includes("ص") || time.includes("م")) {
+    const match = time.match(/(\d{1,2}):(\d{2})\s*(ص|م)/);
+    if (match) {
+      hours = parseInt(match[1]);
+      minutes = parseInt(match[2]);
+      period = match[3];
+    }
+  } else if (time.includes("AM") || time.includes("PM")) {
+    const match = time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (match) {
+      hours = parseInt(match[1]);
+      minutes = parseInt(match[2]);
+      period = match[3].toUpperCase() === "AM" ? "ص" : "م";
+    }
+  } else {
+    return time12;
+  }
+
+  if (isNaN(hours) || isNaN(minutes)) return "";
+
+  if (period === "م" && hours < 12) {
+    hours += 12;
+  } else if (period === "ص" && hours === 12) {
+    hours = 0;
+  }
+
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}`;
+};
+
 const convertErrorObjectToText = (errorMessages) => {
   if (!errorMessages || typeof errorMessages !== "object") {
     return "حدث خطأ غير معروف";
@@ -191,7 +238,6 @@ const showMobileMessage = (type, title, text) => {
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
-        draggable: true,
         style: {
           width: "70%",
           margin: "10px",
@@ -444,14 +490,15 @@ export default function AdminBranches() {
     const closingTime24 = branch.closingTime
       ? adjustTimeFromBackend(branch.closingTime)
       : "";
+
     setFormData({
       name: branch.name || "",
       email: branch.email || "",
       address: branch.address || "",
       locationUrl: branch.locationUrl || "",
       status: branch.status || "Open",
-      openingTime: convert24To12HourFormat(openingTime24),
-      closingTime: convert24To12HourFormat(closingTime24),
+      openingTime: openingTime24,
+      closingTime: closingTime24,
       isActive: branch.isActive !== undefined ? branch.isActive : true,
       cityId: branch.city?.id || "",
       managerId: branch.managerId || "",
@@ -504,10 +551,10 @@ export default function AdminBranches() {
     const processedData = {
       ...submitData,
       openingTime: submitData.openingTime
-        ? adjustTimeForBackend(submitData.openingTime)
+        ? adjustTimeForBackend(convert12To24HourFormat(submitData.openingTime))
         : "",
       closingTime: submitData.closingTime
-        ? adjustTimeForBackend(submitData.closingTime)
+        ? adjustTimeForBackend(convert12To24HourFormat(submitData.closingTime))
         : "",
       phoneNumbers: submitData.phoneNumbers.map((phone) => ({
         phone: phone.phone,
@@ -717,6 +764,7 @@ export default function AdminBranches() {
                   openDropdown={openDropdown}
                   setOpenDropdown={setOpenDropdown}
                   convert24To12HourFormat={convert24To12HourFormat}
+                  convert12To24HourFormat={convert12To24HourFormat}
                   adjustTimeFromBackend={adjustTimeFromBackend}
                 />
               )}

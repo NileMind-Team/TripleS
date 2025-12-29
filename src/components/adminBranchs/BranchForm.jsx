@@ -24,14 +24,24 @@ const BranchForm = ({
   isEditing,
   openDropdown,
   setOpenDropdown,
+  convert12To24HourFormat,
 }) => {
   const [localOpenDropdown, setLocalOpenDropdown] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    let processedValue = value;
+
+    if (name === "openingTime" || name === "closingTime") {
+      if (value && convert12To24HourFormat) {
+        processedValue = convert12To24HourFormat(value);
+      }
+    }
+
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : processedValue,
     });
   };
 
@@ -60,7 +70,13 @@ const BranchForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormValid()) {
-      onSubmit(formData);
+      const dataToSubmit = {
+        ...formData,
+        openingTime: formData.openingTime,
+        closingTime: formData.closingTime,
+      };
+
+      onSubmit(dataToSubmit);
     }
   };
 
@@ -337,7 +353,7 @@ const BranchForm = ({
                 <input
                   type="time"
                   name="openingTime"
-                  value={formData.openingTime}
+                  value={formData.openingTime || ""}
                   onChange={handleInputChange}
                   required
                   className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-600 text-black dark:text-white rounded-lg sm:rounded-xl pr-9 pl-3 py-2.5 sm:py-3 outline-none focus:ring-2 focus:ring-[#E41E26] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
@@ -353,7 +369,7 @@ const BranchForm = ({
                 <input
                   type="time"
                   name="closingTime"
-                  value={formData.closingTime}
+                  value={formData.closingTime || ""}
                   onChange={handleInputChange}
                   required
                   className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-600 text-black dark:text-white rounded-lg sm:rounded-xl pr-9 pl-3 py-2.5 sm:py-3 outline-none focus:ring-2 focus:ring-[#E41E26] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
