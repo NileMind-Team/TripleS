@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, handleGoogleCallback } from "../redux/slices/loginSlice";
 import { registerUser } from "../redux/slices/registerSlice";
@@ -93,6 +93,9 @@ export default function AuthPage() {
   const [timer, setTimer] = useState(60);
   const [showWelcome, setShowWelcome] = useState(false);
   const [loggedUserName, setLoggedUserName] = useState("");
+  const authLayoutRef = useRef(null);
+  const loginFormRef = useRef(null);
+  const registerFormRef = useRef(null);
 
   // Login states
   const [loginData, setLoginData] = useState({
@@ -142,6 +145,29 @@ export default function AuthPage() {
 
     const searchParams = new URLSearchParams(window.location.search);
     return searchParams.get("error");
+  }, []);
+
+  const scrollToForm = useCallback((formType) => {
+    if (window.innerWidth >= 1024) return;
+
+    setTimeout(() => {
+      if (formType === "login" && loginFormRef.current) {
+        loginFormRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      } else if (formType === "register" && registerFormRef.current) {
+        registerFormRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      } else if (authLayoutRef.current) {
+        authLayoutRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
   }, []);
 
   useEffect(() => {
@@ -216,9 +242,23 @@ export default function AuthPage() {
     }
   }, [dispatch, navigate, extractTokenFromUrl, extractErrorFromUrl]);
 
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      scrollToForm(activeTab);
+    }
+  }, [activeTab, scrollToForm]);
+
   const handleTabChange = useCallback((tab) => {
     setActiveTab(tab);
   }, []);
+
+  const handleLoginTabClick = useCallback(() => {
+    scrollToForm("login");
+  }, [scrollToForm]);
+
+  const handleRegisterTabClick = useCallback(() => {
+    scrollToForm("register");
+  }, [scrollToForm]);
 
   const handleLoginChange = useCallback((name, value) => {
     setLoginData((prev) => ({ ...prev, [name]: value }));
@@ -554,12 +594,15 @@ export default function AuthPage() {
 
   return (
     <AuthLayout
+      ref={authLayoutRef}
       activeTab={activeTab}
       onTabChange={handleTabChange}
       onBack={() => navigate(-1)}
       showWelcome={showWelcome}
       onGoogleLogin={handleGoogleLogin}
       isGoogleLoading={isGoogleLoading}
+      onLoginTabClick={handleLoginTabClick}
+      onRegisterTabClick={handleRegisterTabClick}
     >
       {showWelcome ? (
         <WelcomeAnimation userName={loggedUserName} />
@@ -583,33 +626,37 @@ export default function AuthPage() {
           onBack={() => setForgetMode(false)}
         />
       ) : activeTab === "login" ? (
-        <LoginForm
-          email={loginData.email}
-          password={loginData.password}
-          showPassword={showPassword}
-          isLoading={loginLoading}
-          onEmailChange={(value) => handleLoginChange("email", value)}
-          onPasswordChange={(value) => handleLoginChange("password", value)}
-          onToggleShowPassword={() => setShowPassword(!showPassword)}
-          onForgotPassword={() => setForgetMode(true)}
-          onSubmit={handleLogin}
-        />
+        <div ref={loginFormRef}>
+          <LoginForm
+            email={loginData.email}
+            password={loginData.password}
+            showPassword={showPassword}
+            isLoading={loginLoading}
+            onEmailChange={(value) => handleLoginChange("email", value)}
+            onPasswordChange={(value) => handleLoginChange("password", value)}
+            onToggleShowPassword={() => setShowPassword(!showPassword)}
+            onForgotPassword={() => setForgetMode(true)}
+            onSubmit={handleLogin}
+          />
+        </div>
       ) : (
-        <RegisterForm
-          formData={registerData}
-          showRegisterPassword={showRegisterPassword}
-          showConfirmPassword={showConfirmPassword}
-          passwordValidations={passwordValidations}
-          isLoading={registerLoading}
-          onInputChange={handleRegisterChange}
-          onToggleRegisterPassword={() =>
-            setShowRegisterPassword(!showRegisterPassword)
-          }
-          onToggleConfirmPassword={() =>
-            setShowConfirmPassword(!showConfirmPassword)
-          }
-          onSubmit={handleRegister}
-        />
+        <div ref={registerFormRef}>
+          <RegisterForm
+            formData={registerData}
+            showRegisterPassword={showRegisterPassword}
+            showConfirmPassword={showConfirmPassword}
+            passwordValidations={passwordValidations}
+            isLoading={registerLoading}
+            onInputChange={handleRegisterChange}
+            onToggleRegisterPassword={() =>
+              setShowRegisterPassword(!showRegisterPassword)
+            }
+            onToggleConfirmPassword={() =>
+              setShowConfirmPassword(!showConfirmPassword)
+            }
+            onSubmit={handleRegister}
+          />
+        </div>
       )}
     </AuthLayout>
   );
