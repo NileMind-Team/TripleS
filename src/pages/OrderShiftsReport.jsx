@@ -69,29 +69,10 @@ const fetchOrdersWithFilter = async (
       filters: [],
     };
 
-    if (day) {
-      let startDateWithTime = startOfDay(day);
-      let endDateWithTime = endOfDay(day);
-
-      requestBody.filters.push({
-        propertyName: "createdAt",
-        propertyValue: `${startDateWithTime.toISOString()},${endDateWithTime.toISOString()}`,
-        range: true,
-      });
-    }
-
     if (shiftId) {
       requestBody.filters.push({
         propertyName: "orderShift.id",
         propertyValue: shiftId.toString(),
-        range: false,
-      });
-    }
-
-    if (branchId) {
-      requestBody.filters.push({
-        propertyName: "branchId",
-        propertyValue: branchId.toString(),
         range: false,
       });
     }
@@ -131,28 +112,20 @@ const fetchAllOrdersForPrint = async (day, shiftId, branchId) => {
     let endDateWithTime = endOfDay(day);
 
     const params = new URLSearchParams();
-    params.append("startRange", startDateWithTime.toISOString());
-    params.append("endRange", endDateWithTime.toISOString());
 
-    if (branchId) {
-      params.append("branchId", branchId.toString());
-    }
+    params.append("shiftId", shiftId.toString());
 
     console.log(`Fetching print orders with params: ${params.toString()}`);
     console.log(`Start Range: ${startDateWithTime.toISOString()}`);
     console.log(`End Range: ${endDateWithTime.toISOString()}`);
+    console.log(`Branch ID: ${branchId}`);
+    console.log(`Shift ID: ${shiftId || "Not provided"}`);
 
     const response = await axiosInstance.get(
       `/api/Orders/GetAll?${params.toString()}`
     );
 
     let orders = response.data || [];
-
-    if (shiftId) {
-      orders = orders.filter(
-        (order) => order.orderShift?.id === parseInt(shiftId)
-      );
-    }
 
     console.log(`تم جلب ${orders.length} طلب للطباعة`);
 
@@ -197,19 +170,31 @@ const formatNumberArabic = (number) => {
   return arabicNum.replace(/\B(?=(\d{3})+(?!\d))/g, "٬");
 };
 
-const formatTime = (timeString) => {
+const formatTimeTo12Hour = (timeString) => {
   if (!timeString) return "غير محدد";
+
   try {
+    let date;
+
     if (timeString.includes("T")) {
-      const date = parseISO(timeString);
-      const adjustedDate = addHours(date, 2);
-      return format(adjustedDate, "HH:mm");
+      date = parseISO(timeString);
+    } else if (timeString.includes(":")) {
+      const [hours, minutes] = timeString.split(":");
+      date = new Date();
+      date.setHours(parseInt(hours), parseInt(minutes), 0);
+    } else {
+      return timeString;
     }
-    if (timeString.includes(":")) {
-      return timeString.substring(0, 5);
-    }
-    return timeString;
+
+    const adjustedDate = addHours(date, 2);
+
+    let formattedTime = format(adjustedDate, "hh:mm a");
+
+    formattedTime = formattedTime.replace(/AM/g, "ص").replace(/PM/g, "م");
+
+    return formattedTime;
   } catch (error) {
+    console.error("Error formatting time:", error);
     return timeString;
   }
 };
@@ -296,7 +281,7 @@ const OrderShiftsReport = () => {
     };
 
     loadOrderShifts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [day, branchId]);
 
   const toggleDropdown = (menu) => {
@@ -322,6 +307,19 @@ const OrderShiftsReport = () => {
         icon: "warning",
         title: "الفرع غير محدد",
         text: "يرجى تحديد الفرع أولاً",
+        timer: 3000,
+        showConfirmButton: false,
+        background: "#fff",
+        color: "#333",
+      });
+      return;
+    }
+
+    if (!shiftId) {
+      Swal.fire({
+        icon: "warning",
+        title: "الوردية غير محددة",
+        text: "يرجى تحديد اسم الوردية أولاً",
         timer: 3000,
         showConfirmButton: false,
         background: "#fff",
@@ -961,7 +959,14 @@ ${
                                   : "hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] text-gray-700 border-gray-100"
                               } cursor-pointer transition-all text-sm sm:text-base border-b last:border-b-0`}
                             >
-                              {shift.name}
+                              <div className="flex justify-between items-center">
+                                <span>{shift.name}</span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  {shift.start
+                                    ? formatTimeTo12Hour(shift.start)
+                                    : "غير محدد"}
+                                </span>
+                              </div>
                             </li>
                           ))}
                         </motion.ul>
@@ -976,9 +981,9 @@ ${
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleFilter(1)}
-                disabled={!day || !branchId}
+                disabled={!day || !branchId || !shiftId}
                 className={`px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                  day && branchId
+                  day && branchId && shiftId
                     ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white cursor-pointer"
                     : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                 }`}
@@ -1079,12 +1084,16 @@ ${
                         </td>
                         <td className="px-4 py-3 text-center text-sm text-gray-600 dark:text-gray-400">
                           <div className="flex items-center justify-center gap-1">
-                            {formatTime(order.orderShift?.start)}
+                            {order.orderShift?.start
+                              ? formatTimeTo12Hour(order.orderShift.start)
+                              : "غير محدد"}
                           </div>
                         </td>
                         <td className="px-4 py-3 text-center text-sm text-gray-600 dark:text-gray-400">
                           <div className="flex items-center justify-center gap-1">
-                            {formatTime(order.orderShift?.end)}
+                            {order.orderShift?.end
+                              ? formatTimeTo12Hour(order.orderShift.end)
+                              : "غير محدد"}
                           </div>
                         </td>
                       </tr>
