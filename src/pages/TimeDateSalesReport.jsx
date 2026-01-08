@@ -1728,7 +1728,7 @@ ${
                 </label>
                 <div className="flex gap-3">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleDateFilter}
                     disabled={!startDate || !endDate}
@@ -1743,7 +1743,7 @@ ${
                   </motion.button>
                   {reportData && reportData.length > 0 && (
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={handlePrint}
                       disabled={isPrinting}
