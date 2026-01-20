@@ -62,8 +62,8 @@ const showSalesMobileAlertToast = (message, type = "info") => {
       type === "error"
         ? toast.error
         : type === "warning"
-        ? toast.warning
-        : toast.info;
+          ? toast.warning
+          : toast.info;
     toastFunc(message, {
       position: "top-right",
       autoClose: 2500,
@@ -133,7 +133,7 @@ const fetchOrdersByDateRange = async (
   endDate,
   branchId = null,
   pageNumber = 1,
-  pageSize = 10
+  pageSize = 10,
 ) => {
   try {
     if (!startDate || !endDate) {
@@ -191,7 +191,7 @@ const calculateSummary = (allOrders, startDate, endDate, totalPrice = 0) => {
         startDate && endDate
           ? `${format(startDate, "yyyy-MM-dd")} إلى ${format(
               endDate,
-              "yyyy-MM-dd"
+              "yyyy-MM-dd",
             )}`
           : "لم يتم تحديد فترة",
     };
@@ -205,10 +205,10 @@ const calculateSummary = (allOrders, startDate, endDate, totalPrice = 0) => {
   const totalOrders = allOrders.length;
 
   const deliveryOrders = allOrders.filter(
-    (order) => order.deliveryFee?.fee > 0
+    (order) => order.deliveryFee?.fee > 0,
   ).length;
   const pickupOrders = allOrders.filter(
-    (order) => order.deliveryFee?.fee === 0
+    (order) => order.deliveryFee?.fee === 0,
   ).length;
 
   const productSales = {};
@@ -250,7 +250,7 @@ const calculateSummary = (allOrders, startDate, endDate, totalPrice = 0) => {
       startDate && endDate
         ? `${format(startDate, "yyyy-MM-dd")} إلى ${format(
             endDate,
-            "yyyy-MM-dd"
+            "yyyy-MM-dd",
           )}`
         : "لم يتم تحديد فترة",
   };
@@ -377,7 +377,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
     const optionsTotal =
       item.options?.reduce(
         (sum, option) => sum + (option.optionPriceAtOrder || 0),
-        0
+        0,
       ) || 0;
 
     const itemPriceBeforeDiscount =
@@ -512,7 +512,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
                     ((item.menuItem?.basePrice || 0) +
                       (item.options?.reduce(
                         (sum, option) => sum + (option.optionPriceAtOrder || 0),
-                        0
+                        0,
                       ) || 0)) *
                     (item.quantity || 1)
                   ).toFixed(2);
@@ -565,11 +565,11 @@ const OrderDetailsModal = ({ order, onClose }) => {
                               <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                                 {item.menuItem?.description?.substring(
                                   0,
-                                  100
+                                  100,
                                 ) ||
                                   item.menuItemDescriptionAtOrder?.substring(
                                     0,
-                                    100
+                                    100,
                                   ) ||
                                   "لا يوجد وصف"}
                                 {(item.menuItem?.description?.length > 100 ||
@@ -637,7 +637,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
                                         (sum, option) =>
                                           sum +
                                           (option.optionPriceAtOrder || 0),
-                                        0
+                                        0,
                                       )
                                       .toFixed(2)}{" "}
                                     ج.م
@@ -730,7 +730,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
                 </p>
                 <p
                   className={`text-lg font-bold ${getStatusColor(
-                    order.status
+                    order.status,
                   )}`}
                 >
                   <span className="flex items-center gap-2">
@@ -806,7 +806,7 @@ const SalesReports = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "يرجى تحديد تاريخ البداية والنهاية أولاً",
-            "warning"
+            "warning",
           );
         } else {
           Swal.fire({
@@ -828,7 +828,7 @@ const SalesReports = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "تاريخ البداية يجب أن يكون قبل تاريخ النهاية",
-            "error"
+            "error",
           );
         } else {
           Swal.fire({
@@ -850,7 +850,7 @@ const SalesReports = () => {
         endDate,
         selectedBranch !== "all" ? selectedBranch : null,
         page,
-        pageSize
+        pageSize,
       );
 
       const orders = response.data || [];
@@ -865,7 +865,7 @@ const SalesReports = () => {
       const allOrdersResponse = await fetchAllOrdersForStats(
         startDate,
         endDate,
-        selectedBranch !== "all" ? selectedBranch : null
+        selectedBranch !== "all" ? selectedBranch : null,
       );
 
       const allOrders = allOrdersResponse?.data || [];
@@ -876,7 +876,7 @@ const SalesReports = () => {
         allOrders,
         startDate,
         endDate,
-        allOrdersResponse?.totalPrice || 0
+        allOrdersResponse?.totalPrice || 0,
       );
       setSummary(summaryData);
 
@@ -939,7 +939,7 @@ const SalesReports = () => {
           startDate && endDate
             ? `${format(startDate, "yyyy-MM-dd")} إلى ${format(
                 endDate,
-                "yyyy-MM-dd"
+                "yyyy-MM-dd",
               )}`
             : "لم يتم تحديد فترة",
       });
@@ -996,6 +996,14 @@ const SalesReports = () => {
       return order.location.city.name;
     }
     return "لا يوجد";
+  };
+
+  const getOrderBranchName = (order) => {
+    if (order.deliveryFee?.branchId) {
+      const branch = branches.find((b) => b.id === order.deliveryFee.branchId);
+      return branch ? branch.name : `فرع ${order.deliveryFee.branchId}`;
+    }
+    return "غير محدد";
   };
 
   const formatCurrency = (amount) => {
@@ -1070,7 +1078,7 @@ const SalesReports = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "يرجى تحديد تاريخ البداية والنهاية أولاً",
-            "warning"
+            "warning",
           );
         } else {
           Swal.fire({
@@ -1089,7 +1097,7 @@ const SalesReports = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "لا توجد بيانات لعرضها في التقرير",
-            "warning"
+            "warning",
           );
         } else {
           Swal.fire({
@@ -1108,7 +1116,7 @@ const SalesReports = () => {
         allOrdersForStats,
         startDate,
         endDate,
-        totalPriceFromResponse
+        totalPriceFromResponse,
       );
 
       const selectedBranchName =
@@ -1330,6 +1338,7 @@ ${
         <th width="20%">العميل</th>
         <th width="20%">الهاتف</th>
         <th width="20%">نوع الطلب</th>
+        <th width="20%">الفرع</th>
         <th width="15%">المدينة</th>
         <th width="20%">المبلغ النهائي</th>
       </tr>
@@ -1359,6 +1368,7 @@ ${
             ? phoneNumber.replace(/\d/g, (d) => toArabicNumbers(d))
             : "غير متوفر";
           const cityArabic = cityName;
+          const branchName = getOrderBranchName(order);
 
           return `
           <tr>
@@ -1366,20 +1376,21 @@ ${
             <td>${userName}</td>
             <td>${phoneArabic}</td>
             <td class="${orderTypeClass}">${
-            order.deliveryFee?.fee > 0 ? "توصيل" : "استلام"
-          }</td>
+              order.deliveryFee?.fee > 0 ? "توصيل" : "استلام"
+            }</td>
+            <td>${branchName}</td>
             <td>${cityArabic}</td>
             <td class="total-amount">${formatCurrencyArabic(
-              order.totalWithFee || 0
+              order.totalWithFee || 0,
             )}</td>
           </tr>
         `;
         })
         .join("")}
       <tr style="background-color: #f0f0f0 !important; font-weight: bold;">
-        <td colspan="5" style="text-align: left; padding-right: 20px;">المجموع الكلي:</td>
+        <td colspan="6" style="text-align: left; padding-right: 20px;">المجموع الكلي:</td>
         <td class="total-amount" style="text-align: center;">${formatCurrencyArabic(
-          printSummary.totalSales || 0
+          printSummary.totalSales || 0,
         )}</td>
       </tr>
     </tbody>
@@ -1411,13 +1422,13 @@ ${
           <td style="text-align: center;">${toArabicNumbers(index + 1)}</td>
           <td style="text-align: center;">${product.name}</td>
           <td style="text-align: center;">${formatNumberArabic(
-            product.quantity
+            product.quantity,
           )}</td>
           <td class="total-amount" style="text-align: center;">${formatCurrencyArabic(
-            product.revenue
+            product.revenue,
           )}</td>
         </tr>
-      `
+      `,
         )
         .join("")}
     </tbody>
@@ -1430,7 +1441,7 @@ ${
 <div class="print-footer">
   <p>تم الإنشاء في: ${format(new Date(), "yyyy/MM/dd HH:mm").replace(
     /\d/g,
-    (d) => toArabicNumbers(d)
+    (d) => toArabicNumbers(d),
   )}</p>
   <p>Chicken One © ${toArabicNumbers(new Date().getFullYear())}</p>
 </div>
@@ -1926,6 +1937,9 @@ ${
                           نوع الطلب
                         </th>
                         <th className="px-4 py-3 text-center font-semibold text-gray-700 dark:text-gray-300">
+                          الفرع
+                        </th>
+                        <th className="px-4 py-3 text-center font-semibold text-gray-700 dark:text-gray-300">
                           المدينة
                         </th>
                         <th className="px-4 py-3 text-center font-semibold text-gray-700 dark:text-gray-300">
@@ -1976,12 +1990,15 @@ ${
                             </span>
                           </td>
                           <td className="px-4 py-3 text-center text-sm text-gray-600 dark:text-gray-400">
+                            {getOrderBranchName(order)}
+                          </td>
+                          <td className="px-4 py-3 text-center text-sm text-gray-600 dark:text-gray-400">
                             {getCustomerCity(order)}
                           </td>
                           <td className="px-4 py-3 text-center">
                             <span
                               className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getStatusClass(
-                                order.status
+                                order.status,
                               )}`}
                             >
                               {getStatusIcon(order.status)}
@@ -2014,7 +2031,7 @@ ${
                     <tfoot className="bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
                       <tr>
                         <td
-                          colSpan="7"
+                          colSpan="8"
                           className="px-4 py-3 text-center font-bold text-gray-800 dark:text-white"
                         >
                           المجموع الكلي:
