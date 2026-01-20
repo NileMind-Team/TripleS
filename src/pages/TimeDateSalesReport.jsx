@@ -64,8 +64,8 @@ const showSalesMobileAlertToast = (message, type = "info") => {
       type === "error"
         ? toast.error
         : type === "warning"
-        ? toast.warning
-        : toast.info;
+          ? toast.warning
+          : toast.info;
     toastFunc(message, {
       position: "top-right",
       autoClose: 2500,
@@ -144,7 +144,7 @@ const convertToLocalISO = (date, time) => {
     const [hours, minutes] = time.split(":");
 
     const localDate = new Date(
-      `${dateStr}T${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}:00`
+      `${dateStr}T${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}:00`,
     );
 
     const localISOString = localDate.toISOString();
@@ -241,7 +241,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
     const optionsTotal =
       item.options?.reduce(
         (sum, option) => sum + (option.optionPriceAtOrder || 0),
-        0
+        0,
       ) || 0;
 
     const itemPriceBeforeDiscount =
@@ -375,7 +375,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
                     ((item.menuItem?.basePrice || 0) +
                       (item.options?.reduce(
                         (sum, option) => sum + (option.optionPriceAtOrder || 0),
-                        0
+                        0,
                       ) || 0)) *
                     (item.quantity || 1)
                   ).toFixed(2);
@@ -428,11 +428,11 @@ const OrderDetailsModal = ({ order, onClose }) => {
                               <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                                 {item.menuItem?.description?.substring(
                                   0,
-                                  100
+                                  100,
                                 ) ||
                                   item.menuItemDescriptionAtOrder?.substring(
                                     0,
-                                    100
+                                    100,
                                   ) ||
                                   "لا يوجد وصف"}
                                 {(item.menuItem?.description?.length > 100 ||
@@ -500,7 +500,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
                                         (sum, option) =>
                                           sum +
                                           (option.optionPriceAtOrder || 0),
-                                        0
+                                        0,
                                       )
                                       .toFixed(2)}{" "}
                                     ج.م
@@ -593,7 +593,7 @@ const OrderDetailsModal = ({ order, onClose }) => {
                 </p>
                 <p
                   className={`text-lg font-bold ${getStatusColor(
-                    order.status
+                    order.status,
                   )}`}
                 >
                   <span className="flex items-center gap-2">
@@ -635,7 +635,6 @@ const TimeDateSalesReport = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  // eslint-disable-next-line no-unused-vars
   const [totalPrice, setTotalPrice] = useState(0);
   const [branches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState(null);
@@ -684,7 +683,7 @@ const TimeDateSalesReport = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "يرجى تحديد تاريخ البداية والنهاية أولاً",
-            "warning"
+            "warning",
           );
         } else {
           Swal.fire({
@@ -706,7 +705,7 @@ const TimeDateSalesReport = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "تاريخ البداية يجب أن يكون قبل تاريخ النهاية",
-            "error"
+            "error",
           );
         } else {
           Swal.fire({
@@ -755,7 +754,7 @@ const TimeDateSalesReport = () => {
 
       const response = await axiosInstance.post(
         "/api/Orders/GetAllWithPagination",
-        requestBody
+        requestBody,
       );
 
       const responseData = response.data || {};
@@ -763,6 +762,8 @@ const TimeDateSalesReport = () => {
       const totalItems = responseData.totalItems || 0;
       const totalPages = responseData.totalPages || 1;
       const totalPriceFromResponse = responseData.totalPrice || 0;
+      const deliveryOrdersFromResponse = responseData.deliveryOrders || 0;
+      const pickupOrdersFromResponse = responseData.pickupOrders || 0;
 
       setReportData(orders);
       setCurrentPage(page);
@@ -772,12 +773,6 @@ const TimeDateSalesReport = () => {
 
       const totalSales = totalPriceFromResponse;
       const totalOrders = totalItems;
-      const deliveryOrders = orders.filter(
-        (order) => order.deliveryFee?.fee > 0
-      ).length;
-      const pickupOrders = orders.filter(
-        (order) => order.deliveryFee?.fee === 0
-      ).length;
 
       const productSales = {};
       orders.forEach((order) => {
@@ -811,14 +806,14 @@ const TimeDateSalesReport = () => {
       const summaryData = {
         totalSales,
         totalOrders,
-        deliveryOrders,
-        pickupOrders,
+        deliveryOrders: deliveryOrdersFromResponse,
+        pickupOrders: pickupOrdersFromResponse,
         topProducts,
         dateRange:
           startDate && endDate
             ? `${format(startDate, "yyyy-MM-dd")} ${startTime} إلى ${format(
                 endDate,
-                "yyyy-MM-dd"
+                "yyyy-MM-dd",
               )} ${endTime}`
             : "لم يتم تحديد فترة",
         branch: selectedBranch ? selectedBranch.name : "جميع الفروع",
@@ -885,7 +880,7 @@ const TimeDateSalesReport = () => {
           startDate && endDate
             ? `${format(startDate, "yyyy-MM-dd")} ${startTime} إلى ${format(
                 endDate,
-                "yyyy-MM-dd"
+                "yyyy-MM-dd",
               )} ${endTime}`
             : "لم يتم تحديد فترة",
         branch: selectedBranch ? selectedBranch.name : "جميع الفروع",
@@ -931,7 +926,7 @@ const TimeDateSalesReport = () => {
 
       const response = await axiosInstance.post(
         "/api/Orders/GetAllWithPagination",
-        requestBody
+        requestBody,
       );
 
       const responseData = response.data || {};
@@ -1007,7 +1002,7 @@ const TimeDateSalesReport = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "يرجى تحديد تاريخ البداية والنهاية أولاً",
-            "warning"
+            "warning",
           );
         } else {
           Swal.fire({
@@ -1028,7 +1023,7 @@ const TimeDateSalesReport = () => {
         if (window.innerWidth < 768) {
           showSalesMobileAlertToast(
             "لا توجد بيانات لعرضها في التقرير",
-            "warning"
+            "warning",
           );
         } else {
           Swal.fire({
@@ -1043,17 +1038,28 @@ const TimeDateSalesReport = () => {
         return;
       }
 
-      const totalSalesPrint = ordersToPrint.reduce(
-        (sum, order) => sum + (order.totalWithFee || 0),
-        0
+      const totalSalesPrint = totalPrice;
+      const totalOrdersPrint = totalItems;
+
+      // Use the response data from the API
+      const response = await axiosInstance.post(
+        "/api/Orders/GetAllWithPagination",
+        {
+          pageNumber: 1,
+          pageSize: totalItems,
+          filters: [
+            {
+              propertyName: "createdAt",
+              propertyValue: `${convertToLocalISO(startDate, startTime)},${convertToLocalISO(endDate, endTime)}`,
+              range: true,
+            },
+          ],
+        },
       );
-      const totalOrdersPrint = ordersToPrint.length;
-      const deliveryOrdersPrint = ordersToPrint.filter(
-        (order) => order.deliveryFee?.fee > 0
-      ).length;
-      const pickupOrdersPrint = ordersToPrint.filter(
-        (order) => order.deliveryFee?.fee === 0
-      ).length;
+
+      const responseData = response.data || {};
+      const deliveryOrdersPrint = responseData.deliveryOrders || 0;
+      const pickupOrdersPrint = responseData.pickupOrders || 0;
 
       const productSalesPrint = {};
       ordersToPrint.forEach((order) => {
@@ -1094,7 +1100,7 @@ const TimeDateSalesReport = () => {
           startDate && endDate
             ? `${format(startDate, "yyyy-MM-dd")} ${startTime} إلى ${format(
                 endDate,
-                "yyyy-MM-dd"
+                "yyyy-MM-dd",
               )} ${endTime}`
             : "لم يتم تحديد فترة",
         branch: selectedBranch ? selectedBranch.name : "جميع الفروع",
@@ -1348,11 +1354,11 @@ ${
             <td>${userName}</td>
             <td>${phoneArabic}</td>
             <td class="${orderTypeClass}">${
-            order.deliveryFee?.fee > 0 ? "توصيل" : "استلام"
-          }</td>
+              order.deliveryFee?.fee > 0 ? "توصيل" : "استلام"
+            }</td>
             <td>${cityArabic}</td>
             <td class="total-amount">${formatCurrencyArabic(
-              order.totalWithFee || 0
+              order.totalWithFee || 0,
             )}</td>
           </tr>
         `;
@@ -1361,7 +1367,7 @@ ${
       <tr style="background-color: #f0f0f0 !important; font-weight: bold;">
         <td colspan="5" style="text-align: left; padding-right: 20px;">المجموع الكلي:</td>
         <td class="total-amount" style="text-align: center;">${formatCurrencyArabic(
-          printSummary.totalSales || 0
+          printSummary.totalSales || 0,
         )}</td>
       </tr>
     </tbody>
@@ -1393,13 +1399,13 @@ ${
           <td style="text-align: center;">${toArabicNumbers(index + 1)}</td>
           <td style="text-align: center;">${product.name}</td>
           <td style="text-align: center;">${formatNumberArabic(
-            product.quantity
+            product.quantity,
           )}</td>
           <td class="total-amount" style="text-align: center;">${formatCurrencyArabic(
-            product.revenue
+            product.revenue,
           )}</td>
         </tr>
-      `
+      `,
         )
         .join("")}
     </tbody>
@@ -1412,7 +1418,7 @@ ${
 <div class="print-footer">
   <p>تم الإنشاء في: ${format(new Date(), "yyyy/MM/dd HH:mm").replace(
     /\d/g,
-    (d) => toArabicNumbers(d)
+    (d) => toArabicNumbers(d),
   )}</p>
   <p>الفرع: ${printSummary.branch}</p>
   <p>Chicken One © ${toArabicNumbers(new Date().getFullYear())}</p>
