@@ -347,13 +347,23 @@ export default function MyOrders() {
 
   const formatDateForApi = (dateString, isStart = true) => {
     if (!dateString) return "";
+    
     const date = new Date(dateString);
-    date.setHours(date.getHours() + 2);
-
+    
     if (isStart) {
-      return date.toISOString().slice(0, 10) + "T22:00:00.000Z";
+      date.setDate(date.getDate() - 1);
+    }
+    
+    date.setHours(date.getHours() + 2);
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    if (isStart) {
+      return `${year}-${month}-${day}T22:00:00.000Z`;
     } else {
-      return date.toISOString().slice(0, 10) + "T21:59:59.999Z";
+      return `${year}-${month}-${day}T21:59:59.999Z`;
     }
   };
 
