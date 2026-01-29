@@ -241,7 +241,7 @@ export default function Profile() {
         const res = await axiosInstance.get("/api/Account/Profile");
         if (res.status === 200) {
           const fixedImageUrl = res.data.imageUrl
-            ? `https://restaurant-template.runasp.net/Profiles/${res.data.imageUrl
+            ? `https://restaurant-template.runasp.net/profiles/${res.data.imageUrl
                 .split("/")
                 .pop()}`
             : null;
@@ -349,7 +349,7 @@ export default function Profile() {
           );
 
           if (imageRes.status === 200) {
-            updatedAvatar = `https://restaurant-template.runasp.net/Profiles/${imageRes.data
+            updatedAvatar = `https://restaurant-template.runasp.net/profiles/${imageRes.data
               .split("/")
               .pop()}`;
           }
