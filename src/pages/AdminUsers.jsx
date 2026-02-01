@@ -143,6 +143,12 @@ export default function AdminUsers() {
     setIsAdding(false);
   };
 
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      checkAdminAndFetchUsers();
+    }
+  }, [searchTerm, checkAdminAndFetchUsers]);
+
   const handleAddNewUser = () => {
     setIsAdding(true);
     setFormErrors({});
