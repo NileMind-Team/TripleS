@@ -1677,7 +1677,7 @@ const ProductForm = () => {
                               </label>
                               <div className="flex gap-2">
                                 <input
-                                  type="url"
+                                  type="text"
                                   value={imageUrl}
                                   onChange={(e) => setImageUrl(e.target.value)}
                                   placeholder="أدخل رابط الصورة"
