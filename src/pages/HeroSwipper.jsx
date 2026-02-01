@@ -65,7 +65,7 @@ const HeroSwipper = () => {
         setError(null);
 
         const response = await axiosInstance.get(
-          "/api/MenuItems/GetAllSliderItems"
+          "/api/MenuItems/GetAllSliderItems",
         );
         const sliderItems = response.data;
 
@@ -134,6 +134,7 @@ const HeroSwipper = () => {
             ctaText: "اطلب الآن",
             bgColor: colorGradients[index % colorGradients.length],
             hasOffer: item.itemOffer && item.itemOffer.isEnabled,
+            isPriceBasedOnRequest: item.basePrice === 0, // إضافة هذه الخاصية
             productData: item,
           };
         });
@@ -162,7 +163,10 @@ const HeroSwipper = () => {
     navigate(`/product/${slide.id}`, { state: { product: slide.productData } });
   };
 
-  const formatPrice = (price) => {
+  const formatPrice = (price, isPriceBasedOnRequest = false) => {
+    if (isPriceBasedOnRequest) {
+      return "السعر حسب الطلب";
+    }
     return price.toFixed(2);
   };
 
@@ -291,12 +295,21 @@ const HeroSwipper = () => {
                             <span className="text-white/70 text-[9px] sm:text-[10px] md:text-xs mb-0.5">
                               السعر النهائي
                             </span>
-                            <span className="text-sm sm:text-base md:text-lg lg:text-xl text-white font-bold">
-                              {formatPrice(slide.discountPrice)} ج.م
-                            </span>
+                            {slide.isPriceBasedOnRequest ? (
+                              <span className="text-sm sm:text-base md:text-lg lg:text-xl text-white font-bold">
+                                {formatPrice(
+                                  slide.discountPrice,
+                                  slide.isPriceBasedOnRequest,
+                                )}
+                              </span>
+                            ) : (
+                              <span className="text-sm sm:text-base md:text-lg lg:text-xl text-white font-bold">
+                                {formatPrice(slide.discountPrice)} ج.م
+                              </span>
+                            )}
                           </div>
 
-                          {slide.hasOffer && (
+                          {!slide.isPriceBasedOnRequest && slide.hasOffer && (
                             <div className="flex flex-col">
                               <span className="text-white/70 text-[9px] sm:text-[10px] md:text-xs mb-0.5">
                                 بدلاً من
@@ -307,42 +320,46 @@ const HeroSwipper = () => {
                             </div>
                           )}
 
-                          {slide.hasOffer && slide.discountType !== "none" && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ delay: 0.2 }}
-                              className="relative"
-                            >
-                              <div className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-1.5 py-1 sm:px-2 sm:py-1 md:px-3 md:py-1.5 rounded-md sm:rounded-lg shadow-md flex items-center gap-0.5 sm:gap-1 w-fit">
-                                {slide.discountType === "percentage" ? (
-                                  <FaPercent size={8} />
-                                ) : (
-                                  <FaMoneyBillWave size={8} />
-                                )}
-                                <span className="text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">
-                                  {slide.discountText}
-                                </span>
-                              </div>
-                            </motion.div>
-                          )}
+                          {!slide.isPriceBasedOnRequest &&
+                            slide.hasOffer &&
+                            slide.discountType !== "none" && (
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.2 }}
+                                className="relative"
+                              >
+                                <div className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-1.5 py-1 sm:px-2 sm:py-1 md:px-3 md:py-1.5 rounded-md sm:rounded-lg shadow-md flex items-center gap-0.5 sm:gap-1 w-fit">
+                                  {slide.discountType === "percentage" ? (
+                                    <FaPercent size={8} />
+                                  ) : (
+                                    <FaMoneyBillWave size={8} />
+                                  )}
+                                  <span className="text-[10px] sm:text-xs md:text-sm font-bold whitespace-nowrap">
+                                    {slide.discountText}
+                                  </span>
+                                </div>
+                              </motion.div>
+                            )}
                         </div>
 
-                        {slide.hasOffer && slide.discountType !== "none" && (
-                          <div className="mt-1 sm:mt-1.5 md:mt-2">
-                            <div className="inline-flex items-center gap-1 bg-gradient-to-r from-green-600 to-emerald-500 text-white px-1 py-0.5 sm:px-1.5 sm:py-0.5 md:px-2.5 md:py-1 rounded-md w-fit">
-                              <span className="text-[9px] sm:text-[10px] md:text-xs font-semibold">
-                                وفر
-                              </span>
-                              <span className="text-[9px] sm:text-[10px] md:text-xs font-bold whitespace-nowrap">
-                                {formatPrice(
-                                  slide.originalPrice - slide.discountPrice
-                                )}{" "}
-                                ج.م
-                              </span>
+                        {!slide.isPriceBasedOnRequest &&
+                          slide.hasOffer &&
+                          slide.discountType !== "none" && (
+                            <div className="mt-1 sm:mt-1.5 md:mt-2">
+                              <div className="inline-flex items-center gap-1 bg-gradient-to-r from-green-600 to-emerald-500 text-white px-1 py-0.5 sm:px-1.5 sm:py-0.5 md:px-2.5 md:py-1 rounded-md w-fit">
+                                <span className="text-[9px] sm:text-[10px] md:text-xs font-semibold">
+                                  وفر
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] md:text-xs font-bold whitespace-nowrap">
+                                  {formatPrice(
+                                    slide.originalPrice - slide.discountPrice,
+                                  )}{" "}
+                                  ج.م
+                                </span>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                       </div>
 
                       <motion.button
@@ -384,23 +401,25 @@ const HeroSwipper = () => {
                           {/* Image Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
 
-                          {slide.hasOffer && slide.discountType !== "none" && (
-                            <motion.div
-                              initial={{ y: 8, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{ delay: 0.6 }}
-                              className="absolute top-1 left-1 sm:top-1.5 sm:left-1.5 md:top-2 md:left-2 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-1 py-0.5 sm:px-1.5 sm:py-0.5 md:px-2 md:py-1 rounded-md shadow-md w-fit"
-                            >
-                              <div className="flex items-center gap-0.5 sm:gap-1">
-                                <FaFire size={7} />
-                                <span className="font-bold text-[9px] sm:text-[10px] md:text-xs whitespace-nowrap">
-                                  {slide.discountType === "percentage"
-                                    ? `خصم ${slide.discountValue}%`
-                                    : `خصم ${slide.discountValue} ج.م`}
-                                </span>
-                              </div>
-                            </motion.div>
-                          )}
+                          {!slide.isPriceBasedOnRequest &&
+                            slide.hasOffer &&
+                            slide.discountType !== "none" && (
+                              <motion.div
+                                initial={{ y: 8, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.6 }}
+                                className="absolute top-1 left-1 sm:top-1.5 sm:left-1.5 md:top-2 md:left-2 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-1 py-0.5 sm:px-1.5 sm:py-0.5 md:px-2 md:py-1 rounded-md shadow-md w-fit"
+                              >
+                                <div className="flex items-center gap-0.5 sm:gap-1">
+                                  <FaFire size={7} />
+                                  <span className="font-bold text-[9px] sm:text-[10px] md:text-xs whitespace-nowrap">
+                                    {slide.discountType === "percentage"
+                                      ? `خصم ${slide.discountValue}%`
+                                      : `خصم ${slide.discountValue} ج.م`}
+                                  </span>
+                                </div>
+                              </motion.div>
+                            )}
                         </div>
                       </div>
                     </motion.div>
