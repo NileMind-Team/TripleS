@@ -194,34 +194,30 @@ const Footer = () => {
             </ul>
           </motion.div>
 
-          {categoryColumns.map((columnCategories, columnIndex) => (
-            <motion.div
-              key={columnIndex}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 + columnIndex * 0.1 }}
-            >
-              <h3 className="text-lg font-bold mb-6 relative inline-block">
-                {columnIndex === 0 ? "الفئات" : " "}
-                <div className="absolute bottom-0 right-0 w-1/2 h-0.5 bg-gradient-to-r from-[#FDB913] to-[#E41E26]"></div>
-              </h3>
-              <ul className="space-y-3">
-                {columnCategories.map((category) => (
-                  <li key={category.id}>
-                    <button
-                      onClick={() => handleCategoryClick(category.id)}
-                      className="flex items-center gap-3 text-gray-300 hover:text-white transition-all duration-300 group w-full text-right"
-                    >
-                      <FaArrowRight className="text-[#FDB913] text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 rotate-180" />
-                      <span className="group-hover:translate-x-2 transition-transform duration-300 flex-1">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:col-span-2"
+          >
+            <h3 className="text-lg font-bold mb-6">الفئات</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {categoryColumns.map((column, index) => (
+                <ul key={index} className="space-y-3">
+                  {column.map((category) => (
+                    <li key={category.id}>
+                      <button
+                        onClick={() => handleCategoryClick(category.id)}
+                        className="flex items-center gap-3 text-gray-300 hover:text-white w-full text-right"
+                      >
                         {category.name}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </motion.div>
         </div>
 
         <motion.div
