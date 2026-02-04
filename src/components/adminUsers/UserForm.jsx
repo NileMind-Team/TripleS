@@ -16,7 +16,6 @@ export default function UserForm({
   formData,
   setFormData,
   availableRoles,
-  handleRoleToggle,
   handleSubmit,
   resetForm,
   getRoleIcon,
@@ -25,6 +24,10 @@ export default function UserForm({
   const [showPassword, setShowPassword] = useState(false);
 
   if (!isAdding) return null;
+
+  const handleSingleRoleSelection = (roleName) => {
+    setFormData({ ...formData, roles: [roleName] });
+  };
 
   return (
     <motion.div
@@ -167,10 +170,12 @@ export default function UserForm({
               {availableRoles.map((role) => (
                 <div key={role.id} className="flex items-center gap-2">
                   <input
-                    type="checkbox"
+                    type="radio"
                     id={`role-${role.name}`}
+                    name="user-role"
+                    value={role.name}
                     checked={formData.roles.includes(role.name)}
-                    onChange={() => handleRoleToggle(role.name)}
+                    onChange={() => handleSingleRoleSelection(role.name)}
                     className="w-4 h-4 sm:w-5 sm:h-5 text-[#E41E26] bg-white border-gray-300 rounded focus:ring-[#E41E26] focus:ring-2"
                   />
                   <label

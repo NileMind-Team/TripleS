@@ -106,15 +106,6 @@ export default function AdminUsers() {
     initialize();
   }, [checkAdminAndFetchUsers, navigate]);
 
-  const handleRoleToggle = (role) => {
-    setFormData((prev) => ({
-      ...prev,
-      roles: prev.roles.includes(role)
-        ? prev.roles.filter((r) => r !== role)
-        : [...prev.roles, role],
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors({});
@@ -124,7 +115,12 @@ export default function AdminUsers() {
       return;
     }
 
-    const result = await handleSubmitUser(formData, resetForm);
+    const userData = {
+      ...formData,
+      roles: Array.isArray(formData.roles) ? formData.roles : [formData.roles],
+    };
+
+    const result = await handleSubmitUser(userData, resetForm);
     if (result.errors) {
       setFormErrors(result.errors);
     }
@@ -211,7 +207,7 @@ export default function AdminUsers() {
       formData.firstName.trim() !== "" &&
       formData.lastName.trim() !== "" &&
       formData.email.trim() !== "" &&
-      formData.roles.length > 0;
+      formData.roles.length === 1;
 
     if (!isAdding) {
       return basicFieldsValid && formData.password.trim() !== "";
@@ -382,7 +378,6 @@ export default function AdminUsers() {
                 formData={formData}
                 setFormData={setFormData}
                 availableRoles={filteredAvailableRoles}
-                handleRoleToggle={handleRoleToggle}
                 handleSubmit={handleSubmit}
                 resetForm={resetForm}
                 getRoleIcon={getRoleIcon}
