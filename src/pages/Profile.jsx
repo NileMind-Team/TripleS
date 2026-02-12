@@ -27,7 +27,46 @@ import { Helmet } from "react-helmet-async";
 const translateProfileErrorMessage = (errorData) => {
   if (!errorData) return "حدث خطأ غير معروف";
 
-  if (errorData.errors && typeof errorData.errors === "object") {
+  if (errorData.errors && Array.isArray(errorData.errors)) {
+    const errorMessages = [];
+
+    errorData.errors.forEach((error) => {
+      switch (error.code) {
+        case "User.PhoneNumberAlreadyExists":
+          errorMessages.push("رقم الهاتف مسجل بالفعل");
+          break;
+        case "User.InvalidPhoneNumber":
+          errorMessages.push("رقم الهاتف غير صالح");
+          break;
+        case "User.ValidationError":
+          errorMessages.push(error.description || "خطأ في التحقق من البيانات");
+          break;
+        default:
+          errorMessages.push(
+            error.description || "حدث خطأ في تحديث الملف الشخصي",
+          );
+      }
+    });
+
+    if (errorMessages.length > 1) {
+      const htmlMessages = errorMessages.map(
+        (msg) =>
+          `<div style="text-align: right; margin-bottom: 8px; padding-right: 15px; position: relative; color: black;">
+           ${msg}
+           <span style="position: absolute; right: 0; top: 0; color: black;">-</span>
+         </div>`,
+      );
+      return htmlMessages.join("");
+    } else if (errorMessages.length === 1) {
+      return `<div style="text-align: right; color: black;">${errorMessages[0]}</div>`;
+    }
+  }
+
+  if (
+    errorData.errors &&
+    typeof errorData.errors === "object" &&
+    !Array.isArray(errorData.errors)
+  ) {
     const errorMessages = [];
 
     if (errorData.errors.FirstName) {
@@ -122,28 +161,6 @@ const translateProfileErrorMessage = (errorData) => {
     } else {
       return `<div style="text-align: right; color: black;">بيانات غير صالحة</div>`;
     }
-  }
-
-  if (Array.isArray(errorData.errors)) {
-    const error = errorData.errors[0];
-    let translatedMessage = "";
-
-    switch (error.code) {
-      case "User.PhoneNumberAlreadyExists":
-        translatedMessage = "رقم الهاتف مسجل بالفعل";
-        break;
-      case "User.InvalidPhoneNumber":
-        translatedMessage = "رقم الهاتف غير صالح";
-        break;
-      case "User.ValidationError":
-        translatedMessage = error.description || "خطأ في التحقق من البيانات";
-        break;
-      default:
-        translatedMessage =
-          error.description || "حدث خطأ في تحديث الملف الشخصي";
-    }
-
-    return `<div style="text-align: right; color: black;">${translatedMessage}</div>`;
   }
 
   if (typeof errorData.message === "string") {
