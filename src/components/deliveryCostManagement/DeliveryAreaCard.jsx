@@ -30,8 +30,8 @@ export default function DeliveryAreaCard({
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-            <div className="p-2 sm:p-3 bg-gradient-to-r from-[#fff8e7] to-[#ffe5b4] dark:from-gray-700 dark:to-gray-600 rounded-xl sm:rounded-2xl border border-[#FDB913]/30 dark:border-gray-500">
-              <FaMapMarkerAlt className="text-[#E41E26] dark:text-[#FDB913] text-lg sm:text-xl" />
+            <div className="p-2 sm:p-3 bg-gradient-to-r from-[#f0f3ff] to-[#d9e0f5] dark:from-gray-700 dark:to-gray-600 rounded-xl sm:rounded-2xl border border-[#4A5DB0]/30 dark:border-gray-500">
+              <FaMapMarkerAlt className="text-[#2E3D88] dark:text-[#4A5DB0] text-lg sm:text-xl" />
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 mb-1">
@@ -40,7 +40,7 @@ export default function DeliveryAreaCard({
                 </h3>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                    area.isActive
+                    area.isActive,
                   )} whitespace-nowrap`}
                 >
                   {area.isActive ? "نشط" : "غير نشط"}

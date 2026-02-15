@@ -9,7 +9,7 @@ export default function HeaderStats({ deliveryAreasCount, navigate }) {
       className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8"
     >
       <div className="text-right self-end sm:self-auto">
-        <div className="text-lg sm:text-xl md:text-2xl font-bold text-[#E41E26]">
+        <div className="text-lg sm:text-xl md:text-2xl font-bold text-[#2E3D88]">
           {deliveryAreasCount} منطقة
         </div>
         <div className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
@@ -22,7 +22,7 @@ export default function HeaderStats({ deliveryAreasCount, navigate }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate(-1)}
-          className="bg-white/80 backdrop-blur-md rounded-full p-2 sm:p-3 text-[#E41E26] hover:bg-[#E41E26] hover:text-white transition-all duration-300 shadow-lg dark:bg-gray-800/80 dark:text-gray-200 dark:hover:bg-[#E41E26]"
+          className="bg-white/80 backdrop-blur-md rounded-full p-2 sm:p-3 text-[#2E3D88] hover:bg-[#2E3D88] hover:text-white transition-all duration-300 shadow-lg dark:bg-gray-800/80 dark:text-gray-200 dark:hover:bg-[#2E3D88]"
         >
           <FaArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </motion.button>

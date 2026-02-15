@@ -16,13 +16,13 @@ const Footer = () => {
     {
       name: "فيسبوك",
       icon: <FaFacebookF />,
-      url: "https://www.facebook.com/ELZAWYRESTAURANT",
+      url: "https://www.facebook.com/profile.php?id=61580352808105",
       color: "hover:bg-blue-600",
     },
     {
       name: "واتساب",
       icon: <FaWhatsapp />,
-      url: "https://wa.me/201027508008",
+      url: "https://wa.me/201273188267",
       color: "hover:bg-green-600",
     },
   ];
@@ -33,9 +33,9 @@ const Footer = () => {
       dir="rtl"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-r from-[#E41E26]/10 to-[#FDB913]/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-r from-[#FDB913]/10 to-[#E41E26]/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-gradient-to-r from-[#E41E26]/5 to-[#FDB913]/5 rounded-full blur-3xl"></div>
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-r from-[#2E3D88]/10 to-[#4A5DB0]/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-r from-[#4A5DB0]/10 to-[#2E3D88]/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-gradient-to-r from-[#2E3D88]/5 to-[#4A5DB0]/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
@@ -53,7 +53,7 @@ const Footer = () => {
                   alt="Triple-S"
                   className="w-12 h-12 object-contain"
                 />
-                <span className="text-2xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] bg-clip-text text-transparent">
                   Triple-S
                 </span>
               </div>
@@ -66,16 +66,14 @@ const Footer = () => {
 
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
-                <FaPhone className="text-[#FDB913] text-sm" />
+                <FaPhone className="text-[#4A5DB0] text-sm" />
                 <span className="text-sm" dir="ltr">
                   +20 102 750 8008
                 </span>
               </div>
               <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
-                <FaMapMarkerAlt className="text-[#FDB913] text-sm" />
-                <span className="text-sm">
-                  الفيوم - الحواتم - ميدان الحواتم
-                </span>
+                <FaMapMarkerAlt className="text-[#4A5DB0] text-sm" />
+                <span className="text-sm">الفيوم - المحمدية</span>
               </div>
             </div>
           </motion.div>
@@ -88,7 +86,7 @@ const Footer = () => {
           >
             <div className="text-center w-full">
               <h3 className="text-lg font-bold mb-4 flex items-center justify-center gap-2">
-                <FaClock className="text-[#FDB913]" />
+                <FaClock className="text-[#4A5DB0]" />
                 ساعات العمل
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-gray-300">
@@ -174,7 +172,7 @@ const Footer = () => {
                 href="https://wa.me/201062485133"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#FDB913] font-semibold hover:text-yellow-400 transition-colors duration-300"
+                className="text-[#4A5DB0] font-semibold hover:text-[#2E3D88] transition-colors duration-300"
               >
                 شركه TripleS للبرمجيات
               </a>
@@ -193,7 +191,7 @@ const Footer = () => {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#E41E26] via-[#FDB913] to-[#E41E26]"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2E3D88] via-[#4A5DB0] to-[#2E3D88]"></div>
     </footer>
   );
 };

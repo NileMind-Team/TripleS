@@ -333,7 +333,7 @@ export default function AuthPage() {
   const handleGoogleLogin = async () => {
     try {
       const returnUrl = encodeURIComponent(`${window.location.origin}/auth`);
-      const tenant = "Chicken_One";
+      const tenant = "Triples";
 
       const googleAuthUrl = `https://restaurant-template.runasp.net/api/account/login/google?returnUrl=${returnUrl}&Tenant=${tenant}`;
 
@@ -631,7 +631,7 @@ export default function AuthPage() {
           />
         ) : isProcessingGoogle ? (
           <div className="flex flex-col items-center justify-center min-h-[400px]">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#E41E26] dark:border-[#FDB913] mb-6"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2E3D88] dark:border-[#4A5DB0] mb-6"></div>
           </div>
         ) : waitingForConfirmation ? (
           <WaitingConfirmation

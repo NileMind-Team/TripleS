@@ -219,6 +219,7 @@ export default function Reviews() {
               text: "تم تحديث تقييمك بنجاح.",
               timer: 2000,
               showConfirmButton: false,
+              confirmButtonColor: "#2E3D88",
             });
           }
         }
@@ -241,6 +242,7 @@ export default function Reviews() {
               text: "تم إضافة تقييمك بنجاح.",
               timer: 2000,
               showConfirmButton: false,
+              confirmButtonColor: "#2E3D88",
             });
           }
         }
@@ -259,6 +261,7 @@ export default function Reviews() {
           icon: "error",
           title: "خطأ",
           text: err.response?.data?.message || "فشل في حفظ التقييم.",
+          confirmButtonColor: "#2E3D88",
         });
       }
     }
@@ -287,7 +290,7 @@ export default function Reviews() {
       text: "لن تتمكن من التراجع عن هذا!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#E41E26",
+      confirmButtonColor: "#2E3D88",
       cancelButtonColor: "#6B7280",
       confirmButtonText: "نعم، احذفه!",
       cancelButtonText: "إلغاء",
@@ -310,6 +313,7 @@ export default function Reviews() {
               icon: "success",
               timer: 2000,
               showConfirmButton: false,
+              confirmButtonColor: "#2E3D88",
             });
           }
         } catch (err) {
@@ -324,6 +328,7 @@ export default function Reviews() {
               icon: "error",
               title: "خطأ",
               text: "فشل في حذف التقييم.",
+              confirmButtonColor: "#2E3D88",
             });
           }
         }
@@ -396,8 +401,8 @@ export default function Reviews() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#E41E26]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2E3D88]"></div>
       </div>
     );
   }
@@ -412,12 +417,12 @@ export default function Reviews() {
         />
       </Helmet>
       <div
-        className={`min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 md:px-6 py-3 sm:py-6 relative font-sans overflow-hidden transition-colors duration-300`}
+        className={`min-h-screen bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 md:px-6 py-3 sm:py-6 relative font-sans overflow-hidden transition-colors duration-300`}
       >
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-10 sm:-left-20 -top-10 sm:-top-20 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-gradient-to-r from-[#E41E26]/10 to-[#FDB913]/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
-          <div className="absolute -right-10 sm:-right-20 -bottom-10 sm:-bottom-20 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-gradient-to-r from-[#FDB913]/10 to-[#E41E26]/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
+          <div className="absolute -left-10 sm:-left-20 -top-10 sm:-top-20 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-gradient-to-r from-[#2E3D88]/10 to-[#4A5DB0]/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
+          <div className="absolute -right-10 sm:-right-20 -bottom-10 sm:-bottom-20 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-gradient-to-r from-[#4A5DB0]/10 to-[#2E3D88]/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
         </div>
 
         {/* Back Button */}
@@ -425,7 +430,7 @@ export default function Reviews() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={() => navigate(-1)}
-          className="fixed top-3 sm:top-4 left-3 sm:left-4 z-50 bg-white/80 backdrop-blur-md hover:bg-[#E41E26] hover:text-white rounded-full p-2 sm:p-3 text-[#E41E26] border border-[#E41E26]/30 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl group dark:bg-gray-800/80 dark:text-gray-200 dark:hover:bg-[#E41E26]"
+          className="fixed top-3 sm:top-4 left-3 sm:left-4 z-50 bg-white/80 backdrop-blur-md hover:bg-[#2E3D88] hover:text-white rounded-full p-2 sm:p-3 text-[#2E3D88] border border-[#2E3D88]/30 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl group dark:bg-gray-800/80 dark:text-gray-200 dark:hover:bg-[#2E3D88]"
         >
           <FaArrowLeft
             size={14}
@@ -440,7 +445,7 @@ export default function Reviews() {
           className="max-w-7xl mx-auto bg-white/90 backdrop-blur-xl shadow-xl sm:shadow-2xl rounded-2xl sm:rounded-3xl border border-white/50 relative overflow-hidden dark:bg-gray-800/90 dark:border-gray-700/50"
         >
           {/* Header Background */}
-          <div className="relative h-36 sm:h-40 md:h-44 lg:h-52 bg-gradient-to-r from-[#E41E26] to-[#FDB913] overflow-hidden">
+          <div className="relative h-36 sm:h-40 md:h-44 lg:h-52 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] overflow-hidden">
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="absolute -top-4 sm:-top-6 -right-4 sm:-right-6 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 bg-white/10 rounded-full"></div>
             <div className="absolute -bottom-4 sm:-bottom-6 -left-4 sm:-left-6 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-32 lg:h-32 bg-white/10 rounded-full"></div>
@@ -485,7 +490,7 @@ export default function Reviews() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleAddNewReview}
-                className="flex items-center gap-2 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-4 sm:px-5 md:px-6 py-3 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-semibold shadow-2xl sm:shadow-3xl hover:shadow-4xl hover:shadow-[#E41E26]/50 transition-all duration-300 text-sm sm:text-base md:text-lg border-2 border-white whitespace-nowrap transform translate-y-2"
+                className="flex items-center gap-2 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-4 sm:px-5 md:px-6 py-3 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl font-semibold shadow-2xl sm:shadow-3xl hover:shadow-4xl hover:shadow-[#2E3D88]/50 transition-all duration-300 text-sm sm:text-base md:text-lg border-2 border-white whitespace-nowrap transform translate-y-2"
               >
                 <FaPlus className="text-sm sm:text-base md:text-lg" />
                 <span>اكتب تقييم جديد</span>
@@ -511,8 +516,8 @@ export default function Reviews() {
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                            <div className="p-1 sm:p-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#fff8e7] to-[#ffe5b4] border border-[#FDB913]/30 dark:from-gray-600 dark:to-gray-500">
-                              <FaStore className="text-[#E41E26] text-xs sm:text-sm" />
+                            <div className="p-1 sm:p-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#f0f3ff] to-[#d9e0f5] border border-[#2E3D88]/30 dark:from-gray-600 dark:to-gray-500">
+                              <FaStore className="text-[#2E3D88] text-xs sm:text-sm" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <h3 className="font-bold text-gray-800 dark:text-gray-200 text-base sm:text-lg md:text-xl truncate">
@@ -574,7 +579,7 @@ export default function Reviews() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={handleAddNewReview}
-                      className="flex items-center gap-2 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base mx-auto"
+                      className="flex items-center gap-2 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base mx-auto"
                     >
                       <FaPlus className="text-xs sm:text-sm" />
                       <span>اكتب أول تقييم لك</span>
@@ -600,7 +605,7 @@ export default function Reviews() {
                         </h3>
                         <button
                           onClick={resetForm}
-                          className="text-gray-500 hover:text-[#E41E26] transition-colors duration-200 flex-shrink-0 ml-2 dark:text-gray-400"
+                          className="text-gray-500 hover:text-[#2E3D88] transition-colors duration-200 flex-shrink-0 ml-2 dark:text-gray-400"
                         >
                           <FaTimes size={16} className="sm:size-5" />
                         </button>
@@ -619,10 +624,10 @@ export default function Reviews() {
                             <button
                               type="button"
                               onClick={() => toggleDropdown("branch")}
-                              className="w-full flex items-center justify-between border border-gray-200 bg-white rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 text-gray-600 hover:border-[#E41E26] transition-all group text-sm sm:text-base dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300"
+                              className="w-full flex items-center justify-between border border-gray-200 bg-white rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 text-gray-600 hover:border-[#2E3D88] transition-all group text-sm sm:text-base dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300"
                             >
                               <div className="flex items-center gap-3">
-                                <FaStore className="text-[#E41E26] text-sm" />
+                                <FaStore className="text-[#2E3D88] text-sm" />
                                 <span>
                                   {formData.branchId
                                     ? branches.find(
@@ -638,7 +643,7 @@ export default function Reviews() {
                                 }}
                                 transition={{ duration: 0.3 }}
                               >
-                                <FaChevronDown className="text-[#E41E26]" />
+                                <FaChevronDown className="text-[#2E3D88]" />
                               </motion.div>
                             </button>
                             <AnimatePresence>
@@ -660,7 +665,7 @@ export default function Reviews() {
                                         });
                                         setOpenDropdown(null);
                                       }}
-                                      className="px-4 py-2.5 sm:py-3 hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] cursor-pointer text-gray-700 transition-all text-sm sm:text-base border-b border-gray-100 last:border-b-0 dark:hover:from-gray-600 dark:hover:to-gray-500 dark:text-gray-300 dark:border-gray-600"
+                                      className="px-4 py-2.5 sm:py-3 hover:bg-gradient-to-r hover:from-[#f0f3ff] hover:to-[#d9e0f5] cursor-pointer text-gray-700 transition-all text-sm sm:text-base border-b border-gray-100 last:border-b-0 dark:hover:from-gray-600 dark:hover:to-gray-500 dark:text-gray-300 dark:border-gray-600"
                                     >
                                       {branch.name}
                                     </li>
@@ -676,9 +681,9 @@ export default function Reviews() {
                           <label className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
                             التقييم *
                           </label>
-                          <div className="flex items-center justify-between gap-2 bg-gradient-to-r from-[#fff8e7] to-[#ffe5b4] p-2 sm:p-3 rounded-lg sm:rounded-xl border border-[#FDB913]/30 dark:from-gray-600 dark:to-gray-500 dark:border-gray-500">
+                          <div className="flex items-center justify-between gap-2 bg-gradient-to-r from-[#f0f3ff] to-[#d9e0f5] p-2 sm:p-3 rounded-lg sm:rounded-xl border border-[#2E3D88]/30 dark:from-gray-600 dark:to-gray-500 dark:border-gray-500">
                             <div className="flex items-center gap-2 flex-shrink-0">
-                              <FaStar className="text-[#E41E26] text-xs sm:text-sm" />
+                              <FaStar className="text-[#2E3D88] text-xs sm:text-sm" />
                               <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap hidden sm:block">
                                 التقييم العام:
                               </span>
@@ -690,7 +695,7 @@ export default function Reviews() {
                                 handleRatingChange,
                                 "lg",
                               )}
-                              <span className="text-xs sm:text-sm font-semibold text-[#E41E26] whitespace-nowrap">
+                              <span className="text-xs sm:text-sm font-semibold text-[#2E3D88] whitespace-nowrap">
                                 ({formData.rating}/5)
                               </span>
                             </div>
@@ -708,7 +713,7 @@ export default function Reviews() {
                             onChange={handleInputChange}
                             required
                             rows="4"
-                            className="w-full border border-gray-200 bg-white text-black rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 outline-none focus:ring-2 focus:ring-[#E41E26] focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-none dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                            className="w-full border border-gray-200 bg-white text-black rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 outline-none focus:ring-2 focus:ring-[#2E3D88] focus:border-transparent transition-all duration-200 text-sm sm:text-base resize-none dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                             placeholder="شارك تجربتك مع هذا الفرع... (كيف كانت الخدمة؟ جودة الطعام؟ التجربة العامة؟)"
                           />
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -723,7 +728,7 @@ export default function Reviews() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={resetForm}
-                            className="flex-1 py-2.5 sm:py-3 border-2 border-[#E41E26] text-[#E41E26] rounded-lg sm:rounded-xl font-semibold hover:bg-[#E41E26] hover:text-white transition-all duration-300 text-sm sm:text-base dark:border-[#E41E26] dark:text-[#E41E26] dark:hover:bg-[#E41E26] dark:hover:text-white"
+                            className="flex-1 py-2.5 sm:py-3 border-2 border-[#2E3D88] text-[#2E3D88] rounded-lg sm:rounded-xl font-semibold hover:bg-[#2E3D88] hover:text-white transition-all duration-300 text-sm sm:text-base dark:border-[#2E3D88] dark:text-[#2E3D88] dark:hover:bg-[#2E3D88] dark:hover:text-white"
                           >
                             إلغاء
                           </motion.button>
@@ -734,7 +739,7 @@ export default function Reviews() {
                             disabled={!isFormValid()}
                             className={`flex-1 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base flex items-center justify-center gap-1 sm:gap-2 ${
                               isFormValid()
-                                ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white hover:shadow-xl hover:shadow-[#E41E26]/25 cursor-pointer"
+                                ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white hover:shadow-xl hover:shadow-[#2E3D88]/25 cursor-pointer"
                                 : "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-600 dark:text-gray-400"
                             }`}
                           >

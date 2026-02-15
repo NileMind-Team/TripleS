@@ -73,7 +73,7 @@ const showMessage = (type, title, text, options = {}) => {
       icon: type,
       title: title,
       text: text,
-      confirmButtonColor: options.confirmButtonColor || "#E41E26",
+      confirmButtonColor: options.confirmButtonColor || "#2E3D88",
       timer: options.timer || 2500,
       showConfirmButton:
         options.showConfirmButton !== undefined
@@ -410,7 +410,7 @@ export default function OrderShiftsManagement() {
       text: "هل أنت متأكد من إنهاء الوردية الحالية؟",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#E41E26",
+      confirmButtonColor: "#2E3D88",
       cancelButtonColor: "#6B7280",
       confirmButtonText: "نعم، أنهِ الوردية",
       cancelButtonText: "إلغاء",
@@ -448,7 +448,7 @@ export default function OrderShiftsManagement() {
       text: confirmText,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#E41E26",
+      confirmButtonColor: "#2E3D88",
       cancelButtonColor: "#6B7280",
       confirmButtonText: `نعم، ${action}`,
       cancelButtonText: "إلغاء",
@@ -490,8 +490,8 @@ export default function OrderShiftsManagement() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#E41E26]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2E3D88]"></div>
       </div>
     );
   }
@@ -505,7 +505,7 @@ export default function OrderShiftsManagement() {
           content="تريبل اس شركة برمجيات تقدم تطوير مواقع وتطبيقات وأنظمة إدارة حديثة، بحلول رقمية احترافية تعزز حضورك الرقمي وتدعم نمو أعمالك."
         />
       </Helmet>
-      <div className="min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 py-4 sm:py-8 transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 py-4 sm:py-8 transition-colors duration-300">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <motion.div
@@ -517,7 +517,7 @@ export default function OrderShiftsManagement() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate(-1)}
-              className="bg-white/80 backdrop-blur-md rounded-full p-2 sm:p-3 text-[#E41E26] hover:bg-[#E41E26] hover:text-white transition-all duration-300 shadow-lg dark:bg-gray-800/80 dark:text-gray-200 dark:hover:bg-[#E41E26]"
+              className="bg-white/80 backdrop-blur-md rounded-full p-2 sm:p-3 text-[#2E3D88] hover:bg-[#2E3D88] hover:text-white transition-all duration-300 shadow-lg dark:bg-gray-800/80 dark:text-gray-200 dark:hover:bg-[#2E3D88]"
             >
               <FaArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.button>
@@ -619,7 +619,7 @@ export default function OrderShiftsManagement() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleEndShift}
-                    className="w-full py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base flex items-center justify-center gap-2 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white hover:shadow-xl hover:shadow-[#E41E26]/25 cursor-pointer"
+                    className="w-full py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base flex items-center justify-center gap-2 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white hover:shadow-xl hover:shadow-[#2E3D88]/25 cursor-pointer"
                   >
                     <FaStop className="text-sm" />
                     إنهاء الوردية الحالية
@@ -647,8 +647,8 @@ export default function OrderShiftsManagement() {
                           }
                           className={`p-3 rounded-lg border transition-all duration-200 ${
                             formData.name === type.value
-                              ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white border-transparent"
-                              : "bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-[#E41E26] cursor-pointer"
+                              ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white border-transparent"
+                              : "bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-[#2E3D88] cursor-pointer"
                           }`}
                         >
                           {type.label}
@@ -668,8 +668,8 @@ export default function OrderShiftsManagement() {
                         }
                         className={`w-full p-3 rounded-lg border transition-all duration-200 ${
                           formData.name === "custom"
-                            ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white border-transparent"
-                            : "bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-[#E41E26] cursor-pointer"
+                            ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white border-transparent"
+                            : "bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-[#2E3D88] cursor-pointer"
                         }`}
                       >
                         اسم مخصص
@@ -689,7 +689,7 @@ export default function OrderShiftsManagement() {
                               value={formData.customName}
                               onChange={handleInputChange}
                               required
-                              className="w-full border bg-white dark:bg-gray-700 text-black dark:text-white rounded-lg px-4 py-3 outline-none transition-all duration-200 border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-[#E41E26] focus:border-transparent"
+                              className="w-full border bg-white dark:bg-gray-700 text-black dark:text-white rounded-lg px-4 py-3 outline-none transition-all duration-200 border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-[#2E3D88] focus:border-transparent"
                               placeholder="أدخل اسم الوردية المخصص"
                             />
                           </div>
@@ -705,7 +705,7 @@ export default function OrderShiftsManagement() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={resetForm}
-                    className="flex-1 py-3 border-2 border-[#E41E26] text-[#E41E26] rounded-lg font-semibold hover:bg-[#E41E26] hover:text-white transition-all duration-300"
+                    className="flex-1 py-3 border-2 border-[#2E3D88] text-[#2E3D88] rounded-lg font-semibold hover:bg-[#2E3D88] hover:text-white transition-all duration-300"
                   >
                     إلغاء
                   </motion.button>
@@ -717,7 +717,7 @@ export default function OrderShiftsManagement() {
                     disabled={!isFormValid() || !canUserStartShift}
                     className={`flex-1 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                       isFormValid() && canUserStartShift
-                        ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white hover:shadow-xl hover:shadow-[#E41E26]/25 cursor-pointer"
+                        ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white hover:shadow-xl hover:shadow-[#2E3D88]/25 cursor-pointer"
                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`}
                   >

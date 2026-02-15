@@ -50,7 +50,7 @@ const BranchCard = ({
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
         <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white flex items-center justify-center font-semibold text-base sm:text-lg md:text-xl border-2 border-[#FDB913]">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white flex items-center justify-center font-semibold text-base sm:text-lg md:text-xl border-2 border-[#4A5DB0]">
               <FaBuilding className="text-sm sm:text-base md:text-lg" />
             </div>
           </div>
@@ -90,28 +90,28 @@ const BranchCard = ({
 
             <div className="space-y-1 sm:space-y-2 text-gray-700 dark:text-gray-300 text-sm sm:text-base">
               <div className="flex items-center gap-2">
-                <FaMapMarkerAlt className="text-[#E41E26] flex-shrink-0 text-xs sm:text-sm" />
+                <FaMapMarkerAlt className="text-[#2E3D88] flex-shrink-0 text-xs sm:text-sm" />
                 <span className="truncate">{branch.address}</span>
               </div>
               <div className="flex items-center gap-2">
-                <FaEnvelope className="text-[#E41E26] flex-shrink-0 text-xs sm:text-sm" />
+                <FaEnvelope className="text-[#2E3D88] flex-shrink-0 text-xs sm:text-sm" />
                 <span className="truncate">{branch.email}</span>
               </div>
               <div className="flex items-center gap-2">
-                <FaClock className="text-[#E41E26] flex-shrink-0 text-xs sm:text-sm" />
+                <FaClock className="text-[#2E3D88] flex-shrink-0 text-xs sm:text-sm" />
                 <span>
                   {displayOpeningTime} - {displayClosingTime}
                 </span>
               </div>
               {branch.city && (
                 <div className="flex items-center gap-2">
-                  <FaCity className="text-[#E41E26] flex-shrink-0 text-xs sm:text-sm" />
+                  <FaCity className="text-[#2E3D88] flex-shrink-0 text-xs sm:text-sm" />
                   <span>{branch.city.name}</span>
                 </div>
               )}
               {branch.phoneNumbers && branch.phoneNumbers.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <FaPhone className="text-[#E41E26] flex-shrink-0 text-xs sm:text-sm" />
+                  <FaPhone className="text-[#2E3D88] flex-shrink-0 text-xs sm:text-sm" />
                   {branch.phoneNumbers.map((phone, idx) => (
                     <div
                       key={idx}

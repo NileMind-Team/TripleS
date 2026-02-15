@@ -72,7 +72,7 @@ const HeroSwipper = () => {
 
         const formattedSlides = sliderItems.map((item, index) => {
           const colorGradients = [
-            "from-[#E41E26]/85 to-[#FDB913]/85",
+            "from-[#2E3D88]/85 to-[#4A5DB0]/85", // أزرق غامق إلى أزرق فاتح
             "from-[#0f766e]/85 to-[#14b8a6]/85",
             "from-[#7c3aed]/85 to-[#c026d3]/85",
             "from-[#1a1a2e]/85 to-[#16213e]/85",
@@ -174,7 +174,7 @@ const HeroSwipper = () => {
   if (loading) {
     return (
       <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[55vh] min-h-[300px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[450px] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[600px] overflow-hidden rounded-b-2xl shadow-xl bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 border-t-4 border-b-4 border-[#E41E26]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 border-t-4 border-b-4 border-[#2E3D88]"></div>
       </div>
     );
   }
@@ -199,9 +199,9 @@ const HeroSwipper = () => {
 
   if (slides.length === 0) {
     return (
-      <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[55vh] min-h-[300px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[450px] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[600px] overflow-hidden rounded-b-2xl shadow-xl bg-gradient-to-r from-[#E41E26]/10 to-[#FDB913]/10 dark:from-[#E41E26]/20 dark:to-[#FDB913]/20 flex items-center justify-center">
+      <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[55vh] min-h-[300px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[450px] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[600px] overflow-hidden rounded-b-2xl shadow-xl bg-gradient-to-r from-[#2E3D88]/10 to-[#4A5DB0]/10 dark:from-[#2E3D88]/20 dark:to-[#4A5DB0]/20 flex items-center justify-center">
         <div className="text-center px-4">
-          <div className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] p-3 sm:p-4 rounded-2xl inline-block mb-3 sm:mb-4">
+          <div className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] p-3 sm:p-4 rounded-2xl inline-block mb-3 sm:mb-4">
             <FaFire className="text-white text-3xl sm:text-4xl" />
           </div>
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
@@ -338,7 +338,7 @@ const HeroSwipper = () => {
                                   transition={{ delay: 0.2 }}
                                   className="relative"
                                 >
-                                  <div className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-1.5 py-1 sm:px-2 sm:py-1 md:px-3 md:py-1.5 rounded-md sm:rounded-lg shadow-md flex items-center gap-0.5 sm:gap-1 w-fit">
+                                  <div className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-1.5 py-1 sm:px-2 sm:py-1 md:px-3 md:py-1.5 rounded-md sm:rounded-lg shadow-md flex items-center gap-0.5 sm:gap-1 w-fit">
                                     {slide.discountType === "percentage" ? (
                                       <FaPercent size={8} />
                                     ) : (
@@ -379,7 +379,7 @@ const HeroSwipper = () => {
                           className="group relative bg-gradient-to-r from-white to-gray-100 text-gray-900 px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 rounded-lg font-bold text-xs sm:text-sm md:text-base hover:shadow-lg hover:scale-105 transition-all duration-250 transform flex items-center gap-1 sm:gap-2 mx-auto lg:mx-0 overflow-hidden w-fit"
                           dir="rtl"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-r from-[#E41E26] to-[#FDB913] opacity-0 group-hover:opacity-20 transition-opacity duration-250"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] opacity-0 group-hover:opacity-20 transition-opacity duration-250"></div>
                           <span className="relative z-10">{slide.ctaText}</span>
                           <FaShoppingCart
                             className="relative z-10 group-hover:translate-x-0.5 transition-transform duration-250"
@@ -418,7 +418,7 @@ const HeroSwipper = () => {
                                   initial={{ y: 8, opacity: 0 }}
                                   animate={{ y: 0, opacity: 1 }}
                                   transition={{ delay: 0.6 }}
-                                  className="absolute top-1 left-1 sm:top-1.5 sm:left-1.5 md:top-2 md:left-2 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-1 py-0.5 sm:px-1.5 sm:py-0.5 md:px-2 md:py-1 rounded-md shadow-md w-fit"
+                                  className="absolute top-1 left-1 sm:top-1.5 sm:left-1.5 md:top-2 md:left-2 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-1 py-0.5 sm:px-1.5 sm:py-0.5 md:px-2 md:py-1 rounded-md shadow-md w-fit"
                                 >
                                   <div className="flex items-center gap-0.5 sm:gap-1">
                                     <FaFire size={7} />
@@ -443,16 +443,16 @@ const HeroSwipper = () => {
 
         {slides.length > 1 && (
           <>
-            <button className="swiper-button-prev absolute left-1 sm:left-1.5 top-1/2 transform -translate-y-1/2 z-20 bg-white text-[#FDB913] rounded-full p-1 sm:p-1.5 md:p-2 hover:scale-110 transition-all duration-250 shadow-lg hover:shadow-xl flex items-center justify-center">
+            <button className="swiper-button-prev absolute left-1 sm:left-1.5 top-1/2 transform -translate-y-1/2 z-20 bg-white text-[#4A5DB0] rounded-full p-1 sm:p-1.5 md:p-2 hover:scale-110 transition-all duration-250 shadow-lg hover:shadow-xl flex items-center justify-center">
               <FaChevronLeft
                 size={9}
-                className="sm:w-3 md:w-3.5 text-[#FDB913]"
+                className="sm:w-3 md:w-3.5 text-[#4A5DB0]"
               />
             </button>
-            <button className="swiper-button-next absolute right-1 sm:right-1.5 top-1/2 transform -translate-y-1/2 z-20 bg-white text-[#FDB913] rounded-full p-1 sm:p-1.5 md:p-2 hover:scale-110 transition-all duration-250 shadow-lg hover:shadow-xl flex items-center justify-center">
+            <button className="swiper-button-next absolute right-1 sm:right-1.5 top-1/2 transform -translate-y-1/2 z-20 bg-white text-[#4A5DB0] rounded-full p-1 sm:p-1.5 md:p-2 hover:scale-110 transition-all duration-250 shadow-lg hover:shadow-xl flex items-center justify-center">
               <FaChevronRight
                 size={9}
-                className="sm:w-3 md:w-3.5 text-[#FDB913]"
+                className="sm:w-3 md:w-3.5 text-[#4A5DB0]"
               />
             </button>
           </>

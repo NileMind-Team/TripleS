@@ -907,7 +907,7 @@ const OrderShiftsReport = () => {
             closeButton.style.right = "20px";
             closeButton.style.zIndex = "100000";
             closeButton.style.padding = "10px 20px";
-            closeButton.style.background = "#E41E26";
+            closeButton.style.background = "#2E3D88";
             closeButton.style.color = "white";
             closeButton.style.border = "none";
             closeButton.style.borderRadius = "5px";
@@ -960,8 +960,8 @@ const OrderShiftsReport = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#E41E26]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2E3D88]"></div>
       </div>
     );
   }
@@ -977,12 +977,12 @@ const OrderShiftsReport = () => {
       </Helmet>
       <div
         dir="rtl"
-        className="min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 md:px-6 py-6 relative font-sans overflow-hidden transition-colors duration-300"
+        className="min-h-screen bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-3 sm:px-4 md:px-6 py-6 relative font-sans overflow-hidden transition-colors duration-300"
       >
         {/* Background decorations */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-10 -top-10 w-40 h-40 sm:w-60 sm:h-60 bg-gradient-to-r from-[#E41E26]/10 to-[#FDB913]/10 rounded-full blur-2xl animate-pulse"></div>
-          <div className="absolute -right-10 -bottom-10 w-40 h-40 sm:w-60 sm:h-60 bg-gradient-to-r from-[#FDB913]/10 to-[#E41E26]/10 rounded-full blur-2xl animate-pulse"></div>
+          <div className="absolute -left-10 -top-10 w-40 h-40 sm:w-60 sm:h-60 bg-gradient-to-r from-[#2E3D88]/10 to-[#4A5DB0]/10 rounded-full blur-2xl animate-pulse"></div>
+          <div className="absolute -right-10 -bottom-10 w-40 h-40 sm:w-60 sm:h-60 bg-gradient-to-r from-[#4A5DB0]/10 to-[#2E3D88]/10 rounded-full blur-2xl animate-pulse"></div>
         </div>
 
         <motion.div
@@ -992,7 +992,7 @@ const OrderShiftsReport = () => {
           className="max-w-7xl mx-auto bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl shadow-xl rounded-2xl sm:rounded-3xl border border-white/50 dark:border-gray-700/50 relative overflow-hidden transition-colors duration-300"
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] px-6 py-8 relative overflow-hidden">
+          <div className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] px-6 py-8 relative overflow-hidden">
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -1022,7 +1022,7 @@ const OrderShiftsReport = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                 <div className="flex items-center gap-2">
-                  <FaCalendarAlt className="text-[#E41E26] text-xl" />
+                  <FaCalendarAlt className="text-[#2E3D88] text-xl" />
                   <h3 className="text-lg font-bold text-gray-800 dark:text-white">
                     فلترة الورديات
                   </h3>
@@ -1044,7 +1044,7 @@ const OrderShiftsReport = () => {
                         darkMode
                           ? "border-gray-600 bg-gray-800 text-white"
                           : "border-gray-200 bg-white text-black"
-                      } rounded-lg sm:rounded-xl pl-10 pr-3 py-2.5 sm:py-3 outline-none focus:ring-2 focus:ring-[#E41E26] focus:border-transparent transition-all duration-200 text-sm sm:text-base`}
+                      } rounded-lg sm:rounded-xl pl-10 pr-3 py-2.5 sm:py-3 outline-none focus:ring-2 focus:ring-[#2E3D88] focus:border-transparent transition-all duration-200 text-sm sm:text-base`}
                       locale="ar"
                       placeholderText="اختر اليوم"
                     />
@@ -1062,12 +1062,12 @@ const OrderShiftsReport = () => {
                       onClick={() => toggleDropdown("branch")}
                       className={`w-full flex items-center justify-between border ${
                         darkMode
-                          ? "border-gray-600 bg-gray-800 text-gray-300 hover:border-[#E41E26]"
-                          : "border-gray-200 bg-white text-gray-600 hover:border-[#E41E26]"
+                          ? "border-gray-600 bg-gray-800 text-gray-300 hover:border-[#2E3D88]"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-[#2E3D88]"
                       } rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 transition-all group text-sm sm:text-base`}
                     >
                       <div className="flex items-center gap-3">
-                        <FaBuilding className="text-[#E41E26] text-sm" />
+                        <FaBuilding className="text-[#2E3D88] text-sm" />
                         <span>
                           {branchId
                             ? branches.find((b) => b.id === parseInt(branchId))
@@ -1081,7 +1081,7 @@ const OrderShiftsReport = () => {
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        <FaChevronDown className="text-[#E41E26]" />
+                        <FaChevronDown className="text-[#2E3D88]" />
                       </motion.div>
                     </button>
                     <AnimatePresence>
@@ -1107,7 +1107,7 @@ const OrderShiftsReport = () => {
                               className={`px-4 py-2.5 sm:py-3 ${
                                 darkMode
                                   ? "hover:bg-gray-700 text-gray-300 border-gray-600"
-                                  : "hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] text-gray-700 border-gray-100"
+                                  : "hover:bg-gradient-to-r hover:from-[#f0f3ff] hover:to-[#d9e0f5] text-gray-700 border-gray-100"
                               } cursor-pointer transition-all text-sm sm:text-base border-b last:border-b-0`}
                             >
                               {branch.name}
@@ -1131,8 +1131,8 @@ const OrderShiftsReport = () => {
                       disabled={!day || !branchId || orderShifts.length === 0}
                       className={`w-full flex items-center justify-between border ${
                         darkMode
-                          ? "border-gray-600 bg-gray-800 text-gray-300 hover:border-[#E41E26]"
-                          : "border-gray-200 bg-white text-gray-600 hover:border-[#E41E26]"
+                          ? "border-gray-600 bg-gray-800 text-gray-300 hover:border-[#2E3D88]"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-[#2E3D88]"
                       } ${
                         !day || !branchId || orderShifts.length === 0
                           ? "opacity-50 cursor-not-allowed"
@@ -1140,7 +1140,7 @@ const OrderShiftsReport = () => {
                       } rounded-lg sm:rounded-xl px-3 py-2.5 sm:py-3 transition-all group text-sm sm:text-base`}
                     >
                       <div className="flex items-center gap-3">
-                        <FaCalendar className="text-[#E41E26] text-sm" />
+                        <FaCalendar className="text-[#2E3D88] text-sm" />
                         <span>
                           {shiftId && orderShifts.length > 0
                             ? orderShifts.find(
@@ -1159,7 +1159,7 @@ const OrderShiftsReport = () => {
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        <FaChevronDown className="text-[#E41E26]" />
+                        <FaChevronDown className="text-[#2E3D88]" />
                       </motion.div>
                     </button>
                     <AnimatePresence>
@@ -1188,7 +1188,7 @@ const OrderShiftsReport = () => {
                                 className={`px-4 py-2.5 sm:py-3 ${
                                   darkMode
                                     ? "hover:bg-gray-700 text-gray-300 border-gray-600"
-                                    : "hover:bg-gradient-to-r hover:from-[#fff8e7] hover:to-[#ffe5b4] text-gray-700 border-gray-100"
+                                    : "hover:bg-gradient-to-r hover:from-[#f0f3ff] hover:to-[#d9e0f5] text-gray-700 border-gray-100"
                                 } cursor-pointer transition-all text-sm sm:text-base border-b last:border-b-0`}
                               >
                                 <div className="flex justify-between items-center">
@@ -1221,7 +1221,7 @@ const OrderShiftsReport = () => {
                   disabled={!day || !branchId || !shiftId}
                   className={`px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
                     day && branchId && shiftId
-                      ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white cursor-pointer"
+                      ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white cursor-pointer"
                       : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                   }`}
                 >
@@ -1267,7 +1267,7 @@ const OrderShiftsReport = () => {
               >
                 <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-2">
-                    <FaListAlt className="text-[#E41E26] text-xl" />
+                    <FaListAlt className="text-[#2E3D88] text-xl" />
                     <h3 className="text-lg font-bold text-gray-800 dark:text-white">
                       تفاصيل الطلبات حسب الورديات
                     </h3>
@@ -1310,7 +1310,7 @@ const OrderShiftsReport = () => {
                           <td className="px-4 py-3 text-center font-mono text-sm text-gray-800 dark:text-white font-bold">
                             {order.orderNumber}
                           </td>
-                          <td className="px-4 py-3 text-center font-bold text-[#E41E26] dark:text-[#FDB913]">
+                          <td className="px-4 py-3 text-center font-bold text-[#2E3D88] dark:text-[#4A5DB0]">
                             {formatCurrency(order.totalWithFee)}
                           </td>
                           <td className="px-4 py-3 text-center text-sm text-gray-600 dark:text-gray-400">
@@ -1344,7 +1344,7 @@ const OrderShiftsReport = () => {
                           الإجمالي الكلي لجميع الفواتير:
                         </td>
                         <td className="px-4 py-3 text-center">
-                          <span className="text-xl font-bold text-[#E41E26] dark:text-[#FDB913]">
+                          <span className="text-xl font-bold text-[#2E3D88] dark:text-[#4A5DB0]">
                             {formatCurrency(totalPrice)}
                           </span>
                         </td>
@@ -1385,7 +1385,7 @@ const OrderShiftsReport = () => {
                                 onClick={() => handlePageChange(pageNum)}
                                 className={`px-3 sm:px-4 py-1 sm:py-2 rounded-xl font-semibold transition-all ${
                                   currentPage === pageNum
-                                    ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white shadow-lg"
+                                    ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white shadow-lg"
                                     : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
                                 }`}
                               >

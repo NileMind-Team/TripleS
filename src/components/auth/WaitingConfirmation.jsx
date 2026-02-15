@@ -16,8 +16,8 @@ export default function WaitingConfirmation({
       className="flex flex-col items-center justify-center py-8 space-y-6 max-w-md mx-auto w-full"
     >
       <div className="relative">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#E41E26] dark:border-[#FDB913]"></div>
-        <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-t-4 border-b-4 border-[#FDB913] dark:border-[#E41E26] opacity-75"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2E3D88] dark:border-[#4A5DB0]"></div>
+        <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-t-4 border-b-4 border-[#4A5DB0] dark:border-[#2E3D88] opacity-75"></div>
       </div>
       <h2 className="text-xl font-bold text-gray-800 dark:text-white text-center">
         {forgetMode
@@ -38,7 +38,7 @@ export default function WaitingConfirmation({
         className={`w-full font-semibold py-3.5 rounded-xl transition-all duration-300 text-lg relative overflow-hidden ${
           resendDisabled
             ? "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-            : "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white hover:shadow-xl hover:shadow-[#E41E26]/25 dark:hover:shadow-[#FDB913]/25"
+            : "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white hover:shadow-xl hover:shadow-[#2E3D88]/25 dark:hover:shadow-[#4A5DB0]/25"
         }`}
       >
         {resendDisabled
@@ -51,7 +51,7 @@ export default function WaitingConfirmation({
 
       <button
         onClick={onBackToLogin}
-        className="text-[#E41E26] dark:text-[#FDB913] hover:text-[#FDB913] dark:hover:text-[#E41E26] underline font-medium transition-colors duration-200 text-sm"
+        className="text-[#2E3D88] dark:text-[#4A5DB0] hover:text-[#4A5DB0] dark:hover:text-[#2E3D88] underline font-medium transition-colors duration-200 text-sm"
       >
         العودة إلى تسجيل الدخول
       </button>

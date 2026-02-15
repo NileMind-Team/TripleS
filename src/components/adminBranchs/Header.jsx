@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const Header = ({ title, subtitle }) => {
   return (
-    <div className="relative h-36 sm:h-40 md:h-44 lg:h-52 bg-gradient-to-r from-[#E41E26] to-[#FDB913] overflow-hidden">
+    <div className="relative h-36 sm:h-40 md:h-44 lg:h-52 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] overflow-hidden">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="absolute -top-4 sm:-top-6 -right-4 sm:-right-6 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 bg-white/10 rounded-full"></div>
       <div className="absolute -bottom-4 sm:-bottom-6 -left-4 sm:-left-6 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-32 lg:h-32 bg-white/10 rounded-full"></div>

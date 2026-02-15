@@ -203,11 +203,11 @@ export default function ConfirmEmail() {
           content="تريبل اس شركة برمجيات تقدم تطوير مواقع وتطبيقات وأنظمة إدارة حديثة، بحلول رقمية احترافية تعزز حضورك الرقمي وتدعم نمو أعمالك."
         />
       </Helmet>
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4 relative font-sans overflow-hidden transition-colors duration-300">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4 relative font-sans overflow-hidden transition-colors duration-300">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-20 -top-20 w-80 h-80 bg-gradient-to-r from-[#E41E26]/10 to-[#FDB913]/10 dark:from-[#E41E26]/20 dark:to-[#FDB913]/20 rounded-full blur-3xl"></div>
-          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-gradient-to-r from-[#FDB913]/10 to-[#E41E26]/10 dark:from-[#FDB913]/20 dark:to-[#E41E26]/20 rounded-full blur-3xl"></div>
+          <div className="absolute -left-20 -top-20 w-80 h-80 bg-gradient-to-r from-[#2E3D88]/10 to-[#4A5DB0]/10 dark:from-[#2E3D88]/20 dark:to-[#4A5DB0]/20 rounded-full blur-3xl"></div>
+          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-gradient-to-r from-[#4A5DB0]/10 to-[#2E3D88]/10 dark:from-[#4A5DB0]/20 dark:to-[#2E3D88]/20 rounded-full blur-3xl"></div>
         </div>
 
         <motion.div
@@ -217,8 +217,8 @@ export default function ConfirmEmail() {
           className="w-full max-w-md bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-2xl rounded-3xl border border-white/50 dark:border-gray-700/50 relative overflow-hidden transition-colors duration-300"
         >
           {/* Form Background Pattern */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#E41E26]/5 to-transparent rounded-bl-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#FDB913]/5 to-transparent rounded-tr-3xl"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#2E3D88]/5 to-transparent rounded-bl-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#4A5DB0]/5 to-transparent rounded-tr-3xl"></div>
 
           <div className="p-8">
             {loading ? (
@@ -228,11 +228,11 @@ export default function ConfirmEmail() {
                 className="flex flex-col items-center space-y-6 py-4"
               >
                 <div className="relative">
-                  <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#E41E26] dark:border-[#FDB913]"></div>
-                  <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-t-4 border-b-4 border-[#FDB913] dark:border-[#E41E26] opacity-75"></div>
+                  <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2E3D88] dark:border-[#4A5DB0]"></div>
+                  <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-t-4 border-b-4 border-[#4A5DB0] dark:border-[#2E3D88] opacity-75"></div>
                 </div>
 
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent text-center">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] bg-clip-text text-transparent text-center">
                   جاري تأكيد بريدك الإلكتروني...
                 </h2>
 
@@ -242,13 +242,13 @@ export default function ConfirmEmail() {
 
                 {/* Animated Dots */}
                 <div className="flex space-x-2 justify-center mt-4">
-                  <div className="w-3 h-3 bg-[#E41E26] rounded-full animate-bounce"></div>
+                  <div className="w-3 h-3 bg-[#2E3D88] rounded-full animate-bounce"></div>
                   <div
-                    className="w-3 h-3 bg-[#FDB913] rounded-full animate-bounce"
+                    className="w-3 h-3 bg-[#4A5DB0] rounded-full animate-bounce"
                     style={{ animationDelay: "0.2s" }}
                   ></div>
                   <div
-                    className="w-3 h-3 bg-[#E41E26] rounded-full animate-bounce"
+                    className="w-3 h-3 bg-[#2E3D88] rounded-full animate-bounce"
                     style={{ animationDelay: "0.4s" }}
                   ></div>
                 </div>
@@ -273,7 +273,7 @@ export default function ConfirmEmail() {
                   )}
                 </div>
 
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent text-center">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] bg-clip-text text-transparent text-center">
                   {success ? "تم تأكيد البريد الإلكتروني" : "فشل التأكيد"}
                 </h2>
 
@@ -286,7 +286,7 @@ export default function ConfirmEmail() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate("/login")}
-                    className="mt-4 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:shadow-[#E41E26]/25 transition-all duration-300"
+                    className="mt-4 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:shadow-[#2E3D88]/25 transition-all duration-300"
                   >
                     العودة لتسجيل الدخول
                   </motion.button>
@@ -297,7 +297,7 @@ export default function ConfirmEmail() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate("/register")}
-                    className="mt-4 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:shadow-[#E41E26]/25 transition-all duration-300"
+                    className="mt-4 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:shadow-[#2E3D88]/25 transition-all duration-300"
                   >
                     المحاولة مرة أخرى
                   </motion.button>
@@ -305,13 +305,13 @@ export default function ConfirmEmail() {
 
                 {/* Animated Dots */}
                 <div className="flex space-x-2 justify-center mt-4">
-                  <div className="w-2 h-2 bg-[#E41E26] rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-[#2E3D88] rounded-full animate-bounce"></div>
                   <div
-                    className="w-2 h-2 bg-[#FDB913] rounded-full animate-bounce"
+                    className="w-2 h-2 bg-[#4A5DB0] rounded-full animate-bounce"
                     style={{ animationDelay: "0.2s" }}
                   ></div>
                   <div
-                    className="w-2 h-2 bg-[#E41E26] rounded-full animate-bounce"
+                    className="w-2 h-2 bg-[#2E3D88] rounded-full animate-bounce"
                     style={{ animationDelay: "0.4s" }}
                   ></div>
                 </div>

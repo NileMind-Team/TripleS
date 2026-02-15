@@ -24,7 +24,7 @@ export default function LoginForm({
       className="space-y-6 max-w-md mx-auto w-full"
     >
       <div className="text-center mb-2">
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] bg-clip-text text-transparent">
           مرحباً بعودتك
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm">
@@ -35,7 +35,7 @@ export default function LoginForm({
       <div className="space-y-4">
         <div className="relative group">
           <div className="absolute inset-y-0 right-0 flex items-center justify-center pr-4">
-            <FaEnvelope className="text-[#E41E26] dark:text-[#FDB913] text-lg transition-all duration-300 group-focus-within:scale-110" />
+            <FaEnvelope className="text-[#2E3D88] dark:text-[#4A5DB0] text-lg transition-all duration-300 group-focus-within:scale-110" />
           </div>
           <input
             type="email"
@@ -43,13 +43,13 @@ export default function LoginForm({
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
             placeholder="البريد الإلكتروني"
-            className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pr-12 pl-4 py-3.5 outline-none focus:ring-2 focus:ring-[#E41E26] dark:focus:ring-[#FDB913] focus:border-transparent transition-all duration-200 group-hover:border-[#E41E26]/50 dark:group-hover:border-[#FDB913]/50 text-right"
+            className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pr-12 pl-4 py-3.5 outline-none focus:ring-2 focus:ring-[#2E3D88] dark:focus:ring-[#4A5DB0] focus:border-transparent transition-all duration-200 group-hover:border-[#2E3D88]/50 dark:group-hover:border-[#4A5DB0]/50 text-right"
           />
         </div>
 
         <div className="relative group">
           <div className="absolute inset-y-0 right-0 flex items-center justify-center pr-4">
-            <FaLock className="text-[#E41E26] dark:text-[#FDB913] text-lg transition-all duration-300 group-focus-within:scale-110" />
+            <FaLock className="text-[#2E3D88] dark:text-[#4A5DB0] text-lg transition-all duration-300 group-focus-within:scale-110" />
           </div>
           <input
             type={showPassword ? "text" : "password"}
@@ -57,12 +57,12 @@ export default function LoginForm({
             value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
             placeholder="كلمة المرور"
-            className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pr-12 pl-12 py-3.5 outline-none focus:ring-2 focus:ring-[#E41E26] dark:focus:ring-[#FDB913] focus:border-transparent transition-all duration-200 group-hover:border-[#E41E26]/50 dark:group-hover:border-[#FDB913]/50 text-right"
+            className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pr-12 pl-12 py-3.5 outline-none focus:ring-2 focus:ring-[#2E3D88] dark:focus:ring-[#4A5DB0] focus:border-transparent transition-all duration-200 group-hover:border-[#2E3D88]/50 dark:group-hover:border-[#4A5DB0]/50 text-right"
           />
           <div className="absolute inset-y-0 left-0 flex items-center justify-center pl-4">
             <div
               onClick={onToggleShowPassword}
-              className="text-gray-500 dark:text-gray-400 hover:text-[#E41E26] dark:hover:text-[#FDB913] cursor-pointer transition-all duration-200 hover:scale-110"
+              className="text-gray-500 dark:text-gray-400 hover:text-[#2E3D88] dark:hover:text-[#4A5DB0] cursor-pointer transition-all duration-200 hover:scale-110"
             >
               {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
             </div>
@@ -74,7 +74,7 @@ export default function LoginForm({
         <button
           type="button"
           onClick={onForgotPassword}
-          className="text-[#E41E26] dark:text-[#FDB913] hover:text-[#FDB913] dark:hover:text-[#E41E26] underline text-sm font-medium transition-all duration-200"
+          className="text-[#2E3D88] dark:text-[#4A5DB0] hover:text-[#4A5DB0] dark:hover:text-[#2E3D88] underline text-sm font-medium transition-all duration-200"
         >
           نسيت كلمة المرور؟
         </button>
@@ -87,7 +87,7 @@ export default function LoginForm({
         disabled={isDisabled}
         className={`w-full font-semibold py-3.5 rounded-xl transition-all duration-300 text-lg relative overflow-hidden ${
           !isDisabled
-            ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white hover:shadow-xl hover:shadow-[#E41E26]/25 dark:hover:shadow-[#FDB913]/25"
+            ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white hover:shadow-xl hover:shadow-[#2E3D88]/25 dark:hover:shadow-[#4A5DB0]/25"
             : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
         }`}
       >

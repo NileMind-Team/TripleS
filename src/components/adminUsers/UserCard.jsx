@@ -29,7 +29,7 @@ export default function UserCard({
       transition={{ delay: index * 0.1 }}
       className={`bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 lg:p-6 border-2 transition-all duration-300 ${
         isCurrentUser(user)
-          ? "border-[#E41E26] shadow-lg hover:shadow-xl"
+          ? "border-[#2E3D88] shadow-lg hover:shadow-xl"
           : user.isActive === false
             ? "border-red-200 shadow-md hover:shadow-lg"
             : "border-gray-200/50 hover:shadow-lg"
@@ -46,7 +46,7 @@ export default function UserCard({
                 className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover border-2 ${
                   user.isActive === false
                     ? "border-red-300 grayscale"
-                    : "border-[#FDB913]"
+                    : "border-[#4A5DB0]"
                 }`}
               />
             ) : (
@@ -54,14 +54,14 @@ export default function UserCard({
                 className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center font-semibold text-base sm:text-lg md:text-xl border-2 ${
                   user.isActive === false
                     ? "bg-gray-300 text-gray-500 border-red-300 grayscale"
-                    : "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white border-[#FDB913]"
+                    : "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white border-[#4A5DB0]"
                 }`}
               >
                 {user.firstName?.charAt(0).toUpperCase() || "م"}
               </div>
             )}
             {isCurrentUser(user) && (
-              <div className="absolute -top-1 -right-1 bg-[#E41E26] text-white rounded-full p-1 border-2 border-white">
+              <div className="absolute -top-1 -right-1 bg-[#2E3D88] text-white rounded-full p-1 border-2 border-white">
                 <FaUserShield className="text-xs" />
               </div>
             )}
@@ -83,7 +83,7 @@ export default function UserCard({
                   {user.firstName} {user.lastName}
                 </h3>
                 {isCurrentUser(user) && (
-                  <span className="bg-[#E41E26] text-white px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">
+                  <span className="bg-[#2E3D88] text-white px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap">
                     المستخدم الحالي
                   </span>
                 )}
@@ -112,7 +112,7 @@ export default function UserCard({
               <div className="flex items-center gap-2">
                 <FaEnvelope
                   className={`flex-shrink-0 text-xs sm:text-sm ${
-                    user.isActive === false ? "text-gray-400" : "text-[#E41E26]"
+                    user.isActive === false ? "text-gray-400" : "text-[#2E3D88]"
                   }`}
                 />
                 <span className="truncate">{user.email}</span>
@@ -120,7 +120,7 @@ export default function UserCard({
               <div className="flex items-center gap-2">
                 <FaPhone
                   className={`flex-shrink-0 text-xs sm:text-sm ${
-                    user.isActive === false ? "text-gray-400" : "text-[#E41E26]"
+                    user.isActive === false ? "text-gray-400" : "text-[#2E3D88]"
                   }`}
                 />
                 <span>{user.phoneNumber || "غير متوفر"}</span>

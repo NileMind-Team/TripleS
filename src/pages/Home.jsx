@@ -89,7 +89,7 @@ const Home = () => {
         confirmButtonText: options.confirmButtonText,
         showCancelButton: options.showCancelButton,
         cancelButtonText: options.cancelButtonText,
-        confirmButtonColor: "#E41E26",
+        confirmButtonColor: "#2E3D88",
         cancelButtonColor: "#6B7280",
         ...options.swalOptions,
       });
@@ -133,7 +133,7 @@ const Home = () => {
         text: text,
         timer: options.timer || 2000,
         showConfirmButton: false,
-        confirmButtonColor: "#E41E26",
+        confirmButtonColor: "#2E3D88",
         ...options.swalOptions,
       });
     }
@@ -550,7 +550,7 @@ const Home = () => {
         text: "يجب تسجيل الدخول لإضافة المنتجات إلى المفضلة",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#E41E26",
+        confirmButtonColor: "#2E3D88",
         cancelButtonColor: "#6B7280",
         confirmButtonText: "تسجيل الدخول",
         cancelButtonText: "إنشاء حساب جديد",
@@ -650,7 +650,7 @@ const Home = () => {
         text: "يجب تسجيل الدخول لإضافة المنتجات إلى السلة",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#E41E26",
+        confirmButtonColor: "#2E3D88",
         cancelButtonColor: "#6B7280",
         confirmButtonText: "تسجيل الدخول",
         cancelButtonText: "إنشاء حساب جديد",
@@ -890,7 +890,7 @@ const Home = () => {
       text: "لن تتمكن من التراجع عن هذا الإجراء!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#E41E26",
+      confirmButtonColor: "#2E3D88",
       cancelButtonColor: "#6B7280",
       confirmButtonText: "نعم، احذفه!",
       cancelButtonText: "إلغاء",
@@ -1079,7 +1079,7 @@ const Home = () => {
         title: "لا يمكن حذف التصنيف",
         text: `يوجد ${productsInCategory.length} منتج في هذا التصنيف. يرجى إعادة تعيين أو حذف هذه المنتجات أولاً.`,
         icon: "warning",
-        confirmButtonColor: "#E41E26",
+        confirmButtonColor: "#2E3D88",
         confirmButtonText: "حسناً",
       });
       return;
@@ -1090,7 +1090,7 @@ const Home = () => {
       text: "لن تتمكن من التراجع عن هذا الإجراء!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#E41E26",
+      confirmButtonColor: "#2E3D88",
       cancelButtonColor: "#6B7280",
       confirmButtonText: "نعم، احذفه!",
       cancelButtonText: "إلغاء",
@@ -1239,7 +1239,7 @@ const Home = () => {
   const formatPriceDisplay = (product) => {
     if (product.isPriceBasedOnRequest) {
       return (
-        <div className="text-[#E41E26] font-bold text-lg sm:text-xl">
+        <div className="text-[#2E3D88] font-bold text-lg sm:text-xl">
           السعر حسب الطلب
         </div>
       );
@@ -1251,7 +1251,7 @@ const Home = () => {
           <div className="text-gray-400 dark:text-gray-500 text-sm line-through">
             {product.price} ج.م
           </div>
-          <div className="text-[#E41E26] font-bold text-lg sm:text-xl">
+          <div className="text-[#2E3D88] font-bold text-lg sm:text-xl">
             {product.finalPrice.toFixed(2)} ج.م
           </div>
         </>
@@ -1259,7 +1259,7 @@ const Home = () => {
     }
 
     return (
-      <div className="text-[#E41E26] font-bold text-lg sm:text-xl">
+      <div className="text-[#2E3D88] font-bold text-lg sm:text-xl">
         {product.price} ج.م
       </div>
     );
@@ -1268,7 +1268,7 @@ const Home = () => {
   const formatPriceDisplayMobile = (product) => {
     if (product.isPriceBasedOnRequest) {
       return (
-        <div className="text-[#E41E26] font-bold text-sm">السعر حسب الطلب</div>
+        <div className="text-[#2E3D88] font-bold text-sm">السعر حسب الطلب</div>
       );
     }
 
@@ -1278,7 +1278,7 @@ const Home = () => {
           <div className="text-gray-400 dark:text-gray-500 text-xs line-through">
             {product.price} ج.م
           </div>
-          <div className="text-[#E41E26] font-bold text-sm">
+          <div className="text-[#2E3D88] font-bold text-sm">
             {product.finalPrice.toFixed(2)} ج.م
           </div>
         </>
@@ -1286,7 +1286,7 @@ const Home = () => {
     }
 
     return (
-      <div className="text-[#E41E26] font-bold text-sm">
+      <div className="text-[#2E3D88] font-bold text-sm">
         {product.price} ج.م
       </div>
     );
@@ -1346,7 +1346,7 @@ const Home = () => {
         text: `يجب تسجيل الدخول للوصول إلى ${action}`,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#E41E26",
+        confirmButtonColor: "#2E3D88",
         cancelButtonColor: "#6B7280",
         confirmButtonText: "تسجيل الدخول",
         cancelButtonText: "إنشاء حساب جديد",
@@ -1465,8 +1465,8 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#E41E26]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2E3D88]"></div>
       </div>
     );
   }
@@ -1498,7 +1498,7 @@ const Home = () => {
               dir="rtl"
               style={{ maxHeight: "calc(100vh - 2rem)" }}
             >
-              <div className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white p-4 sm:p-6 relative">
+              <div className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white p-4 sm:p-6 relative">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="bg-white/20 p-2 sm:p-3 rounded-xl sm:rounded-2xl backdrop-blur-sm">
@@ -1528,7 +1528,7 @@ const Home = () => {
               >
                 {modalLoading ? (
                   <div className="flex items-center justify-center py-8 sm:py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 border-t-4 border-b-4 border-[#E41E26]"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 border-t-4 border-b-4 border-[#2E3D88]"></div>
                   </div>
                 ) : productAddons.length === 0 ? (
                   <div className="text-center py-8 sm:py-12">
@@ -1586,7 +1586,7 @@ const Home = () => {
                                       }
                                       className={`w-full p-2 sm:p-3 rounded-lg border-2 transition-all duration-200 flex items-center justify-between ${
                                         isSelected
-                                          ? "border-[#E41E26] bg-red-50 dark:bg-red-900/20"
+                                          ? "border-[#2E3D88] bg-blue-50 dark:bg-blue-900/20"
                                           : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-500"
                                       }`}
                                     >
@@ -1594,14 +1594,14 @@ const Home = () => {
                                         <span
                                           className={`font-medium text-xs sm:text-sm md:text-base truncate ${
                                             isSelected
-                                              ? "text-[#E41E26]"
+                                              ? "text-[#2E3D88]"
                                               : "text-gray-700 dark:text-gray-300"
                                           }`}
                                         >
                                           {option.name}
                                         </span>
                                         {isSelected && (
-                                          <FaCheck className="text-[#E41E26] flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4" />
+                                          <FaCheck className="text-[#2E3D88] flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4" />
                                         )}
                                       </div>
 
@@ -1699,7 +1699,7 @@ const Home = () => {
                         className={`flex-1 py-2 sm:py-3 rounded-lg font-semibold flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base ${
                           addingToCart === selectedProductForAddons?.id
                             ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white cursor-wait"
-                            : "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white hover:shadow-lg transition-all"
+                            : "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white hover:shadow-lg transition-all"
                         }`}
                       >
                         {addingToCart === selectedProductForAddons?.id ? (
@@ -1777,7 +1777,7 @@ const Home = () => {
                   value={modalNotes}
                   onChange={(e) => setModalNotes(e.target.value)}
                   placeholder="اكتب تعليماتك هنا..."
-                  className="w-full h-40 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-[#E41E26] focus:border-transparent resize-none"
+                  className="w-full h-40 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-[#2E3D88] focus:border-transparent resize-none"
                   dir="rtl"
                   maxLength={500}
                   autoFocus
@@ -1831,7 +1831,7 @@ const Home = () => {
                       { timer: 1500 },
                     );
                   }}
-                  className="flex-1 py-3 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   <FaCheck className="text-sm" />
                   حفظ
@@ -1842,7 +1842,7 @@ const Home = () => {
         </>
       )}
 
-      <div className="min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 font-sans relative overflow-x-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 font-sans relative overflow-x-hidden">
         <div ref={topOfPageRef}></div>
 
         <HeroSwipper />
@@ -1854,7 +1854,7 @@ const Home = () => {
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-3 md:p-4 relative w-full">
             <button
               onClick={() => scrollCategories("left")}
-              className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm rounded-full p-2 text-gray-600 dark:text-gray-300 hover:text-[#E41E26] z-10 shadow-lg"
+              className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm rounded-full p-2 text-gray-600 dark:text-gray-300 hover:text-[#2E3D88] z-10 shadow-lg"
             >
               <FaChevronLeft size={14} className="sm:w-4" />
             </button>
@@ -1887,7 +1887,7 @@ const Home = () => {
                   }}
                   className={`flex-shrink-0 flex items-center gap-2 px-3 md:px-4 py-2 md:py-3 rounded-xl font-semibold text-sm md:text-base ${
                     selectedCategory === category.id
-                      ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white shadow-lg"
+                      ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white shadow-lg"
                       : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                   } ${
                     !category.isActive &&
@@ -1910,7 +1910,7 @@ const Home = () => {
 
             <button
               onClick={() => scrollCategories("right")}
-              className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm rounded-full p-2 text-gray-600 dark:text-gray-300 hover:text-[#E41E26] z-10 shadow-lg"
+              className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm rounded-full p-2 text-gray-600 dark:text-gray-300 hover:text-[#2E3D88] z-10 shadow-lg"
             >
               <FaChevronRight size={14} className="sm:w-4" />
             </button>
@@ -1945,7 +1945,7 @@ const Home = () => {
                       scrollToCategories();
                     }, 50);
                   }}
-                  className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-6 py-3 rounded-xl font-semibold shadow-lg text-sm md:text-base"
+                  className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-6 py-3 rounded-xl font-semibold shadow-lg text-sm md:text-base"
                 >
                   عرض جميع المنتجات
                 </button>
@@ -1975,7 +1975,7 @@ const Home = () => {
                   >
                     {product.itemOffer && product.itemOffer.isEnabled && (
                       <div className="absolute top-2 right-2 z-10">
-                        <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center gap-1.5">
+                        <div className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center gap-1.5">
                           <FaFire className="text-white" size={12} />
                           <span className="text-xs font-bold whitespace-nowrap">
                             {formatOfferText(product.itemOffer)}
@@ -2065,7 +2065,7 @@ const Home = () => {
 
                           <div className="flex-1 min-w-0">
                             <h3
-                              className="font-bold text-sm text-gray-800 dark:text-gray-200 hover:text-[#E41E26] line-clamp-1 mb-2"
+                              className="font-bold text-sm text-gray-800 dark:text-gray-200 hover:text-[#2E3D88] line-clamp-1 mb-2"
                               dir={isArabic(product.name) ? "rtl" : "ltr"}
                             >
                               {product.name}
@@ -2103,7 +2103,7 @@ const Home = () => {
                               addingToCart === product.id
                                 ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white cursor-wait"
                                 : isProductAvailableForCart(product)
-                                  ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white"
+                                  ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white"
                                   : "bg-gray-400 text-gray-200 cursor-not-allowed"
                             }`}
                           >
@@ -2165,7 +2165,7 @@ const Home = () => {
 
                       <div className="p-3 sm:p-4">
                         <h3
-                          className="font-bold text-base sm:text-lg text-gray-800 dark:text-gray-200 mb-2 hover:text-[#E41E26] line-clamp-1"
+                          className="font-bold text-base sm:text-lg text-gray-800 dark:text-gray-200 mb-2 hover:text-[#2E3D88] line-clamp-1"
                           dir={isArabic(product.name) ? "rtl" : "ltr"}
                         >
                           {product.name}
@@ -2212,7 +2212,7 @@ const Home = () => {
                               addingToCart === product.id
                                 ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white cursor-wait"
                                 : isProductAvailableForCart(product)
-                                  ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white"
+                                  ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white"
                                   : "bg-gray-400 text-gray-200 cursor-not-allowed"
                             }`}
                           >
@@ -2279,7 +2279,7 @@ const Home = () => {
                               onClick={() => handlePageChange(pageNum)}
                               className={`px-3 sm:px-4 py-1 sm:py-2 rounded-xl font-semibold ${
                                 currentPage === pageNum
-                                  ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white shadow-lg"
+                                  ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white shadow-lg"
                                   : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
                               }`}
                             >
@@ -2310,7 +2310,7 @@ const Home = () => {
 
         {/* Cart Button */}
         <div
-          className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white rounded-full p-3 sm:p-4 shadow-2xl z-40 cursor-pointer hover:scale-110 no-product-details ${
+          className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white rounded-full p-3 sm:p-4 shadow-2xl z-40 cursor-pointer hover:scale-110 no-product-details ${
             cartItemsCount === 0 ? "opacity-70" : ""
           }`}
           onClick={handleNavigateToCart}
@@ -2318,7 +2318,7 @@ const Home = () => {
           <div className="relative">
             <FaShoppingCart className="w-4 h-4 sm:w-6 sm:h-6" />
             {cartItemsCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-white text-[#E41E26] rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center text-xs font-bold">
+              <span className="absolute -top-2 -right-2 bg-white text-[#2E3D88] rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center text-xs font-bold">
                 {cartItemsCount}
               </span>
             )}
@@ -2407,7 +2407,7 @@ const Home = () => {
                 onClick={(e) => e.stopPropagation()}
                 dir="rtl"
               >
-                <div className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white p-4 sm:p-6 relative">
+                <div className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white p-4 sm:p-6 relative">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="bg-white/20 p-2 sm:p-3 rounded-2xl backdrop-blur-sm">
@@ -2434,8 +2434,8 @@ const Home = () => {
                 <div className="p-4 sm:p-6">
                   <div className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 shadow-lg">
                     <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                      <div className="bg-[#E41E26]/10 p-2 rounded-xl">
-                        <FaPlus className="text-[#E41E26] text-base sm:text-lg" />
+                      <div className="bg-[#2E3D88]/10 p-2 rounded-xl">
+                        <FaPlus className="text-[#2E3D88] text-base sm:text-lg" />
                       </div>
                       <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200">
                         إضافة تصنيف جديد
@@ -2459,7 +2459,7 @@ const Home = () => {
                               })
                             }
                             placeholder="أدخل اسم التصنيف الجديد..."
-                            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-[#E41E26] focus:border-[#E41E26] outline-none text-right text-base font-medium"
+                            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-[#2E3D88] focus:border-[#2E3D88] outline-none text-right text-base font-medium"
                           />
                         </div>
                       </div>
@@ -2524,8 +2524,8 @@ const Home = () => {
 
                   <div>
                     <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                      <div className="bg-[#FDB913]/10 p-2 rounded-xl">
-                        <FaList className="text-[#FDB913] text-base sm:text-lg" />
+                      <div className="bg-[#4A5DB0]/10 p-2 rounded-xl">
+                        <FaList className="text-[#4A5DB0] text-base sm:text-lg" />
                       </div>
                       <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200">
                         التصنيفات الحالية ({categories.length - 2})
@@ -2539,7 +2539,7 @@ const Home = () => {
                           className={`bg-white dark:bg-gray-700 border-2 ${
                             category.id === "all" || category.id === "offers"
                               ? "border-gray-300 dark:border-gray-600"
-                              : "border-gray-200 dark:border-gray-600 hover:border-[#E41E26]/30 dark:hover:border-[#E41E26]/30"
+                              : "border-gray-200 dark:border-gray-600 hover:border-[#2E3D88]/30 dark:hover:border-[#2E3D88]/30"
                           } rounded-2xl p-4 sm:p-6 hover:shadow-lg`}
                         >
                           {editingCategory &&
@@ -2559,7 +2559,7 @@ const Home = () => {
                                         name: e.target.value,
                                       })
                                     }
-                                    className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-[#E41E26] focus:border-[#E41E26] outline-none text-right text-base font-medium"
+                                    className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-[#2E3D88] focus:border-[#2E3D88] outline-none text-right text-base font-medium"
                                     dir="rtl"
                                   />
                                 </div>
@@ -2622,7 +2622,7 @@ const Home = () => {
                                 </button>
                                 <button
                                   onClick={handleSaveCategory}
-                                  className="bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold shadow-lg flex items-center gap-2 text-sm sm:text-base no-product-details"
+                                  className="bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold shadow-lg flex items-center gap-2 text-sm sm:text-base no-product-details"
                                 >
                                   <FaSave />
                                   حفظ التغييرات

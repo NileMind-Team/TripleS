@@ -132,6 +132,7 @@ export default function ResetPassword() {
           icon: "error",
           title: "كلمة المرور لا تلبي المتطلبات",
           text: "يرجى التأكد من استيفاء جميع شروط كلمة المرور",
+          confirmButtonColor: "#2E3D88",
           customClass: {
             popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
           },
@@ -165,6 +166,7 @@ export default function ResetPassword() {
           text: res.data.message || "تم إعادة تعيين كلمة المرور بنجاح.",
           showConfirmButton: false,
           timer: 2000,
+          confirmButtonColor: "#2E3D88",
           customClass: {
             popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
           },
@@ -188,6 +190,7 @@ export default function ResetPassword() {
           icon: "error",
           title: "فشل إعادة تعيين كلمة المرور",
           text: errorMsg,
+          confirmButtonColor: "#2E3D88",
           customClass: {
             popup: "rounded-3xl shadow-2xl dark:bg-gray-800 dark:text-white",
           },
@@ -207,10 +210,10 @@ export default function ResetPassword() {
           content="تريبل اس شركة برمجيات تقدم تطوير مواقع وتطبيقات وأنظمة إدارة حديثة، بحلول رقمية احترافية تعزز حضورك الرقمي وتدعم نمو أعمالك."
         />
       </Helmet>
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4 relative font-sans overflow-hidden transition-colors duration-300">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#f0f3ff] to-[#d9e0f5] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 px-4 relative font-sans overflow-hidden transition-colors duration-300">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-20 -top-20 w-80 h-80 bg-gradient-to-r from-[#E41E26]/10 to-[#FDB913]/10 dark:from-[#E41E26]/20 dark:to-[#FDB913]/20 rounded-full blur-3xl"></div>
-          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-gradient-to-r from-[#FDB913]/10 to-[#E41E26]/10 dark:from-[#FDB913]/20 dark:to-[#E41E26]/20 rounded-full blur-3xl"></div>
+          <div className="absolute -left-20 -top-20 w-80 h-80 bg-gradient-to-r from-[#2E3D88]/10 to-[#4A5DB0]/10 dark:from-[#2E3D88]/20 dark:to-[#4A5DB0]/20 rounded-full blur-3xl"></div>
+          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-gradient-to-r from-[#4A5DB0]/10 to-[#2E3D88]/10 dark:from-[#4A5DB0]/20 dark:to-[#2E3D88]/20 rounded-full blur-3xl"></div>
         </div>
 
         <motion.div
@@ -219,8 +222,8 @@ export default function ResetPassword() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-md bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-2xl rounded-3xl border border-white/50 dark:border-gray-700/50 relative overflow-hidden transition-colors duration-300"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#E41E26]/5 to-transparent rounded-bl-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#FDB913]/5 to-transparent rounded-tr-3xl"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#2E3D88]/5 to-transparent rounded-bl-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#4A5DB0]/5 to-transparent rounded-tr-3xl"></div>
 
           <div className="p-8">
             {!loading && message ? (
@@ -263,7 +266,7 @@ export default function ResetPassword() {
                   )}
                 </div>
 
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent text-center">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] bg-clip-text text-transparent text-center">
                   {success
                     ? "تم إعادة تعيين كلمة المرور بنجاح"
                     : "فشل إعادة التعيين"}
@@ -278,7 +281,7 @@ export default function ResetPassword() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate("/login")}
-                    className="mt-4 bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:shadow-[#E41E26]/25 transition-all duration-300"
+                    className="mt-4 bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:shadow-[#2E3D88]/25 transition-all duration-300"
                   >
                     العودة لتسجيل الدخول
                   </motion.button>
@@ -287,7 +290,7 @@ export default function ResetPassword() {
             ) : (
               <>
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] bg-clip-text text-transparent">
                     إعادة تعيين كلمة المرور
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
@@ -298,19 +301,19 @@ export default function ResetPassword() {
                 <form onSubmit={handleResetPassword} className="space-y-6">
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 flex items-center justify-center pl-4">
-                      <FaLock className="text-[#E41E26] dark:text-[#FDB913] text-lg transition-all duration-300 group-focus-within:scale-110" />
+                      <FaLock className="text-[#2E3D88] dark:text-[#4A5DB0] text-lg transition-all duration-300 group-focus-within:scale-110" />
                     </div>
                     <input
                       type={showPassword ? "text" : "password"}
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="أدخل كلمة المرور الجديدة"
-                      className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pl-12 pr-12 py-4 outline-none focus:ring-2 focus:ring-[#E41E26] dark:focus:ring-[#FDB913] focus:border-transparent transition-all duration-200 group-hover:border-[#E41E26]/50 dark:group-hover:border-[#FDB913]/50"
+                      className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pl-12 pr-12 py-4 outline-none focus:ring-2 focus:ring-[#2E3D88] dark:focus:ring-[#4A5DB0] focus:border-transparent transition-all duration-200 group-hover:border-[#2E3D88]/50 dark:group-hover:border-[#4A5DB0]/50"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center justify-center pr-4">
                       <div
                         onClick={() => setShowPassword(!showPassword)}
-                        className="text-gray-500 dark:text-gray-400 hover:text-[#E41E26] dark:hover:text-[#FDB913] cursor-pointer transition-all duration-200 hover:scale-110"
+                        className="text-gray-500 dark:text-gray-400 hover:text-[#2E3D88] dark:hover:text-[#4A5DB0] cursor-pointer transition-all duration-200 hover:scale-110"
                       >
                         {showPassword ? (
                           <FaEyeSlash size={18} />
@@ -323,21 +326,21 @@ export default function ResetPassword() {
 
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 flex items-center justify-center pl-4">
-                      <FaLock className="text-[#E41E26] dark:text-[#FDB913] text-lg transition-all duration-300 group-focus-within:scale-110" />
+                      <FaLock className="text-[#2E3D88] dark:text-[#4A5DB0] text-lg transition-all duration-300 group-focus-within:scale-110" />
                     </div>
                     <input
                       type={showConfirmPassword ? "text" : "password"}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="تأكيد كلمة المرور الجديدة"
-                      className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pl-12 pr-12 py-4 outline-none focus:ring-2 focus:ring-[#E41E26] dark:focus:ring-[#FDB913] focus:border-transparent transition-all duration-200 group-hover:border-[#E41E26]/50 dark:group-hover:border-[#FDB913]/50"
+                      className="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl pl-12 pr-12 py-4 outline-none focus:ring-2 focus:ring-[#2E3D88] dark:focus:ring-[#4A5DB0] focus:border-transparent transition-all duration-200 group-hover:border-[#2E3D88]/50 dark:group-hover:border-[#4A5DB0]/50"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center justify-center pr-4">
                       <div
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }
-                        className="text-gray-500 dark:text-gray-400 hover:text-[#E41E26] dark:hover:text-[#FDB913] cursor-pointer transition-all duration-200 hover:scale-110"
+                        className="text-gray-500 dark:text-gray-400 hover:text-[#2E3D88] dark:hover:text-[#4A5DB0] cursor-pointer transition-all duration-200 hover:scale-110"
                       >
                         {showConfirmPassword ? (
                           <FaEyeSlash size={18} />
@@ -348,8 +351,8 @@ export default function ResetPassword() {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-[#fff8e7] to-[#ffe5b4] dark:from-gray-800 dark:to-gray-700 p-4 rounded-xl border border-[#FDB913]/30 dark:border-gray-600 space-y-2 transition-colors duration-300">
-                    <p className="text-sm font-semibold text-[#E41E26] dark:text-[#FDB913]">
+                  <div className="bg-gradient-to-r from-[#f0f3ff] to-[#d9e0f5] dark:from-gray-800 dark:to-gray-700 p-4 rounded-xl border border-[#4A5DB0]/30 dark:border-gray-600 space-y-2 transition-colors duration-300">
+                    <p className="text-sm font-semibold text-[#2E3D88] dark:text-[#4A5DB0]">
                       متطلبات كلمة المرور:
                     </p>
                     <div className="grid grid-cols-1 gap-2">
@@ -383,13 +386,13 @@ export default function ResetPassword() {
                     disabled={!isFormValid || loading}
                     className={`w-full font-semibold py-4 rounded-xl transition-all duration-300 text-lg relative overflow-hidden ${
                       isFormValid
-                        ? "bg-gradient-to-r from-[#E41E26] to-[#FDB913] text-white hover:shadow-xl hover:shadow-[#E41E26]/25 dark:hover:shadow-[#FDB913]/25"
+                        ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white hover:shadow-xl hover:shadow-[#2E3D88]/25 dark:hover:shadow-[#4A5DB0]/25"
                         : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                     }`}
                   >
                     {loading ? (
                       <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white ml-2"></div>
                         جاري إعادة تعيين كلمة المرور...
                       </div>
                     ) : (
@@ -401,14 +404,14 @@ export default function ResetPassword() {
                   </motion.button>
                 </form>
 
-                <div className="flex space-x-2 justify-center mt-8">
-                  <div className="w-3 h-3 bg-[#E41E26] rounded-full animate-bounce"></div>
+                <div className="flex gap-2 justify-center mt-8">
+                  <div className="w-3 h-3 bg-[#2E3D88] rounded-full animate-bounce"></div>
                   <div
-                    className="w-3 h-3 bg-[#FDB913] rounded-full animate-bounce"
+                    className="w-3 h-3 bg-[#4A5DB0] rounded-full animate-bounce"
                     style={{ animationDelay: "0.2s" }}
                   ></div>
                   <div
-                    className="w-3 h-3 bg-[#E41E26] rounded-full animate-bounce"
+                    className="w-3 h-3 bg-[#2E3D88] rounded-full animate-bounce"
                     style={{ animationDelay: "0.4s" }}
                   ></div>
                 </div>
