@@ -68,7 +68,7 @@ const Footer = () => {
               <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
                 <FaPhone className="text-[#4A5DB0] text-sm" />
                 <span className="text-sm" dir="ltr">
-                  +20 102 750 8008
+                  +20 127 318 8267
                 </span>
               </div>
               <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
