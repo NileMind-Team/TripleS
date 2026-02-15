@@ -1094,10 +1094,10 @@ const ProductDetails = () => {
   return (
     <>
       <Helmet>
-        <title>Chicken One | تشيكن وان الزاوي</title>
+        <title>Triple-S | تريبل اس</title>
         <meta
           name="description"
-          content="تشيكن ون - الزاوي مطعم عصري يقدم خدمة عالية الجودة وتجربة طعام مميزة، مع مذاق رائع واهتمام كبير برضا العملاء."
+          content="تريبل اس شركة برمجيات تقدم تطوير مواقع وتطبيقات وأنظمة إدارة حديثة، بحلول رقمية احترافية تعزز حضورك الرقمي وتدعم نمو أعمالك."
         />
       </Helmet>
       <div className="min-h-screen bg-gradient-to-br from-white via-[#fff8e7] to-[#ffe5b4] dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 transition-colors duration-300">

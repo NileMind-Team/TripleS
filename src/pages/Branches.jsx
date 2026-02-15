@@ -294,10 +294,10 @@ const Branches = () => {
   return (
     <>
       <Helmet>
-        <title>Chicken One | تشيكن وان الزاوي</title>
+        <title>Triple-S | تريبل اس</title>
         <meta
           name="description"
-          content="تشيكن ون - الزاوي مطعم عصري يقدم خدمة عالية الجودة وتجربة طعام مميزة، مع مذاق رائع واهتمام كبير برضا العملاء."
+          content="تريبل اس شركة برمجيات تقدم تطوير مواقع وتطبيقات وأنظمة إدارة حديثة، بحلول رقمية احترافية تعزز حضورك الرقمي وتدعم نمو أعمالك."
         />
       </Helmet>
       <div
@@ -411,7 +411,7 @@ const Branches = () => {
                 transition={{ delay: 0.4 }}
                 className="text-white/80 text-xs sm:text-sm md:text-base px-2"
               >
-                اكتشف فروع Chicken One القريبة منك وتعرّف على تفاصيل كل فرع
+                اكتشف فروع Triple-S القريبة منك وتعرّف على تفاصيل كل فرع
                 وتقييمات العملاء
               </motion.p>
             </div>

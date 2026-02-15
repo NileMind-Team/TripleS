@@ -364,7 +364,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             <div className="relative">
               <img
                 src={darkMode ? logoDark : logo}
-                alt="Chicken One logo"
+                alt="Triple-S logo"
                 className="w-14 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
               />
 
@@ -378,7 +378,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               {/* Title and Icon for Medium+ Screens */}
               <div className="flex items-center gap-2">
                 <h1 className="hidden md:block text-xl lg:text-2xl font-bold bg-gradient-to-r from-[#E41E26] to-[#FDB913] bg-clip-text text-transparent dark:from-[#FDB913] dark:to-[#E41E26] transition-all duration-300 group-hover:from-[#FDB913] group-hover:to-[#E41E26] dark:group-hover:from-[#E41E26] dark:group-hover:to-[#FDB913]">
-                  Chicken One
+                  Triple-S
                 </h1>
 
                 {/* Home Icon for Medium+ Screens */}
@@ -485,7 +485,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
                         >
                           انضم إلى{" "}
                           <span className="font-semibold text-gray-800 dark:text-gray-200">
-                            Chicken One
+                            Triple-S
                           </span>
                         </p>
                         <p

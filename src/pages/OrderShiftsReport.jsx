@@ -522,7 +522,7 @@ const OrderShiftsReport = () => {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تقرير الورديات - Chicken One</title>
+<title>تقرير الورديات - Triple-S</title>
 <style>
   @media print {
     @page {
@@ -761,7 +761,7 @@ const OrderShiftsReport = () => {
   <div class="report-container compact">
     <div class="report-header compact">
       <div class="company-info compact">
-        <div class="company-name single-line">Chicken One - تقرير الورديات</div>
+        <div class="company-name single-line">Triple-S - تقرير الورديات</div>
       </div>
       <h1 class="single-line">تقرير الورديات</h1>
       <h2 class="single-line spaced-text">${selectedShiftName}</h2>
@@ -848,7 +848,7 @@ const OrderShiftsReport = () => {
     
     <div class="report-footer compact">
       <div class="print-date single-line spaced-text">${formattedDate} - ${formattedTime}</div>
-      <div class="single-line spaced-text">Chicken One © ${toArabicNumbers(
+      <div class="single-line spaced-text">Triple-S © ${toArabicNumbers(
         new Date().getFullYear(),
       )}</div>
     </div>
@@ -969,10 +969,10 @@ const OrderShiftsReport = () => {
   return (
     <>
       <Helmet>
-        <title>Chicken One | تشيكن وان الزاوي</title>
+        <title>Triple-S | تريبل اس</title>
         <meta
           name="description"
-          content="تشيكن ون - الزاوي مطعم عصري يقدم خدمة عالية الجودة وتجربة طعام مميزة، مع مذاق رائع واهتمام كبير برضا العملاء."
+          content="تريبل اس شركة برمجيات تقدم تطوير مواقع وتطبيقات وأنظمة إدارة حديثة، بحلول رقمية احترافية تعزز حضورك الرقمي وتدعم نمو أعمالك."
         />
       </Helmet>
       <div
