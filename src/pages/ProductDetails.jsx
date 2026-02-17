@@ -698,32 +698,20 @@ const ProductDetails = () => {
   const handleManageOffers = async (e) => {
     e?.stopPropagation();
 
-    try {
-      const response = await axiosInstance.get("/api/ItemOffers/GetAll");
-      const offersData = response.data;
+    const existingOffer = product.itemOffer;
 
-      const existingOffer = offersData.find(
-        (offer) => offer.menuItemId === product.id,
-      );
-
-      if (existingOffer) {
-        navigate("/admin/item-offers", {
-          state: {
-            selectedProductId: product.id,
-            selectedOfferId: existingOffer.id,
-          },
-        });
-      } else {
-        navigate("/admin/item-offers", {
-          state: {
-            selectedProductId: product.id,
-          },
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching offers:", error);
-      showMessage("error", "خطأ", "فشل في تحميل بيانات الخصومات", {
-        timer: 2000,
+    if (existingOffer && existingOffer.isEnabled) {
+      navigate("/admin/item-offers", {
+        state: {
+          selectedProductId: product.id,
+          selectedOfferId: existingOffer.id,
+        },
+      });
+    } else {
+      navigate("/admin/item-offers", {
+        state: {
+          selectedProductId: product.id,
+        },
       });
     }
   };
