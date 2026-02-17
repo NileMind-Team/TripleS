@@ -69,13 +69,54 @@ export default function MyOrders() {
   const [loadingBranches, setLoadingBranches] = useState(false);
   const [isAdminOrRestaurant, setIsAdminOrRestaurant] = useState(false);
   const signalRConnectionRef = useRef(null);
+  const ordersContainerRef = useRef(null);
+  const firstOrderRef = useRef(null);
+  const isPaginationChange = useRef(false);
+  const previousPageRef = useRef(currentPage);
+
+  const scrollToFirstOrder = () => {
+    setTimeout(() => {
+      if (firstOrderRef.current) {
+        const offset = 120;
+        const elementPosition =
+          firstOrderRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      } else if (ordersContainerRef.current && orders.length > 0) {
+        const containerPosition =
+          ordersContainerRef.current.getBoundingClientRect().top;
+        const offsetPosition = containerPosition + window.pageYOffset - 80;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    }, 200);
+  };
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [currentPage]);
+    if (!isInitialLoad && !fetchingOrders && orders.length > 0) {
+      if (isPaginationChange.current) {
+        scrollToFirstOrder();
+        isPaginationChange.current = false;
+      }
+    }
+    previousPageRef.current = currentPage;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, orders, fetchingOrders]);
+
+  useEffect(() => {
+    if (!fetchingOrders && isPaginationChange.current && orders.length > 0) {
+      scrollToFirstOrder();
+      isPaginationChange.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchingOrders]);
 
   const isMobile = () => {
     return window.innerWidth < 768;
@@ -1187,29 +1228,24 @@ export default function MyOrders() {
     setCurrentPage(1);
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    scrollToTop();
+    if (pageNumber !== currentPage) {
+      isPaginationChange.current = true;
+      setCurrentPage(pageNumber);
+    }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
+      isPaginationChange.current = true;
       setCurrentPage(currentPage - 1);
-      scrollToTop();
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
+      isPaginationChange.current = true;
       setCurrentPage(currentPage + 1);
-      scrollToTop();
     }
   };
 
@@ -1676,7 +1712,10 @@ export default function MyOrders() {
           )}
 
           {/* Orders List */}
-          <div className="space-y-4 sm:space-y-6 relative z-20">
+          <div
+            ref={ordersContainerRef}
+            className="space-y-4 sm:space-y-6 relative z-20"
+          >
             {!fetchingOrders && (
               <AnimatePresence>
                 {orders.map((order, index) => {
@@ -1685,6 +1724,7 @@ export default function MyOrders() {
                   return (
                     <motion.div
                       key={order.id}
+                      ref={index === 0 ? firstOrderRef : null}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
