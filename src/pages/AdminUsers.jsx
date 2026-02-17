@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -36,6 +36,9 @@ export default function AdminUsers() {
   });
   // eslint-disable-next-line no-unused-vars
   const [formErrors, setFormErrors] = useState({});
+  const usersContainerRef = useRef(null);
+  const firstUserRef = useRef(null);
+  const isPaginationChange = useRef(false);
 
   const {
     filteredUsers,
@@ -63,12 +66,61 @@ export default function AdminUsers() {
     getPaginationNumbers,
   } = useUsers();
 
+  const scrollToFirstUser = () => {
+    if (isPaginationChange.current) {
+      setTimeout(() => {
+        if (firstUserRef.current) {
+          const offset = 120;
+          const elementPosition =
+            firstUserRef.current.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        } else if (usersContainerRef.current) {
+          const containerPosition =
+            usersContainerRef.current.getBoundingClientRect().top;
+          const offsetPosition = containerPosition + window.pageYOffset - 20;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 200);
+
+      isPaginationChange.current = false;
+    }
+  };
+
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [currentPage]);
+    if (!isLoading && filteredUsers.length > 0) {
+      scrollToFirstUser();
+    }
+  }, [filteredUsers, isLoading, currentPage]);
+
+  const handlePageChangeWithScroll = (pageNum) => {
+    if (pageNum !== currentPage) {
+      isPaginationChange.current = true;
+      handlePageChange(pageNum);
+    }
+  };
+
+  const handlePrevPageWithScroll = () => {
+    if (currentPage > 1) {
+      isPaginationChange.current = true;
+      handlePrevPage();
+    }
+  };
+
+  const handleNextPageWithScroll = () => {
+    if (currentPage < totalPages) {
+      isPaginationChange.current = true;
+      handleNextPage();
+    }
+  };
 
   const filteredAvailableRoles = getFilteredAvailableRoles();
 
@@ -303,6 +355,7 @@ export default function AdminUsers() {
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               <div
+                ref={usersContainerRef}
                 className={`space-y-3 sm:space-y-4 md:space-y-5 ${
                   isAdding ? "xl:col-span-2" : "xl:col-span-3"
                 }`}
@@ -312,6 +365,7 @@ export default function AdminUsers() {
                     {sortedUsers.map((user, index) => (
                       <UserCard
                         key={user.id}
+                        ref={index === 0 ? firstUserRef : null}
                         user={user}
                         index={index}
                         isCurrentUser={isCurrentUser}
@@ -331,7 +385,7 @@ export default function AdminUsers() {
                       <div className="mt-6 sm:mt-8 flex flex-col items-center">
                         <div className="flex items-center justify-center gap-1 sm:gap-2">
                           <button
-                            onClick={handlePrevPage}
+                            onClick={handlePrevPageWithScroll}
                             disabled={currentPage === 1}
                             className={`p-2 sm:p-3 rounded-xl ${
                               currentPage === 1
@@ -351,7 +405,9 @@ export default function AdminUsers() {
                                   </span>
                                 ) : (
                                   <button
-                                    onClick={() => handlePageChange(pageNum)}
+                                    onClick={() =>
+                                      handlePageChangeWithScroll(pageNum)
+                                    }
                                     className={`px-3 sm:px-4 py-1 sm:py-2 rounded-xl font-semibold ${
                                       currentPage === pageNum
                                         ? "bg-gradient-to-r from-[#2E3D88] to-[#4A5DB0] text-white shadow-lg"
@@ -366,7 +422,7 @@ export default function AdminUsers() {
                           </div>
 
                           <button
-                            onClick={handleNextPage}
+                            onClick={handleNextPageWithScroll}
                             disabled={currentPage === totalPages}
                             className={`p-2 sm:p-3 rounded-xl ${
                               currentPage === totalPages
