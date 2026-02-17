@@ -70,6 +70,13 @@ export default function MyOrders() {
   const [isAdminOrRestaurant, setIsAdminOrRestaurant] = useState(false);
   const signalRConnectionRef = useRef(null);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
   const isMobile = () => {
     return window.innerWidth < 768;
   };

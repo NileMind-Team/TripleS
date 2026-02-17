@@ -219,6 +219,13 @@ const OrderShiftsReport = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
+  useEffect(() => {
     const loadBranches = async () => {
       try {
         const branchesData = await fetchBranches();

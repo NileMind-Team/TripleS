@@ -781,6 +781,13 @@ const SalesReports = () => {
   const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
+  useEffect(() => {
     setSummary({
       totalSales: 0,
       totalOrders: 0,

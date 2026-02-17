@@ -63,6 +63,13 @@ export default function AdminUsers() {
     getPaginationNumbers,
   } = useUsers();
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
   const filteredAvailableRoles = getFilteredAvailableRoles();
 
   const showWarningAlert = (title, message) => {

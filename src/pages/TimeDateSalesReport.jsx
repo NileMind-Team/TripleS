@@ -645,6 +645,13 @@ const TimeDateSalesReport = () => {
   const pageSize = 10;
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
+  useEffect(() => {
     setSummary({
       totalSales: 0,
       totalOrders: 0,
